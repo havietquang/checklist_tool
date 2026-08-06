@@ -1,0 +1,112 @@
+resources:
+  jobs:
+    dbrjobs_run_daily_datavault_gold_edw_mart:
+      name: dbrjobs-run-daily-datavault-gold-edw-mart
+      max_concurrent_runs: 1
+
+      parameters:
+        - name: target_date
+          default: ""
+        - name: environment
+          default: "${var.env}"
+        - name: run_mode
+          default: "daily"
+
+
+
+      tasks:
+        - task_key: date_param
+          spark_python_task:
+            python_file: ../sourcing/generate_target_date.py
+            parameters:
+              - --target-date
+              - "{{job.parameters.target_date}}"
+              - --run-mode
+              - "{{job.parameters.run_mode}}"
+            source: WORKSPACE
+          job_cluster_key: dbt_job_cluster
+
+        - task_key: dim_fact_card
+          depends_on:
+            - task_key: date_param
+          dbt_task:
+            project_directory: ${workspace.file_path}
+            commands:
+              - dbt run -s dim_card fact_card --vars
+                '{"target_date":"{{tasks.date_param.values.target_date}}", "curated_catalog":"ocb_datavault_{{job.parameters.environment}}_curated", "run_mode":"{{job.parameters.run_mode}}", "source_name":"t24"}'
+            source: WORKSPACE
+          job_cluster_key: dbt_job_cluster
+
+        - task_key: fact_funds_transfer
+          depends_on:
+            - task_key: date_param
+          dbt_task:
+            project_directory: ${workspace.file_path}
+            commands:
+              - dbt run -s fact_funds_transfer --vars
+                '{"target_date":"{{tasks.date_param.values.target_date}}", "curated_catalog":"ocb_datavault_{{job.parameters.environment}}_curated", "run_mode":"{{job.parameters.run_mode}}", "source_name":"t24"}'
+            source: WORKSPACE
+          job_cluster_key: dbt_job_cluster
+
+        - task_key: fact_loan
+          depends_on:
+            - task_key: date_param
+          dbt_task:
+            project_directory: ${workspace.file_path}
+            commands:
+              - dbt run -s fact_loan --vars
+                '{"target_date":"{{tasks.date_param.values.target_date}}", "curated_catalog":"ocb_datavault_{{job.parameters.environment}}_curated", "run_mode":"{{job.parameters.run_mode}}", "source_name":"t24"}'
+            source: WORKSPACE
+          job_cluster_key: dbt_job_cluster
+
+        - task_key: deposit
+          depends_on:
+            - task_key: date_param
+          dbt_task:
+            project_directory: ${workspace.file_path}
+            commands:
+              - dbt run -s twt_cx_deposit_agg_m twt_cx_deposit fact_casa fact_term_deposit --vars
+                '{"target_date":"{{tasks.date_param.values.target_date}}", "curated_catalog":"ocb_datavault_{{job.parameters.environment}}_curated", "run_mode":"{{job.parameters.run_mode}}", "source_name":"t24"}'
+            source: WORKSPACE
+          job_cluster_key: dbt_job_cluster
+
+      job_clusters:
+        - job_cluster_key: dbt_job_cluster
+          new_cluster:
+            spark_version: 15.4.x-scala2.12
+            spark_conf:
+              spark.sql.redaction.string.regex: \\\"(password|user)\\\"[\\s]*[^\\\"]*\\\"[^\\\"]*\\\"
+              spark.hadoop.datanucleus.fixedDatastore: "false"
+              spark.hadoop.javax.jdo.option.ConnectionDriverName: org.apache.derby.jdbc.EmbeddedDriver
+              spark.hadoop.javax.jdo.option.ConnectionURL: jdbc:derby:memory:myInMemDB;create=true
+              spark.hadoop.javax.jdo.option.ConnectionUserName: hiveuser
+              spark.hadoop.javax.jdo.option.ConnectionPassword: hivepass
+              spark.hadoop.datanucleus.autoCreateSchema: "true"
+              spark.hadoop.datanucleus.autoCreateTables: "true"
+              spark.sql.catalogImplementation: hive
+            node_type_id: m5d.xlarge
+            custom_tags:
+              project: datavault
+              zone: data_mart
+            spark_env_vars:
+              PYSPARK_PYTHON: /databricks/python3/bin/python3
+              DATABRICKS_HOST: "${var.host}"
+              DATABRICKS_SQL_WAREHOUSE_HTTP_PATH: "${var.sql_warehouse_http_path}"
+              DATABRICKS_DESTINATION_CATALOG: "${var.destination_catalog}"
+              DATABRICKS_DESTINATION_SCHEMA: "${var.destination_schema}"
+              DATABRICKS_CLIENT_ID: "{{secrets/ocb-cdp-datavault/datavault_dbt_job_client_id}}"
+              DATABRICKS_CLIENT_SECRET: "{{secrets/ocb-cdp-datavault/datavault_dbt_job_client_secret}}"
+            init_scripts:
+              - volumes:
+                  destination: /Volumes/ocb_cdp_python_library_jdbc/default/init_script/ocb_datavault_dbt_shared_cluster.sh
+            data_security_mode: DATA_SECURITY_MODE_DEDICATED
+            runtime_engine: STANDARD
+            kind: CLASSIC_PREVIEW
+            is_single_node: true
+
+      tags:
+        project: dbt
+        zone: data_mart
+        map-migrated: migV58YOK697G
+      queue:
+        enabled: true

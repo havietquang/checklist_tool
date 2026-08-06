@@ -1,0 +1,310 @@
+version: 2
+
+models:
+  - name: v_stg_omni_en_user
+    columns:
+      - name: hashkey
+        tests:
+          - unique:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+          - not_null:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+  - name: v_stg_omni_customers
+    columns:
+      - name: hashkey
+        tests:
+          - unique:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+          - not_null:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+  - name: v_stg_omni_omni_service
+    columns:
+      - name: hashkey
+        tests:
+          - unique:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+          - not_null:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+  - name: v_stg_omni_transfer_bill_history
+    columns:
+      - name: hashkey
+        tests:
+          - unique:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+          - not_null:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+  - name: v_stg_omni_user_notification
+    columns:
+      - name: hashkey
+        tests:
+          - unique:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+          - not_null:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+  - name: v_stg_omni_payment_order
+    columns:
+      - name: hashkey
+        tests:
+          - unique:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+          - not_null:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+  - name: v_stg_omni_payment_history
+    columns:
+      - name: hashkey
+        tests:
+          - unique:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+          - not_null:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+  - name: v_stg_omni_acknowledgement
+    columns:
+      - name: hashkey
+        tests:
+          - unique:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+          - not_null:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+  - name: v_stg_omni_party
+    columns:
+      - name: hashkey
+        tests:
+          - unique:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+          - not_null:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+  - name: v_stg_omni_customer_data_sharing_consent
+    columns:
+      - name: hashkey
+        tests:
+          - unique:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+          - not_null:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+
+  - name: v_stg_omni_account_information
+    columns:
+      - name: hashkey
+        tests:
+          - unique:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+          - not_null:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+
+  - name: v_stg_omni_device
+    columns:
+      - name: hashkey
+        tests:
+          - unique:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+          - not_null:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+
+  - name: v_stg_omni_od_linked_deposit
+    columns:
+      - name: hashkey
+        tests:
+          - unique:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+          - not_null:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+    data_tests:
+      - unique_combination_of_columns:
+          arguments:
+            combination_of_columns:
+              - hashkey
+              - ma_key
+
+  - name: v_stg_omni_device_detail
+    columns:
+      - name: hashkey
+        tests:
+          - not_null:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+    data_tests:
+      - unique_combination_of_columns:
+          arguments:
+            combination_of_columns:
+              - hashkey
+              - ma_key
+
+  - name: v_stg_omni_od_registration
+    columns:
+      - name: hashkey
+        tests:
+          - unique:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+          - not_null:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+
+  - name: v_stg_omni_voucher
+    columns:
+      - name: hashkey
+        tests:
+          - unique:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+          - not_null:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+
+  - name: v_stg_omni_voucher_campaign
+    columns:
+      - name: hashkey
+        tests:
+          - unique:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+          - not_null:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+
+  - name: v_stg_omni_voucher_generate
+    columns:
+      - name: hashkey
+        tests:
+          - unique:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+          - not_null:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+  - name: v_stg_omni_onboarding_report
+    columns:
+      - name: hashkey
+        tests:
+          - unique:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+          - not_null:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+  - name: v_stg_omni_credit_card_registration
+    columns:
+      - name: hashkey
+        tests:
+          - unique:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+          - not_null:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+  - name: v_stg_omni_package
+    columns:
+      - name: hashkey
+        tests:
+          - unique:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+          - not_null:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+  - name: v_stg_omni_master_data
+    columns:
+      - name: hashkey
+        tests:
+          - unique:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+          - not_null:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+  - name: v_stg_omni_services
+    columns:
+      - name: hashkey
+        tests:
+          - unique:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+          - not_null:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+  - name: v_stg_omni_service_provider
+    columns:
+      - name: hashkey
+        tests:
+          - unique:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+          - not_null:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+  - name: v_stg_omni_oversea_ft_request
+    columns:
+      - name: hashkey
+        tests:
+          - unique:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+          - not_null:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+  - name: v_stg_omni_auto_debit
+    columns:
+      - name: hashkey
+        tests:
+          - unique:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+          - not_null:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+  - name: v_stg_omni_clevertap_tracking
+    columns:
+      - name: hashkey
+        tests:
+          - unique:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+          - not_null:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+  - name: v_stg_omni_message
+    columns:
+      - name: hashkey
+        tests:
+          - unique:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+          - not_null:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+  - name: v_stg_omni_audit_message
+    columns:
+      - name: hashkey
+        tests:
+          - unique:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+          - not_null:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"

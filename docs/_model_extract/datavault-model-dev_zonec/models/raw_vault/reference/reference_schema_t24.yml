@@ -1,0 +1,2731 @@
+version: 2
+
+models:
+  - name: ref_t24_acct_gen_condition
+    config:
+      contract:
+        enforced: true
+    columns:
+      - name: ref_hashkey
+        data_type: string
+        tests:
+          - unique:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+          - not_null:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+      - name: ref_type
+        data_type: string
+      - name: ref_code
+        data_type: string
+      - name: ref_description
+        data_type: string
+      - name: data_date
+        data_type: string
+      - name: t_item
+        data_type: string
+      - name: t_priority
+        data_type: string
+      - name: t_value
+        data_type: string
+      - name: t_multivalue
+        data_type: string
+      - name: t_co_code
+        data_type: string
+      - name: t_inputter
+        data_type: string
+      - name: t_date_time
+        data_type: string
+      - name: t_authoriser
+        data_type: string
+      - name: hashdiff
+        data_type: string
+      - name: source_event_date
+        data_type: date
+      - name: record_source
+        data_type: string
+      - name: load_timestamp
+        data_type: timestamp
+
+  - name: ref_t24_auto_name
+    config:
+      contract:
+        enforced: true
+    columns:
+      - name: ref_hashkey
+        data_type: string
+        tests:
+          - unique:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+          - not_null:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+      - name: ref_type
+        data_type: string
+      - name: ref_code
+        data_type: string
+      - name: ref_description
+        data_type: string
+      - name: data_date
+        data_type: string
+      - name: hashdiff
+        data_type: string
+      - name: source_event_date
+        data_type: date
+      - name: record_source
+        data_type: string
+      - name: load_timestamp
+        data_type: timestamp
+
+  - name: ref_t24_az_product_parameter
+    config:
+      contract:
+        enforced: true
+    columns:
+      - name: ref_hashkey
+        data_type: string
+        tests:
+          - unique:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+          - not_null:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+      - name: ref_type
+        data_type: string
+      - name: ref_code
+        data_type: string
+      - name: ref_description
+        data_type: string
+      - name: data_date
+        data_type: string
+      - name: t_allowed_categ
+        data_type: bigint
+      - name: t_dr_txn_code
+        data_type: bigint
+      - name: t_cr_txn_code
+        data_type: bigint
+      - name: t_int_basis
+        data_type: string
+      - name: t_minimum_term
+        data_type: string
+      - name: t_maximum_term
+        data_type: string
+      - name: t_periodic_rate_key
+        data_type: string
+      - name: t_maturity_instr
+        data_type: string
+      - name: t_record_status
+        data_type: string
+      - name: t_curr_no
+        data_type: bigint
+      - name: t_inputter
+        data_type: string
+      - name: t_authoriser
+        data_type: string
+      - name: t_date_time
+        data_type: string
+      - name: t_co_code
+        data_type: string
+      - name: t_loan_deposit
+        data_type: string
+      - name: t_prod_end_date
+        data_type: string
+      - name: t_prod_start_date
+        data_type: string
+      - name: hashdiff
+        data_type: string
+      - name: source_event_date
+        data_type: date
+      - name: record_source
+        data_type: string
+      - name: load_timestamp
+        data_type: timestamp
+
+  - name: ref_t24_basic_interest
+    config:
+      contract:
+        enforced: true
+    columns:
+      - name: ref_hashkey
+        data_type: string
+        tests:
+          - unique:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+          - not_null:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+      - name: ref_type
+        data_type: string
+      - name: ref_code
+        data_type: string
+      - name: ref_description
+        data_type: string
+      - name: data_date
+        data_type: string
+      - name: t_interest_rate
+        data_type: decimal(38,10)
+      - name: t_record_status
+        data_type: string
+      - name: t_curr_no
+        data_type: bigint
+      - name: t_inputter
+        data_type: string
+      - name: t_authoriser
+        data_type: string
+      - name: t_date_time
+        data_type: string
+      - name: t_co_code
+        data_type: string
+      - name: hashdiff
+        data_type: string
+      - name: source_event_date
+        data_type: date
+      - name: record_source
+        data_type: string
+      - name: load_timestamp
+        data_type: timestamp
+
+  - name: ref_t24_bc_sort_code
+    config:
+      contract:
+        enforced: true
+    columns:
+      - name: ref_hashkey
+        data_type: string
+        tests:
+          - unique:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+          - not_null:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+      - name: ref_type
+        data_type: string
+      - name: ref_code
+        data_type: string
+      - name: ref_description
+        data_type: string
+      - name: data_date
+        data_type: string
+      - name: t_telephone_no
+        data_type: string
+      - name: t_identity_kind
+        data_type: string
+      - name: hashdiff
+        data_type: string
+      - name: source_event_date
+        data_type: date
+      - name: record_source
+        data_type: string
+      - name: load_timestamp
+        data_type: timestamp
+
+  - name: ref_t24_bosc_comp_reg
+    config:
+      contract:
+        enforced: true
+    columns:
+      - name: ref_hashkey
+        data_type: string
+        tests:
+          - unique:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+          - not_null:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+      - name: ref_type
+        data_type: string
+      - name: ref_code
+        data_type: string
+      - name: ref_description
+        data_type: string
+      - name: data_date
+        data_type: string
+      - name: t_account_number
+        data_type: string
+      - name: t_branch_id
+        data_type: string
+      - name: hashdiff
+        data_type: string
+      - name: source_event_date
+        data_type: date
+      - name: record_source
+        data_type: string
+      - name: load_timestamp
+        data_type: timestamp
+
+  - name: ref_t24_category
+    config:
+      contract:
+        enforced: true
+    columns:
+      - name: ref_hashkey
+        data_type: string
+        tests:
+          - unique:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+          - not_null:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+      - name: ref_type
+        data_type: string
+      - name: ref_code
+        data_type: string
+      - name: ref_description
+        data_type: string
+      - name: data_date
+        data_type: string
+      - name: t_short_name
+        data_type: string
+      - name: t_product
+        data_type: string
+      - name: t_prod_id
+        data_type: bigint
+      - name: t_co_vat
+        data_type: string
+      - name: t_type_business
+        data_type: string
+      - name: t_is_mand
+        data_type: string
+      - name: hashdiff
+        data_type: string
+      - name: source_event_date
+        data_type: date
+      - name: record_source
+        data_type: string
+      - name: load_timestamp
+        data_type: timestamp
+
+  - name: ref_t24_ocbh_cat_prod
+    config:
+      contract:
+        enforced: true
+    columns:
+      - name: ref_hashkey
+        data_type: string
+        tests:
+          - unique:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+          - not_null:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+      - name: ref_type
+        data_type: string
+      - name: ref_code
+        data_type: string
+      - name: ref_description
+        data_type: string
+      - name: PRODUCT_GRP
+        data_type: string
+      - name: PRODUCT_SYS
+        data_type: string
+      - name: KPI_ID
+        data_type: string
+      - name: LOCAL_REF
+        data_type: string
+      - name: OVERRIDE
+        data_type: string
+      - name: RECORD_STATUS
+        data_type: string
+      - name: CURR_NO
+        data_type: string
+      - name: INPUTTER
+        data_type: string
+      - name: DATE_TIME
+        data_type: string
+      - name: AUTHORISER
+        data_type: string
+      - name: CO_CODE
+        data_type: string
+      - name: DEPT_CODE
+        data_type: string
+      - name: AUDITOR_CODE
+        data_type: string
+      - name: AUDIT_DATE_TIME
+        data_type: string
+      - name: hashdiff
+        data_type: string
+      - name: source_event_date
+        data_type: date
+      - name: record_source
+        data_type: string
+      - name: load_timestamp
+        data_type: timestamp
+
+  - name: ref_t24_collateral_code
+    config:
+      contract:
+        enforced: true
+    columns:
+      - name: ref_hashkey
+        data_type: string
+        tests:
+          - unique:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+          - not_null:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+      - name: ref_type
+        data_type: string
+      - name: ref_code
+        data_type: string
+      - name: ref_description
+        data_type: string
+      - name: data_date
+        data_type: string
+      - name: t_collateral_code
+        data_type: bigint
+      - name: t_short_name
+        data_type: string
+      - name: t_collateral_type
+        data_type: string
+      - name: t_record_status
+        data_type: string
+      - name: t_curr_no
+        data_type: bigint
+      - name: t_inputter
+        data_type: string
+      - name: t_authoriser
+        data_type: string
+      - name: t_date_time
+        data_type: string
+      - name: t_co_code
+        data_type: string
+      - name: hashdiff
+        data_type: string
+      - name: source_event_date
+        data_type: date
+      - name: record_source
+        data_type: string
+      - name: load_timestamp
+        data_type: timestamp
+
+  - name: ref_t24_collateral_type
+    config:
+      contract:
+        enforced: true
+    columns:
+      - name: ref_hashkey
+        data_type: string
+        tests:
+          - unique:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+          - not_null:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+      - name: ref_type
+        data_type: string
+      - name: ref_code
+        data_type: string
+      - name: ref_description
+        data_type: string
+      - name: data_date
+        data_type: string
+      - name: t_collateral_type
+        data_type: bigint
+      - name: t_application
+        data_type: string
+      - name: t_application_input
+        data_type: string
+      - name: t_nominal_value
+        data_type: string
+      - name: t_execution_value
+        data_type: string
+      - name: t_gen_ledger_value
+        data_type: string
+      - name: t_central_bank_value
+        data_type: string
+      - name: t_third_party_value
+        data_type: string
+      - name: t_record_status
+        data_type: string
+      - name: t_curr_no
+        data_type: bigint
+      - name: t_inputter
+        data_type: string
+      - name: t_authoriser
+        data_type: string
+      - name: t_date_time
+        data_type: string
+      - name: t_co_code
+        data_type: string
+      - name: hashdiff
+        data_type: string
+      - name: source_event_date
+        data_type: date
+      - name: record_source
+        data_type: string
+      - name: load_timestamp
+        data_type: timestamp
+
+  - name: ref_t24_company
+    config:
+      contract:
+        enforced: true
+    columns:
+      - name: ref_hashkey
+        data_type: string
+        tests:
+          - unique:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+          - not_null:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+      - name: ref_type
+        data_type: string
+      - name: ref_code
+        data_type: string
+      - name: ref_description
+        data_type: string
+      - name: data_date
+        data_type: string
+      - name: t_mnemonic
+        data_type: string
+      - name: t_consolidation_mark
+        data_type: string
+      - name: t_default_no_of_auth
+        data_type: string
+      - name: t_pgm_autom_id
+        data_type: string
+      - name: t_applications
+        data_type: string
+      - name: t_tax_code
+        data_type: string
+      - name: t_financial_year_end
+        data_type: string
+      - name: t_sub_division_code
+        data_type: string
+      - name: t_official_holiday
+        data_type: string
+      - name: t_branch_holiday
+        data_type: string
+      - name: t_batch_holiday
+        data_type: string
+      - name: t_name_address
+        data_type: string
+      - name: t_language_code
+        data_type: string
+      - name: hashdiff
+        data_type: string
+      - name: source_event_date
+        data_type: date
+      - name: record_source
+        data_type: string
+      - name: load_timestamp
+        data_type: timestamp
+
+  - name: ref_t24_country
+    config:
+      contract:
+        enforced: true
+    columns:
+      - name: ref_hashkey
+        data_type: string
+        tests:
+          - unique:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+          - not_null:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+      - name: ref_type
+        data_type: string
+      - name: ref_code
+        data_type: string
+      - name: ref_description
+        data_type: string
+      - name: data_date
+        data_type: string
+      - name: t_short_name
+        data_type: string
+      - name: hashdiff
+        data_type: string
+      - name: source_event_date
+        data_type: date
+      - name: record_source
+        data_type: string
+      - name: load_timestamp
+        data_type: timestamp
+
+  - name: ref_t24_dealer_desk
+    config:
+      contract:
+        enforced: true
+    columns:
+      - name: ref_hashkey
+        data_type: string
+        tests:
+          - unique:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+          - not_null:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+      - name: ref_type
+        data_type: string
+      - name: ref_code
+        data_type: string
+      - name: ref_description
+        data_type: string
+      - name: data_date
+        data_type: string
+      - name: hashdiff
+        data_type: string
+      - name: source_event_date
+        data_type: date
+      - name: record_source
+        data_type: string
+      - name: load_timestamp
+        data_type: timestamp
+
+  - name: ref_t24_department
+    config:
+      contract:
+        enforced: true
+    columns:
+      - name: ref_hashkey
+        data_type: string
+        tests:
+          - unique:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+          - not_null:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+      - name: ref_type
+        data_type: string
+      - name: ref_code
+        data_type: string
+      - name: ref_description
+        data_type: string
+      - name: data_date
+        data_type: string
+      - name: t_group_id
+        data_type: string
+      - name: hashdiff
+        data_type: string
+      - name: source_event_date
+        data_type: date
+      - name: record_source
+        data_type: string
+      - name: load_timestamp
+        data_type: timestamp
+
+  - name: ref_t24_de_bic
+    config:
+      contract:
+        enforced: true
+    columns:
+      - name: ref_hashkey
+        data_type: string
+        tests:
+          - unique:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+          - not_null:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+      - name: ref_type
+        data_type: string
+      - name: ref_code
+        data_type: string
+      - name: ref_description
+        data_type: string
+      - name: data_date
+        data_type: string
+      - name: t_city
+        data_type: string
+      - name: t_address
+        data_type: string
+      - name: t_country
+        data_type: string
+      - name: t_subtype_ind
+        data_type: string
+      - name: t_recordkey
+        data_type: string
+      - name: t_branch
+        data_type: string
+      - name: t_bic_code
+        data_type: string
+      - name: hashdiff
+        data_type: string
+      - name: source_event_date
+        data_type: date
+      - name: record_source
+        data_type: string
+      - name: load_timestamp
+        data_type: timestamp
+
+  - name: ref_t24_ft_txn_type_condition
+    config:
+      contract:
+        enforced: true
+    columns:
+      - name: ref_hashkey
+        data_type: string
+        tests:
+          - unique:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+          - not_null:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+      - name: ref_type
+        data_type: string
+      - name: ref_code
+        data_type: string
+      - name: ref_description
+        data_type: string
+      - name: data_date
+        data_type: string
+      - name: t_txn_code_cr
+        data_type: string
+      - name: t_txn_code_dr
+        data_type: string
+      - name: t_sto_txn_code_cr
+        data_type: string
+      - name: t_sto_txn_code_dr
+        data_type: string
+      - name: hashdiff
+        data_type: string
+      - name: source_event_date
+        data_type: date
+      - name: record_source
+        data_type: string
+      - name: load_timestamp
+        data_type: timestamp
+
+  - name: ref_t24_industry
+    config:
+      contract:
+        enforced: true
+    columns:
+      - name: ref_hashkey
+        data_type: string
+        tests:
+          - unique:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+          - not_null:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+      - name: ref_type
+        data_type: string
+      - name: ref_code
+        data_type: string
+      - name: ref_description
+        data_type: string
+      - name: data_date
+        data_type: string
+      - name: t_sbv_industry
+        data_type: string
+      - name: t_sub_industry
+        data_type: bigint
+      - name: t_active
+        data_type: string
+      - name: hashdiff
+        data_type: string
+      - name: source_event_date
+        data_type: date
+      - name: record_source
+        data_type: string
+      - name: load_timestamp
+        data_type: timestamp
+
+  - name: ref_t24_int_chg_type
+    config:
+      contract:
+        enforced: true
+    columns:
+      - name: ref_hashkey
+        data_type: string
+        tests:
+          - unique:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+          - not_null:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+      - name: ref_type
+        data_type: string
+      - name: ref_code
+        data_type: string
+      - name: ref_description
+        data_type: string
+      - name: data_date
+        data_type: string
+      - name: hashdiff
+        data_type: string
+      - name: source_event_date
+        data_type: date
+      - name: record_source
+        data_type: string
+      - name: load_timestamp
+        data_type: timestamp
+
+  - name: ref_t24_job_title
+    config:
+      contract:
+        enforced: true
+    columns:
+      - name: ref_hashkey
+        data_type: string
+        tests:
+          - unique:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+          - not_null:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+      - name: ref_type
+        data_type: string
+      - name: ref_code
+        data_type: string
+      - name: ref_description
+        data_type: string
+      - name: data_date
+        data_type: string
+      - name: hashdiff
+        data_type: string
+      - name: source_event_date
+        data_type: date
+      - name: record_source
+        data_type: string
+      - name: load_timestamp
+        data_type: timestamp
+
+  - name: ref_t24_lc_types
+    config:
+      contract:
+        enforced: true
+    columns:
+      - name: ref_hashkey
+        data_type: string
+        tests:
+          - unique:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+          - not_null:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+      - name: ref_type
+        data_type: string
+      - name: ref_code
+        data_type: string
+      - name: ref_description
+        data_type: string
+      - name: data_date
+        data_type: string
+      - name: t_category_code
+        data_type: bigint
+      - name: t_import_export
+        data_type: string
+      - name: hashdiff
+        data_type: string
+      - name: source_event_date
+        data_type: date
+      - name: record_source
+        data_type: string
+      - name: load_timestamp
+        data_type: timestamp
+
+  - name: ref_t24_ld_aprv_user
+    config:
+      contract:
+        enforced: true
+    columns:
+      - name: ref_hashkey
+        data_type: string
+        tests:
+          - unique:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+          - not_null:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+      - name: ref_type
+        data_type: string
+      - name: ref_code
+        data_type: string
+      - name: ref_description
+        data_type: string
+      - name: data_date
+        data_type: string
+      - name: t_ubtd1
+        data_type: string
+      - name: t_ubtd2
+        data_type: string
+      - name: t_ubtd3
+        data_type: string
+      - name: t_direct_aprv
+        data_type: string
+      - name: t_indirect_aprv
+        data_type: string
+      - name: t_reval_level
+        data_type: string
+      - name: t_active_info
+        data_type: string
+      - name: t_user_status
+        data_type: string
+      - name: t_curr_no
+        data_type: string
+      - name: t_inputter
+        data_type: string
+      - name: t_authoriser
+        data_type: string
+      - name: t_date_time
+        data_type: string
+      - name: hashdiff
+        data_type: string
+      - name: source_event_date
+        data_type: date
+      - name: record_source
+        data_type: string
+      - name: load_timestamp
+        data_type: timestamp
+
+  - name: ref_t24_ld_economic_sector
+    config:
+      contract:
+        enforced: true
+    columns:
+      - name: ref_hashkey
+        data_type: string
+        tests:
+          - unique:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+          - not_null:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+      - name: ref_type
+        data_type: string
+      - name: ref_code
+        data_type: string
+      - name: ref_description
+        data_type: string
+      - name: data_date
+        data_type: string
+      - name: t_parent_id
+        data_type: string
+      - name: hashdiff
+        data_type: string
+      - name: source_event_date
+        data_type: date
+      - name: record_source
+        data_type: string
+      - name: load_timestamp
+        data_type: timestamp
+
+  - name: ref_t24_ld_ins_type_comp
+    config:
+      contract:
+        enforced: true
+    columns:
+      - name: ref_hashkey
+        data_type: string
+        tests:
+          - unique:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+          - not_null:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+      - name: ref_type
+        data_type: string
+      - name: ref_code
+        data_type: string
+      - name: ref_description
+        data_type: string
+      - name: data_date
+        data_type: string
+      - name: t_ins_type
+        data_type: string
+      - name: t_ins_company
+        data_type: string
+      - name: t_ins_type_id
+        data_type: string
+      - name: t_nused
+        data_type: string
+      - name: hashdiff
+        data_type: string
+      - name: source_event_date
+        data_type: date
+      - name: record_source
+        data_type: string
+      - name: load_timestamp
+        data_type: timestamp
+
+  - name: ref_t24_ld_partner
+    config:
+      contract:
+        enforced: true
+    columns:
+      - name: ref_hashkey
+        data_type: string
+        tests:
+          - unique:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+          - not_null:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+      - name: ref_type
+        data_type: string
+      - name: ref_code
+        data_type: string
+      - name: ref_description
+        data_type: string
+      - name: data_date
+        data_type: string
+      - name: t_record_status
+        data_type: string
+      - name: t_curr_no
+        data_type: bigint
+      - name: t_inputter
+        data_type: string
+      - name: t_date_time
+        data_type: string
+      - name: t_authoriser
+        data_type: string
+      - name: hashdiff
+        data_type: string
+      - name: source_event_date
+        data_type: date
+      - name: record_source
+        data_type: string
+      - name: load_timestamp
+        data_type: timestamp
+
+  - name: ref_t24_ld_promotion
+    config:
+      contract:
+        enforced: true
+    columns:
+      - name: ref_hashkey
+        data_type: string
+        tests:
+          - unique:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+          - not_null:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+      - name: ref_type
+        data_type: string
+      - name: ref_code
+        data_type: string
+      - name: ref_description
+        data_type: string
+      - name: data_date
+        data_type: string
+      - name: t_record_status
+        data_type: string
+      - name: t_curr_no
+        data_type: bigint
+      - name: t_inputter
+        data_type: string
+      - name: t_date_time
+        data_type: string
+      - name: t_authoriser
+        data_type: string
+      - name: hashdiff
+        data_type: string
+      - name: source_event_date
+        data_type: date
+      - name: record_source
+        data_type: string
+      - name: load_timestamp
+        data_type: timestamp
+
+  - name: ref_t24_limit_level_auth
+    config:
+      contract:
+        enforced: true
+    columns:
+      - name: ref_hashkey
+        data_type: string
+        tests:
+          - unique:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+          - not_null:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+      - name: ref_type
+        data_type: string
+      - name: ref_code
+        data_type: string
+      - name: ref_description
+        data_type: string
+      - name: data_date
+        data_type: string
+      - name: hashdiff
+        data_type: string
+      - name: source_event_date
+        data_type: date
+      - name: record_source
+        data_type: string
+      - name: load_timestamp
+        data_type: timestamp
+
+  - name: ref_t24_limit_reference
+    config:
+      contract:
+        enforced: true
+    columns:
+      - name: ref_hashkey
+        data_type: string
+        tests:
+          - unique:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+          - not_null:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+      - name: ref_type
+        data_type: string
+      - name: ref_code
+        data_type: string
+      - name: ref_description
+        data_type: string
+      - name: data_date
+        data_type: string
+      - name: t_limit_reference
+        data_type: bigint
+      - name: t_short_name
+        data_type: string
+      - name: t_reducing_limit
+        data_type: string
+      - name: t_reference_child
+        data_type: string
+      - name: t_record_status
+        data_type: string
+      - name: t_curr_no
+        data_type: bigint
+      - name: t_inputter
+        data_type: string
+      - name: t_authoriser
+        data_type: string
+      - name: t_date_time
+        data_type: string
+      - name: t_co_code
+        data_type: string
+      - name: hashdiff
+        data_type: string
+      - name: source_event_date
+        data_type: date
+      - name: record_source
+        data_type: string
+      - name: load_timestamp
+        data_type: timestamp
+
+  - name: ref_t24_loan_method
+    config:
+      contract:
+        enforced: true
+    columns:
+      - name: ref_hashkey
+        data_type: string
+        tests:
+          - unique:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+          - not_null:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+      - name: ref_type
+        data_type: string
+      - name: ref_code
+        data_type: string
+      - name: ref_description
+        data_type: string
+      - name: data_date
+        data_type: string
+      - name: t_loan_method
+        data_type: string
+      - name: t_record_status
+        data_type: string
+      - name: t_curr_no
+        data_type: bigint
+      - name: t_inputter
+        data_type: string
+      - name: t_authoriser
+        data_type: string
+      - name: t_date_time
+        data_type: string
+      - name: t_co_code
+        data_type: string
+      - name: hashdiff
+        data_type: string
+      - name: source_event_date
+        data_type: date
+      - name: record_source
+        data_type: string
+      - name: load_timestamp
+        data_type: timestamp
+
+  - name: ref_t24_loan_purpose
+    config:
+      contract:
+        enforced: true
+    columns:
+      - name: ref_hashkey
+        data_type: string
+        tests:
+          - unique:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+          - not_null:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+      - name: ref_type
+        data_type: string
+      - name: ref_code
+        data_type: string
+      - name: ref_description
+        data_type: string
+      - name: data_date
+        data_type: string
+      - name: t_level_1
+        data_type: bigint
+      - name: t_level_1_desc
+        data_type: string
+      - name: t_level_2
+        data_type: bigint
+      - name: t_level_2_desc
+        data_type: string
+      - name: t_record_status
+        data_type: string
+      - name: t_curr_no
+        data_type: bigint
+      - name: t_inputter
+        data_type: string
+      - name: t_authoriser
+        data_type: string
+      - name: t_date_time
+        data_type: string
+      - name: t_co_code
+        data_type: string
+      - name: t_category
+        data_type: string
+      - name: hashdiff
+        data_type: string
+      - name: source_event_date
+        data_type: date
+      - name: record_source
+        data_type: string
+      - name: load_timestamp
+        data_type: timestamp
+
+  - name: ref_t24_loan_subproduct
+    config:
+      contract:
+        enforced: true
+    columns:
+      - name: ref_hashkey
+        data_type: string
+        tests:
+          - unique:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+          - not_null:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+      - name: ref_type
+        data_type: string
+      - name: ref_code
+        data_type: string
+      - name: ref_description
+        data_type: string
+      - name: data_date
+        data_type: string
+      - name: t_sub_categ_code
+        data_type: bigint
+      - name: t_category
+        data_type: string
+      - name: t_record_status
+        data_type: string
+      - name: t_curr_no
+        data_type: bigint
+      - name: t_inputter
+        data_type: string
+      - name: t_authoriser
+        data_type: string
+      - name: t_date_time
+        data_type: string
+      - name: t_co_code
+        data_type: string
+      - name: hashdiff
+        data_type: string
+      - name: source_event_date
+        data_type: date
+      - name: record_source
+        data_type: string
+      - name: load_timestamp
+        data_type: timestamp
+
+  - name: ref_t24_ocbh_classification
+    config:
+      contract:
+        enforced: true
+    columns:
+      - name: ref_hashkey
+        data_type: string
+        tests:
+          - unique:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+          - not_null:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+      - name: ref_type
+        data_type: string
+      - name: ref_code
+        data_type: string
+      - name: ref_description
+        data_type: string
+      - name: data_date
+        data_type: string
+      - name: t_active_status
+        data_type: string
+      - name: hashdiff
+        data_type: string
+      - name: source_event_date
+        data_type: date
+      - name: record_source
+        data_type: string
+      - name: load_timestamp
+        data_type: timestamp
+
+  - name: ref_t24_ocbh_coll_borrow_purpose
+    config:
+      contract:
+        enforced: true
+    columns:
+      - name: ref_hashkey
+        data_type: string
+        tests:
+          - unique:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+          - not_null:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+      - name: ref_type
+        data_type: string
+      - name: ref_code
+        data_type: string
+      - name: ref_description
+        data_type: string
+      - name: data_date
+        data_type: string
+      - name: id2
+        data_type: string
+      - name: t_curr_no
+        data_type: string
+      - name: t_inputter
+        data_type: string
+      - name: t_date_time
+        data_type: string
+      - name: t_authoriser
+        data_type: string
+      - name: t_co_code
+        data_type: string
+      - name: t_dept_code
+        data_type: string
+      - name: hashdiff
+        data_type: string
+      - name: source_event_date
+        data_type: date
+      - name: record_source
+        data_type: string
+      - name: load_timestamp
+        data_type: timestamp
+
+  - name: ref_t24_ocbh_coll_rev_agent
+    config:
+      contract:
+        enforced: true
+    columns:
+      - name: ref_hashkey
+        data_type: string
+        tests:
+          - unique:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+          - not_null:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+      - name: ref_type
+        data_type: string
+      - name: ref_code
+        data_type: string
+      - name: ref_description
+        data_type: string
+      - name: data_date
+        data_type: string
+      - name: t_inputter
+        data_type: string
+      - name: t_authoriser
+        data_type: string
+      - name: t_date_time
+        data_type: string
+      - name: hashdiff
+        data_type: string
+      - name: source_event_date
+        data_type: date
+      - name: record_source
+        data_type: string
+      - name: load_timestamp
+        data_type: timestamp
+
+  - name: ref_t24_ocbh_cus_group
+    config:
+      contract:
+        enforced: true
+    columns:
+      - name: ref_hashkey
+        data_type: string
+        tests:
+          - unique:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+          - not_null:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+      - name: ref_type
+        data_type: string
+      - name: ref_code
+        data_type: string
+      - name: ref_description
+        data_type: string
+      - name: data_date
+        data_type: string
+      - name: hashdiff
+        data_type: string
+      - name: source_event_date
+        data_type: date
+      - name: record_source
+        data_type: string
+      - name: load_timestamp
+        data_type: timestamp
+
+  - name: ref_t24_ocbh_deposit_prgm
+    config:
+      contract:
+        enforced: true
+    columns:
+      - name: ref_hashkey
+        data_type: string
+        tests:
+          - unique:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+          - not_null:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+      - name: ref_type
+        data_type: string
+      - name: ref_code
+        data_type: string
+      - name: ref_description
+        data_type: string
+      - name: data_date
+        data_type: string
+      - name: t_begin_date
+        data_type: string
+      - name: t_end_date
+        data_type: string
+      - name: t_co_code
+        data_type: string
+      - name: hashdiff
+        data_type: string
+      - name: source_event_date
+        data_type: date
+      - name: record_source
+        data_type: string
+      - name: load_timestamp
+        data_type: timestamp
+
+  - name: ref_t24_ocbh_ft_outward_purpose
+    config:
+      contract:
+        enforced: true
+    columns:
+      - name: ref_hashkey
+        data_type: string
+        tests:
+          - unique:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+          - not_null:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+      - name: ref_type
+        data_type: string
+      - name: ref_code
+        data_type: string
+      - name: ref_description
+        data_type: string
+      - name: data_date
+        data_type: string
+      - name: t_purpose_type
+        data_type: string
+      - name: t_cus_type
+        data_type: string
+      - name: hashdiff
+        data_type: string
+      - name: source_event_date
+        data_type: date
+      - name: record_source
+        data_type: string
+      - name: load_timestamp
+        data_type: timestamp
+
+  - name: ref_t24_ocbh_fx_buyfcy_purpose
+    config:
+      contract:
+        enforced: true
+    columns:
+      - name: ref_hashkey
+        data_type: string
+        tests:
+          - unique:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+          - not_null:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+      - name: ref_type
+        data_type: string
+      - name: ref_code
+        data_type: string
+      - name: ref_description
+        data_type: string
+      - name: data_date
+        data_type: string
+      - name: hashdiff
+        data_type: string
+      - name: source_event_date
+        data_type: date
+      - name: record_source
+        data_type: string
+      - name: load_timestamp
+        data_type: timestamp
+
+  - name: ref_t24_ocbh_ld_prod_main
+    config:
+      contract:
+        enforced: true
+    columns:
+      - name: ref_hashkey
+        data_type: string
+        tests:
+          - unique:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+          - not_null:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+      - name: ref_type
+        data_type: string
+      - name: ref_code
+        data_type: string
+      - name: ref_description
+        data_type: string
+      - name: data_date
+        data_type: string
+      - name: t_category
+        data_type: string
+      - name: t_record_status
+        data_type: string
+      - name: t_curr_no
+        data_type: string
+      - name: t_inputter
+        data_type: string
+      - name: t_date_time
+        data_type: string
+      - name: t_authoriser
+        data_type: string
+      - name: t_co_code
+        data_type: string
+      - name: t_dept_code
+        data_type: string
+      - name: t_auditor_code
+        data_type: string
+      - name: t_audit_date_time
+        data_type: string
+      - name: hashdiff
+        data_type: string
+      - name: source_event_date
+        data_type: date
+      - name: record_source
+        data_type: string
+      - name: load_timestamp
+        data_type: timestamp
+
+  - name: ref_t24_ocbh_loan_pro_bundle
+    config:
+      contract:
+        enforced: true
+    columns:
+      - name: ref_hashkey
+        data_type: string
+        tests:
+          - unique:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+          - not_null:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+      - name: ref_type
+        data_type: string
+      - name: ref_code
+        data_type: string
+      - name: ref_description
+        data_type: string
+      - name: data_date
+        data_type: string
+      - name: sub_product
+        data_type: string
+      - name: hashdiff
+        data_type: string
+      - name: source_event_date
+        data_type: date
+      - name: record_source
+        data_type: string
+      - name: load_timestamp
+        data_type: timestamp
+
+  - name: ref_t24_ocbh_md_purpose
+    config:
+      contract:
+        enforced: true
+    columns:
+      - name: ref_hashkey
+        data_type: string
+        tests:
+          - unique:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+          - not_null:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+      - name: ref_type
+        data_type: string
+      - name: ref_code
+        data_type: string
+      - name: ref_description
+        data_type: string
+      - name: data_date
+        data_type: string
+      - name: t_parent_id
+        data_type: string
+      - name: t_n_used
+        data_type: string
+      - name: hashdiff
+        data_type: string
+      - name: source_event_date
+        data_type: date
+      - name: record_source
+        data_type: string
+      - name: load_timestamp
+        data_type: timestamp
+
+  - name: ref_t24_ocbh_product_package
+    config:
+      contract:
+        enforced: true
+    columns:
+      - name: ref_hashkey
+        data_type: string
+        tests:
+          - unique:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+          - not_null:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+      - name: ref_type
+        data_type: string
+      - name: ref_code
+        data_type: string
+      - name: ref_description
+        data_type: string
+      - name: data_date
+        data_type: string
+      - name: package_register_fee
+        data_type: string
+      - name: min_balance
+        data_type: string
+      - name: begin_date
+        data_type: string
+      - name: expire_date
+        data_type: string
+      - name: service
+        data_type: string
+      - name: ft_transaction_type
+        data_type: string
+      - name: province_type
+        data_type: string
+      - name: high_low_value
+        data_type: string
+      - name: external_ft_fee
+        data_type: string
+      - name: external_ft_comm_type
+        data_type: string
+      - name: condition_group
+        data_type: string
+      - name: min_average_balance
+        data_type: string
+      - name: below_aver_bal_fee
+        data_type: string
+      - name: atm_max_amt_trans
+        data_type: string
+      - name: atm_max_daily_amt
+        data_type: string
+      - name: atm_not_ocb_fee
+        data_type: string
+      - name: withdraw_cash_tt_amt
+        data_type: string
+      - name: withdraw_cash_tt_fee
+        data_type: string
+      - name: withdraw_cash_tt_pl
+        data_type: string
+      - name: ft_channel
+        data_type: string
+      - name: internal_ft_fee
+        data_type: string
+      - name: internal_ft_comm_type
+        data_type: string
+      - name: bill_payment_fee
+        data_type: string
+      - name: bill_payment_comm_type
+        data_type: string
+      - name: package_customer_type
+        data_type: string
+      - name: package_register_pl
+        data_type: string
+      - name: below_aver_bal_pl
+        data_type: string
+      - name: atm_not_ocb_pl
+        data_type: string
+      - name: hashdiff
+        data_type: string
+      - name: source_event_date
+        data_type: date
+      - name: record_source
+        data_type: string
+      - name: load_timestamp
+        data_type: timestamp
+
+  - name: ref_t24_ocbt_sub_industry
+    config:
+      contract:
+        enforced: true
+    columns:
+      - name: ref_hashkey
+        data_type: string
+        tests:
+          - unique:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+          - not_null:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+      - name: ref_type
+        data_type: string
+      - name: ref_code
+        data_type: string
+      - name: ref_description
+        data_type: string
+      - name: data_date
+        data_type: string
+      - name: t_id_parent
+        data_type: string
+      - name: t_order
+        data_type: bigint
+      - name: t_active
+        data_type: bigint
+      - name: hashdiff
+        data_type: string
+      - name: source_event_date
+        data_type: date
+      - name: record_source
+        data_type: string
+      - name: load_timestamp
+        data_type: timestamp
+
+  - name: ref_t24_occupation
+    config:
+      contract:
+        enforced: true
+    columns:
+      - name: ref_hashkey
+        data_type: string
+        tests:
+          - unique:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+          - not_null:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+      - name: ref_type
+        data_type: string
+      - name: ref_code
+        data_type: string
+      - name: ref_description
+        data_type: string
+      - name: data_date
+        data_type: string
+      - name: hashdiff
+        data_type: string
+      - name: source_event_date
+        data_type: date
+      - name: record_source
+        data_type: string
+      - name: load_timestamp
+        data_type: timestamp
+
+  - name: ref_t24_posting_restrict
+    config:
+      contract:
+        enforced: true
+    columns:
+      - name: ref_hashkey
+        data_type: string
+        tests:
+          - unique:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+          - not_null:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+      - name: ref_type
+        data_type: string
+      - name: ref_code
+        data_type: string
+      - name: ref_description
+        data_type: string
+      - name: data_date
+        data_type: string
+      - name: t_restriction_type
+        data_type: string
+      - name: t_dispo_officer
+        data_type: string
+      - name: t_allow_txn
+        data_type: string
+      - name: t_txn_code
+        data_type: string
+      - name: t_local_ref
+        data_type: string
+      - name: t_alt_override
+        data_type: string
+      - name: t_block_reason_codes
+        data_type: string
+      - name: t_unblock_reason_codes
+        data_type: string
+      - name: t_co_code
+        data_type: string
+      - name: hashdiff
+        data_type: string
+      - name: source_event_date
+        data_type: date
+      - name: record_source
+        data_type: string
+      - name: load_timestamp
+        data_type: timestamp
+
+  - name: ref_t24_prod_package_cb
+    config:
+      contract:
+        enforced: true
+    columns:
+      - name: ref_hashkey
+        data_type: string
+        tests:
+          - unique:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+          - not_null:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+      - name: ref_type
+        data_type: string
+      - name: ref_code
+        data_type: string
+      - name: ref_description
+        data_type: string
+      - name: data_date
+        data_type: string
+      - name: t_ac_manage_fee_per
+        data_type: string
+      - name: t_ext_ft_fee_per
+        data_type: string
+      - name: t_ib_fee_per
+        data_type: string
+      - name: t_tax_fee_per
+        data_type: string
+      - name: t_sms_fee_per
+        data_type: string
+      - name: t_record_status
+        data_type: string
+      - name: t_curr_no
+        data_type: string
+      - name: t_inputter
+        data_type: string
+      - name: t_date_time
+        data_type: string
+      - name: t_authoriser
+        data_type: string
+      - name: t_co_code
+        data_type: string
+      - name: t_dept_code
+        data_type: string
+      - name: t_package_fdate
+        data_type: string
+      - name: t_package_tdate
+        data_type: string
+      - name: t_ac_manage_fee_term
+        data_type: string
+      - name: t_ext_ft_fee_term
+        data_type: string
+      - name: t_ib_fee_term
+        data_type: string
+      - name: t_tax_fee_term
+        data_type: string
+      - name: t_sms_fee_term
+        data_type: string
+      - name: t_ac_min_avr_balance
+        data_type: string
+      - name: t_batch_ft_fee_per
+        data_type: string
+      - name: t_batch_ft_fee_term
+        data_type: string
+      - name: t_ft_8s_fee_per
+        data_type: string
+      - name: t_ft_8s_fee_term
+        data_type: string
+      - name: t_ext_fo_fee_per
+        data_type: string
+      - name: t_ext_fo_fee_term
+        data_type: string
+      - name: t_avr_balance_from
+        data_type: string
+      - name: t_avr_balance_to
+        data_type: string
+      - name: t_ac_manage_fee
+        data_type: string
+      - name: hashdiff
+        data_type: string
+      - name: source_event_date
+        data_type: date
+      - name: record_source
+        data_type: string
+      - name: load_timestamp
+        data_type: timestamp
+
+  - name: ref_t24_province
+    config:
+      contract:
+        enforced: true
+    columns:
+      - name: ref_hashkey
+        data_type: string
+        tests:
+          - unique:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+          - not_null:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+      - name: ref_type
+        data_type: string
+      - name: ref_code
+        data_type: string
+      - name: ref_description
+        data_type: string
+      - name: data_date
+        data_type: string
+      - name: t_nationality
+        data_type: string
+      - name: hashdiff
+        data_type: string
+      - name: source_event_date
+        data_type: date
+      - name: record_source
+        data_type: string
+      - name: load_timestamp
+        data_type: timestamp
+
+  - name: ref_t24_re_stat_line_cont
+    config:
+      contract:
+        enforced: true
+    columns:
+      - name: ref_hashkey
+        data_type: string
+        tests:
+          - unique:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+          - not_null:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+      - name: ref_type
+        data_type: string
+      - name: ref_code
+        data_type: string
+      - name: ref_description
+        data_type: string
+      - name: data_date
+        data_type: string
+      - name: t_type
+        data_type: string
+      - name: t_profit_ccy
+        data_type: string
+      - name: t_asst_consol_key
+        data_type: string
+      - name: t_asset_type
+        data_type: string
+      - name: t_prft_consol_key
+        data_type: string
+      - name: hashdiff
+        data_type: string
+      - name: source_event_date
+        data_type: date
+      - name: record_source
+        data_type: string
+      - name: load_timestamp
+        data_type: timestamp
+
+  - name: ref_t24_re_stat_rep_line
+    config:
+      contract:
+        enforced: true
+    columns:
+      - name: ref_hashkey
+        data_type: string
+        tests:
+          - unique:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+          - not_null:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+      - name: ref_type
+        data_type: string
+      - name: ref_code
+        data_type: string
+      - name: ref_description
+        data_type: string
+      - name: data_date
+        data_type: string
+      - name: t_k_type
+        data_type: string
+      - name: t_co_code
+        data_type: string
+      - name: t_inputter
+        data_type: string
+      - name: t_date_time
+        data_type: string
+      - name: t_authoriser
+        data_type: string
+      - name: hashdiff
+        data_type: string
+      - name: source_event_date
+        data_type: date
+      - name: record_source
+        data_type: string
+      - name: load_timestamp
+        data_type: timestamp
+
+  - name: ref_t24_re_txn_code
+    config:
+      contract:
+        enforced: true
+    columns:
+      - name: ref_hashkey
+        data_type: string
+        tests:
+          - unique:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+          - not_null:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+      - name: ref_type
+        data_type: string
+      - name: ref_code
+        data_type: string
+      - name: ref_description
+        data_type: string
+      - name: data_date
+        data_type: string
+      - name: hashdiff
+        data_type: string
+      - name: source_event_date
+        data_type: date
+      - name: record_source
+        data_type: string
+      - name: load_timestamp
+        data_type: timestamp
+
+  - name: ref_t24_sc_trans_name
+    config:
+      contract:
+        enforced: true
+    columns:
+      - name: ref_hashkey
+        data_type: string
+        tests:
+          - unique:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+          - not_null:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+      - name: ref_type
+        data_type: string
+      - name: ref_code
+        data_type: string
+      - name: ref_description
+        data_type: string
+      - name: data_date
+        data_type: string
+      - name: hashdiff
+        data_type: string
+      - name: source_event_date
+        data_type: date
+      - name: record_source
+        data_type: string
+      - name: load_timestamp
+        data_type: timestamp
+
+  - name: ref_t24_sector
+    config:
+      contract:
+        enforced: true
+    columns:
+      - name: ref_hashkey
+        data_type: string
+        tests:
+          - unique:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+          - not_null:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+      - name: ref_type
+        data_type: string
+      - name: ref_code
+        data_type: string
+      - name: ref_description
+        data_type: string
+      - name: data_date
+        data_type: string
+      - name: t_sector_group
+        data_type: string
+      - name: hashdiff
+        data_type: string
+      - name: source_event_date
+        data_type: date
+      - name: record_source
+        data_type: string
+      - name: load_timestamp
+        data_type: timestamp
+
+  - name: ref_t24_sec_acc_master
+    config:
+      contract:
+        enforced: true
+    columns:
+      - name: ref_hashkey
+        data_type: string
+        tests:
+          - unique:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+          - not_null:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+      - name: ref_type
+        data_type: string
+      - name: ref_code
+        data_type: string
+      - name: ref_description
+        data_type: string
+      - name: data_date
+        data_type: string
+      - name: t_account_officer
+        data_type: string
+      - name: t_customer_number
+        data_type: string
+      - name: t_reference_currency
+        data_type: string
+      - name: t_date_of_valuation
+        data_type: string
+      - name: t_start_date
+        data_type: string
+      - name: t_co_code
+        data_type: string
+      - name: t_portfolio_type
+        data_type: string
+      - name: hashdiff
+        data_type: string
+      - name: source_event_date
+        data_type: date
+      - name: record_source
+        data_type: string
+      - name: load_timestamp
+        data_type: timestamp
+
+  - name: ref_t24_sub_asset_type
+    config:
+      contract:
+        enforced: true
+    columns:
+      - name: ref_hashkey
+        data_type: string
+        tests:
+          - unique:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+          - not_null:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+      - name: ref_type
+        data_type: string
+      - name: ref_code
+        data_type: string
+      - name: ref_description
+        data_type: string
+      - name: data_date
+        data_type: string
+      - name: t_short_descr
+        data_type: string
+      - name: t_asset_type_code
+        data_type: string
+      - name: hashdiff
+        data_type: string
+      - name: source_event_date
+        data_type: date
+      - name: record_source
+        data_type: string
+      - name: load_timestamp
+        data_type: timestamp
+
+  - name: ref_t24_teller_transaction
+    config:
+      contract:
+        enforced: true
+    columns:
+      - name: ref_hashkey
+        data_type: string
+        tests:
+          - unique:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+          - not_null:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+      - name: ref_type
+        data_type: string
+      - name: ref_code
+        data_type: string
+      - name: ref_description
+        data_type: string
+      - name: data_date
+        data_type: string
+      - name: t_short_desc
+        data_type: string
+      - name: t_transaction_code_1
+        data_type: string
+      - name: t_transaction_code_2
+        data_type: string
+      - name: t_record_status
+        data_type: string
+      - name: t_curr_no
+        data_type: string
+      - name: t_inputter
+        data_type: string
+      - name: t_date_time
+        data_type: string
+      - name: t_authoriser
+        data_type: string
+      - name: t_co_code
+        data_type: string
+      - name: t_dept_code
+        data_type: string
+      - name: hashdiff
+        data_type: string
+      - name: source_event_date
+        data_type: date
+      - name: record_source
+        data_type: string
+      - name: load_timestamp
+        data_type: timestamp
+
+  - name: ref_t24_town
+    config:
+      contract:
+        enforced: true
+    columns:
+      - name: ref_hashkey
+        data_type: string
+        tests:
+          - unique:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+          - not_null:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+      - name: ref_type
+        data_type: string
+      - name: ref_code
+        data_type: string
+      - name: ref_description
+        data_type: string
+      - name: data_date
+        data_type: string
+      - name: t_order
+        data_type: bigint
+      - name: t_active
+        data_type: string
+      - name: t_province
+        data_type: bigint
+      - name: t_ocb_town_nation
+        data_type: string
+      - name: hashdiff
+        data_type: string
+      - name: source_event_date
+        data_type: date
+      - name: record_source
+        data_type: string
+      - name: load_timestamp
+        data_type: timestamp
+
+  - name: ref_t24_transaction
+    config:
+      contract:
+        enforced: true
+    columns:
+      - name: ref_hashkey
+        data_type: string
+        tests:
+          - unique:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+          - not_null:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+      - name: ref_type
+        data_type: string
+      - name: ref_code
+        data_type: string
+      - name: ref_description
+        data_type: string
+      - name: data_date
+        data_type: string
+      - name: t_transaction_code
+        data_type: string
+      - name: t_data_capture
+        data_type: string
+      - name: t_cheque_ind
+        data_type: string
+      - name: t_mandatory_ref_no
+        data_type: string
+      - name: t_debit_credit_ind
+        data_type: string
+      - name: t_charge_key
+        data_type: string
+      - name: t_immediate_charge
+        data_type: string
+      - name: t_default_value_date
+        data_type: string
+      - name: t_exposure_date
+        data_type: string
+      - name: t_record_status
+        data_type: string
+      - name: t_curr_no
+        data_type: string
+      - name: t_co_code
+        data_type: string
+      - name: t_dept_code
+        data_type: string
+      - name: t_auditor_code
+        data_type: string
+      - name: hashdiff
+        data_type: string
+      - name: source_event_date
+        data_type: date
+      - name: record_source
+        data_type: string
+      - name: load_timestamp
+        data_type: timestamp
+
+  - name: ref_t24_acct_group_condition
+    config:
+      contract:
+        enforced: true
+    columns:
+      - name: ref_hashkey
+        data_type: string
+        tests:
+          - unique:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+          - not_null:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+      - name: id
+        data_type: string
+      - name: t_minimum_bal
+        data_type: decimal(38,10)
+      - name: t_curr_no
+        data_type: bigint
+      - name: inputter
+        data_type: string
+      - name: t_date_time
+        data_type: string
+      - name: t_authoriser
+        data_type: string
+      - name: hashdiff
+        data_type: string
+      - name: source_event_date
+        data_type: date
+      - name: record_source
+        data_type: string
+      - name: load_timestamp
+        data_type: timestamp
+
+  - name: ref_t24_lc_enrichment
+    config:
+      contract:
+        enforced: true
+    columns:
+      - name: ref_hashkey
+        data_type: string
+        tests:
+          - unique:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+          - not_null:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+      - name: id
+        data_type: string
+      - name: t_operation
+        data_type: string
+      - name: t_revocable
+        data_type: string
+      - name: t_ucp_ind
+        data_type: string
+      - name: t_part_ship
+        data_type: string
+      - name: t_transship
+        data_type: string
+      - name: t_reimburse
+        data_type: string
+      - name: t_charges_from
+        data_type: string
+      - name: t_party_chrgd
+        data_type: string
+      - name: t_chrg_status
+        data_type: string
+      - name: t_drawing_type
+        data_type: string
+      - name: t_pay_method
+        data_type: string
+      - name: t_coll_reply
+        data_type: string
+      - name: t_chrg_period
+        data_type: string
+      - name: t_imp_exp
+        data_type: string
+      - name: t_pay_type
+        data_type: string
+      - name: t_inco_terms
+        data_type: string
+      - name: hashdiff
+        data_type: string
+      - name: source_event_date
+        data_type: date
+      - name: record_source
+        data_type: string
+      - name: load_timestamp
+        data_type: timestamp
+
+  - name: ref_t24_group_capitalisation
+    config:
+      contract:
+        enforced: true
+    columns:
+      - name: ref_hashkey
+        data_type: string
+        tests:
+          - unique:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+          - not_null:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+      - name: id
+        data_type: string
+      - name: data_date
+        data_type: string
+      - name: t_dr_cap_frequency
+        data_type: string
+      - name: t_cr_cap_frequency
+        data_type: string
+      - name: t_settle_acct_close
+        data_type: string
+      - name: t_start_of_day_cap
+        data_type: string
+      - name: hashdiff
+        data_type: string
+      - name: source_event_date
+        data_type: date
+      - name: record_source
+        data_type: string
+      - name: load_timestamp
+        data_type: timestamp
+
+
+  - name: ref_t24_denom_exchange
+    config:
+      contract:
+        enforced: true
+    columns:
+      - name: ref_hashkey
+        data_type: string
+        tests:
+          - unique:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+          - not_null:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+      - name: id
+        data_type: string
+      - name: data_date
+        data_type: string
+      - name: t_denomination
+        data_type: string
+      - name: t_denom_buy_rate
+        data_type: string
+      - name: t_denom_sell_rate
+        data_type: string
+      - name: t_denom_revl_rate
+        data_type: string
+      - name: t_denom_rate_sprd
+        data_type: string
+      - name: t_curr_no
+        data_type: string
+      - name: t_inputter
+        data_type: string
+      - name: t_date_time
+        data_type: string
+      - name: t_authoriser
+        data_type: string
+      - name: hashdiff
+        data_type: string
+      - name: source_event_date
+        data_type: date
+      - name: record_source
+        data_type: string
+      - name: load_timestamp
+        data_type: timestamp
+
+  - name: ref_t24_ocbh_industry_tt15
+    config:
+      contract:
+        enforced: true
+    columns:
+      - name: ref_hashkey
+        data_type: string
+        tests:
+          - unique:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+          - not_null:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+      - name: id
+        data_type: string
+      - name: t_industry_tt15_l1
+        data_type: string
+      - name: t_industry_tt15_l2
+        data_type: string
+      - name: t_industry_tt15_l3
+        data_type: string
+      - name: t_industry_name
+        data_type: string
+      - name: hashdiff
+        data_type: string
+      - name: source_event_date
+        data_type: date
+      - name: record_source
+        data_type: string
+      - name: load_timestamp
+        data_type: timestamp
+
+  - name: ref_currency
+    config:
+      contract:
+        enforced: false
+    columns:
+      - name: id
+        tests:
+          - unique:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+          - not_null:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+
+  - name: ref_holiday
+    config:
+      contract:
+        enforced: true
+    columns:
+      - name: ref_holiday_hashkey
+        data_type: string
+        tests:
+          - not_null:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+      - name: year
+        data_type: string
+        tests:
+          - not_null:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+      - name: source_event_date
+        data_type: date
+      - name: record_source
+        data_type: string
+      - name: load_timestamp
+        data_type: timestamp
+      - name: t_january
+        data_type: string
+      - name: t_february
+        data_type: string
+      - name: t_march
+        data_type: string
+      - name: t_april
+        data_type: string
+      - name: t_may
+        data_type: string
+      - name: t_june
+        data_type: string
+      - name: t_july
+        data_type: string
+      - name: t_august
+        data_type: string
+      - name: t_september
+        data_type: string
+      - name: t_october
+        data_type: string
+      - name: t_november
+        data_type: string
+      - name: t_december
+        data_type: string
+      - name: t_weekend_days
+        data_type: string
+      - name: t_mth_01_table
+        data_type: string
+      - name: t_mth_02_table
+        data_type: string
+      - name: t_mth_03_table
+        data_type: string
+      - name: t_mth_04_table
+        data_type: string
+      - name: t_mth_05_table
+        data_type: string
+      - name: t_mth_06_table
+        data_type: string
+      - name: t_mth_07_table
+        data_type: string
+      - name: t_mth_08_table
+        data_type: string
+      - name: t_mth_09_table
+        data_type: string
+      - name: t_mth_10_table
+        data_type: string
+      - name: t_mth_11_table
+        data_type: string
+      - name: t_mth_12_table
+        data_type: string
+    data_tests:
+      - unique_combination_of_columns:
+          arguments:
+            combination_of_columns:
+              - ref_holiday_hashkey
+              - year
+
+  - name: reference
+    config:
+      contract:
+        enforced: false
+    columns:
+      - name: ref_hashkey
+        data_type: string
+      - name: ref_type
+        data_type: string
+      - name: ref_code
+        data_type: string
+      - name: ref_description
+        data_type: string
+      - name: ref_all_attributes
+        data_type: string
+      - name: hashdiff_full
+        data_type: string
+      - name: source_event_date
+        data_type: date
+      - name: record_source
+        data_type: string
+      - name: load_timestamp
+        data_type: timestamp
+
+  - name: ref_t24_ocbh_co_group
+    config:
+      contract:
+        enforced: true
+    columns:
+      - name: ref_hashkey
+        data_type: string
+        tests:
+          - unique:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+          - not_null:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+      - name: ref_type
+        data_type: string
+      - name: ref_code
+        data_type: string
+      - name: ref_description
+        data_type: string
+      - name: MVALUE
+        data_type: string
+      - name: hashdiff
+        data_type: string
+      - name: source_event_date
+        data_type: date
+      - name: record_source
+        data_type: string
+      - name: load_timestamp
+        data_type: timestamp

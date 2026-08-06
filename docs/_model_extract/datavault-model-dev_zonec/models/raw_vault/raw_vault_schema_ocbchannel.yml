@@ -1,0 +1,3027 @@
+
+version: 2
+
+models:
+  # ====================== HUBS ======================
+
+  - name: hub_admin_command_queue
+    columns:
+      - name: admin_command_queue_hashkey
+        data_type: string
+        tests:
+          - unique:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+          - not_null:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+      - name: business_key
+        data_type: bigint
+      - name: source_event_date
+        data_type: date
+      - name: record_source
+        data_type: string
+      - name: load_timestamp
+        data_type: timestamp
+
+  - name: hub_apportion_trans_batch_details
+    columns:
+      - name: apportion_trans_batch_details_hashkey
+        data_type: string
+        tests:
+          - unique:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+          - not_null:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+      - name: business_key
+        data_type: bigint
+      - name: source_event_date
+        data_type: date
+      - name: record_source
+        data_type: string
+      - name: load_timestamp
+        data_type: timestamp
+
+  - name: hub_customer_file
+    columns:
+      - name: customer_file_hashkey
+        data_type: string
+        tests:
+          - unique:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+          - not_null:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+      - name: business_key
+        data_type: bigint
+      - name: source_event_date
+        data_type: date
+      - name: record_source
+        data_type: string
+      - name: load_timestamp
+        data_type: timestamp
+
+  - name: hub_eb_user_channel
+    columns:
+      - name: eb_user_channel_hashkey
+        data_type: string
+        tests:
+          - unique:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+          - not_null:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+      - name: business_key
+        data_type: string
+      - name: source_event_date
+        data_type: date
+      - name: record_source
+        data_type: string
+      - name: load_timestamp
+        data_type: timestamp
+
+  - name: hub_eb_user_session
+    columns:
+      - name: eb_user_session_hashkey
+        data_type: string
+        tests:
+          - unique:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+          - not_null:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+      - name: business_key
+        data_type: string
+      - name: source_event_date
+        data_type: date
+      - name: record_source
+        data_type: string
+      - name: load_timestamp
+        data_type: timestamp
+
+  - name: hub_eb_users
+    columns:
+      - name: eb_users_hashkey
+        data_type: string
+        tests:
+          - unique:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+          - not_null:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+      - name: business_key
+        data_type: string
+      - name: source_event_date
+        data_type: date
+      - name: record_source
+        data_type: string
+      - name: load_timestamp
+        data_type: timestamp
+
+  - name: hub_ocb_bill_providers
+    columns:
+      - name: ocb_bill_providers_hashkey
+        data_type: string
+        tests:
+          - unique:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+          - not_null:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+      - name: business_key
+        data_type: string
+      - name: source_event_date
+        data_type: date
+      - name: record_source
+        data_type: string
+      - name: load_timestamp
+        data_type: timestamp
+
+  - name: hub_ocb_bill_services
+    columns:
+      - name: ocb_bill_services_hashkey
+        data_type: string
+        tests:
+          - unique:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+          - not_null:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+      - name: business_key
+        data_type: string
+      - name: source_event_date
+        data_type: date
+      - name: record_source
+        data_type: string
+      - name: load_timestamp
+        data_type: timestamp
+
+  - name: hub_soa_cust_account
+    columns:
+      - name: soa_cust_account_hashkey
+        data_type: string
+        tests:
+          - unique:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+          - not_null:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+      - name: business_key
+        data_type: decimal(38,0)
+      - name: source_event_date
+        data_type: date
+      - name: record_source
+        data_type: string
+      - name: load_timestamp
+        data_type: timestamp
+
+  - name: hub_soa_cust_package
+    columns:
+      - name: soa_cust_package_hashkey
+        data_type: string
+        tests:
+          - unique:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+          - not_null:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+      - name: business_key
+        data_type: bigint
+      - name: source_event_date
+        data_type: date
+      - name: record_source
+        data_type: string
+      - name: load_timestamp
+        data_type: timestamp
+
+  - name: hub_soa_ntdt_register
+    columns:
+      - name: soa_ntdt_register_hashkey
+        data_type: string
+        tests:
+          - unique:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+          - not_null:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+      - name: business_key
+        data_type: decimal(20,0)
+      - name: source_event_date
+        data_type: date
+      - name: record_source
+        data_type: string
+      - name: load_timestamp
+        data_type: timestamp
+
+  - name: hub_trans_type_mapping
+    columns:
+      - name: trans_type_mapping_hashkey
+        data_type: string
+        tests:
+          - unique:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+          - not_null:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+      - name: business_key
+        data_type: string
+      - name: source_event_date
+        data_type: date
+      - name: record_source
+        data_type: string
+      - name: load_timestamp
+        data_type: timestamp
+
+  - name: hub_user_login_log
+    columns:
+      - name: ocbchannel_user_login_log_hashkey
+        data_type: string
+        tests:
+          - unique:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+          - not_null:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+      - name: business_key
+        data_type: string
+      - name: source_event_date
+        data_type: date
+      - name: record_source
+        data_type: string
+      - name: load_timestamp
+        data_type: timestamp
+
+  - name: hub_soa_cust_termdeposit
+    columns:
+      - name: soa_cust_termdeposit_hashkey
+        data_type: string
+        tests:
+          - unique:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+          - not_null:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+      - name: business_key
+        data_type: decimal(25,0)
+      - name: source_event_date
+        data_type: date
+      - name: record_source
+        data_type: string
+      - name: load_timestamp
+        data_type: timestamp
+
+  - name: hub_soa_hdtg_da_nang
+    columns:
+      - name: soa_hdtg_da_nang_hashkey
+        data_type: string
+        tests:
+          - unique:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+          - not_null:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+      - name: business_key
+        data_type: decimal(25,0)
+      - name: source_event_date
+        data_type: date
+      - name: record_source
+        data_type: string
+      - name: load_timestamp
+        data_type: timestamp
+
+  - name: hub_soa_ft_batch_details
+    columns:
+      - name: soa_ft_batch_details_hashkey
+        data_type: string
+        tests:
+          - unique:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+          - not_null:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+      - name: business_key
+        data_type: decimal(32,0)
+      - name: source_event_date
+        data_type: date
+      - name: record_source
+        data_type: string
+      - name: load_timestamp
+        data_type: timestamp
+
+  - name: hub_soa_thq_register
+    columns:
+      - name: soa_thq_register_hashkey
+        data_type: string
+        tests:
+          - unique:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+          - not_null:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+      - name: business_key
+        data_type: decimal(20,0)
+      - name: source_event_date
+        data_type: date
+      - name: record_source
+        data_type: string
+      - name: load_timestamp
+        data_type: timestamp
+
+  - name: hub_soa_apportion_detail
+    columns:
+      - name: soa_apportion_detail_hashkey
+        data_type: string
+        tests:
+          - unique:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+          - not_null:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+      - name: business_key
+        data_type: string
+      - name: source_event_date
+        data_type: date
+      - name: record_source
+        data_type: string
+      - name: load_timestamp
+        data_type: timestamp
+
+  - name: hub_soa_cust_ft
+    columns:
+      - name: soa_cust_ft_hashkey
+        data_type: string
+        tests:
+          - unique:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+          - not_null:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+      - name: business_key
+        data_type: decimal(38,0)
+      - name: source_event_date
+        data_type: date
+      - name: record_source
+        data_type: string
+      - name: load_timestamp
+        data_type: timestamp
+
+  - name: hub_soa_multi_crdr_trans
+    columns:
+      - name: soa_multi_crdr_trans_hashkey
+        data_type: string
+        tests:
+          - unique:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+          - not_null:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+      - name: business_key
+        data_type: decimal(32,0)
+      - name: source_event_date
+        data_type: date
+      - name: record_source
+        data_type: string
+      - name: load_timestamp
+        data_type: timestamp
+
+  # ====================== LINKS ======================
+
+  - name: link_admin_command_queue_branch
+    columns:
+      - name: link_admin_command_queue_branch_hashkey
+        data_type: string
+      - name: admin_command_queue_hashkey
+        data_type: string
+      - name: branch_hashkey
+        data_type: string
+      - name: source_event_date
+        data_type: date
+      - name: record_source
+        data_type: string
+      - name: load_timestamp
+        data_type: timestamp
+
+  - name: link_apportion_trans_batch_details_branch
+    columns:
+      - name: link_apportion_trans_batch_details_branch_hashkey
+        data_type: string
+      - name: apportion_trans_batch_details_hashkey
+        data_type: string
+      - name: branch_hashkey
+        data_type: string
+      - name: source_event_date
+        data_type: date
+      - name: record_source
+        data_type: string
+      - name: load_timestamp
+        data_type: timestamp
+
+  - name: link_customer_file_customer
+    columns:
+      - name: link_customer_file_customer_hashkey
+        data_type: string
+      - name: customer_file_hashkey
+        data_type: string
+      - name: customer_hashkey
+        data_type: string
+      - name: source_event_date
+        data_type: date
+      - name: record_source
+        data_type: string
+      - name: load_timestamp
+        data_type: timestamp
+
+  - name: link_customer_file_branch
+    columns:
+      - name: link_customer_file_branch_hashkey
+        data_type: string
+      - name: customer_file_hashkey
+        data_type: string
+      - name: branch_hashkey
+        data_type: string
+      - name: source_event_date
+        data_type: date
+      - name: record_source
+        data_type: string
+      - name: load_timestamp
+        data_type: timestamp
+
+  - name: link_eb_user_channel_branch
+    columns:
+      - name: link_eb_user_channel_branch_hashkey
+        data_type: string
+      - name: eb_user_channel_hashkey
+        data_type: string
+      - name: branch_hashkey
+        data_type: string
+      - name: source_event_date
+        data_type: date
+      - name: record_source
+        data_type: string
+      - name: load_timestamp
+        data_type: timestamp
+
+  - name: link_eb_user_channel_package_type
+    columns:
+      - name: link_eb_user_channel_package_type_hashkey
+        data_type: string
+      - name: eb_user_channel_hashkey
+        data_type: string
+      - name: eb_package_type_hashkey
+        data_type: string
+      - name: source_event_date
+        data_type: date
+      - name: record_source
+        data_type: string
+      - name: load_timestamp
+        data_type: timestamp
+
+  - name: link_eb_users_customer
+    columns:
+      - name: link_eb_users_customer_hashkey
+        data_type: string
+      - name: eb_users_hashkey
+        data_type: string
+      - name: customer_hashkey
+        data_type: string
+      - name: source_event_date
+        data_type: date
+      - name: record_source
+        data_type: string
+      - name: load_timestamp
+        data_type: timestamp
+
+  - name: link_eb_users_branch
+    columns:
+      - name: link_ocbchannel_eb_users_branch_hashkey
+        data_type: string
+      - name: eb_users_hashkey
+        data_type: string
+      - name: branch_hashkey
+        data_type: string
+      - name: source_event_date
+        data_type: date
+      - name: record_source
+        data_type: string
+      - name: load_timestamp
+        data_type: timestamp
+
+  - name: link_ocb_bill_service_provider
+    columns:
+      - name: link_ocb_bill_service_provider_hashkey
+        data_type: string
+      - name: ocb_bill_services_hashkey
+        data_type: string
+      - name: ocb_bill_providers_hashkey
+        data_type: string
+      - name: source_event_date
+        data_type: date
+      - name: record_source
+        data_type: string
+      - name: load_timestamp
+        data_type: timestamp
+
+  - name: link_soa_cust_account_customer
+    columns:
+      - name: link_soa_cust_account_customer_hashkey
+        data_type: string
+      - name: soa_cust_account_hashkey
+        data_type: string
+      - name: customer_hashkey
+        data_type: string
+      - name: source_event_date
+        data_type: date
+      - name: record_source
+        data_type: string
+      - name: load_timestamp
+        data_type: timestamp
+
+  - name: link_soa_cust_account_branch
+    columns:
+      - name: link_soa_cust_account_branch_hashkey
+        data_type: string
+      - name: soa_cust_account_hashkey
+        data_type: string
+      - name: branch_hashkey
+        data_type: string
+      - name: source_event_date
+        data_type: date
+      - name: record_source
+        data_type: string
+      - name: load_timestamp
+        data_type: timestamp
+
+  - name: link_soa_cust_package_customer
+    columns:
+      - name: link_soa_cust_package_customer_hashkey
+        data_type: string
+      - name: soa_cust_package_hashkey
+        data_type: string
+      - name: customer_hashkey
+        data_type: string
+      - name: source_event_date
+        data_type: date
+      - name: record_source
+        data_type: string
+      - name: load_timestamp
+        data_type: timestamp
+
+  - name: link_soa_cust_package_branch
+    columns:
+      - name: link_soa_cust_package_branch_hashkey
+        data_type: string
+      - name: soa_cust_package_hashkey
+        data_type: string
+      - name: branch_hashkey
+        data_type: string
+      - name: source_event_date
+        data_type: date
+      - name: record_source
+        data_type: string
+      - name: load_timestamp
+        data_type: timestamp
+
+  - name: link_soa_ntdt_register_branch
+    columns:
+      - name: link_soa_ntdt_register_branch_hashkey
+        data_type: string
+      - name: soa_ntdt_register_hashkey
+        data_type: string
+      - name: branch_hashkey
+        data_type: string
+      - name: source_event_date
+        data_type: date
+      - name: record_source
+        data_type: string
+      - name: load_timestamp
+        data_type: timestamp
+
+  - name: link_soa_ntdt_register_account
+    columns:
+      - name: link_soa_ntdt_register_account_hashkey
+        data_type: string
+      - name: soa_ntdt_register_hashkey
+        data_type: string
+      - name: account_hashkey
+        data_type: string
+      - name: source_event_date
+        data_type: date
+      - name: record_source
+        data_type: string
+      - name: load_timestamp
+        data_type: timestamp
+
+  - name: effsat_link_soa_ntdt_register_account
+    columns:
+      - name: link_soa_ntdt_register_account_hashkey
+        data_type: string
+      - name: source_event_date
+        data_type: date
+      - name: record_source
+        data_type: string
+      - name: load_timestamp
+        data_type: timestamp
+      - name: active_flag
+        data_type: int
+
+  - name: link_soa_cust_termdeposit_customer
+    columns:
+      - name: link_soa_cust_termdeposit_customer_hashkey
+        data_type: string
+      - name: soa_cust_termdeposit_hashkey
+        data_type: string
+      - name: customer_hashkey
+        data_type: string
+      - name: source_event_date
+        data_type: date
+      - name: record_source
+        data_type: string
+      - name: load_timestamp
+        data_type: timestamp
+
+  - name: link_soa_cust_termdeposit_branch
+    columns:
+      - name: link_soa_cust_termdeposit_branch_hashkey
+        data_type: string
+      - name: soa_cust_termdeposit_hashkey
+        data_type: string
+      - name: branch_hashkey
+        data_type: string
+      - name: source_event_date
+        data_type: date
+      - name: record_source
+        data_type: string
+      - name: load_timestamp
+        data_type: timestamp
+
+  - name: link_soa_hdtg_da_nang_customer
+    columns:
+      - name: link_soa_hdtg_da_nang_customer_hashkey
+        data_type: string
+      - name: soa_hdtg_da_nang_hashkey
+        data_type: string
+      - name: customer_hashkey
+        data_type: string
+      - name: source_event_date
+        data_type: date
+      - name: record_source
+        data_type: string
+      - name: load_timestamp
+        data_type: timestamp
+
+  - name: link_soa_hdtg_da_nang_branch
+    columns:
+      - name: link_soa_hdtg_da_nang_branch_hashkey
+        data_type: string
+      - name: soa_hdtg_da_nang_hashkey
+        data_type: string
+      - name: branch_hashkey
+        data_type: string
+      - name: source_event_date
+        data_type: date
+      - name: record_source
+        data_type: string
+      - name: load_timestamp
+        data_type: timestamp
+
+  - name: link_soa_ft_batch_details_customer
+    columns:
+      - name: link_soa_ft_batch_details_customer_hashkey
+        data_type: string
+      - name: soa_ft_batch_details_hashkey
+        data_type: string
+      - name: customer_hashkey
+        data_type: string
+      - name: source_event_date
+        data_type: date
+      - name: record_source
+        data_type: string
+      - name: load_timestamp
+        data_type: timestamp
+
+  - name: link_soa_ft_batch_details_branch
+    columns:
+      - name: link_soa_ft_batch_details_branch_hashkey
+        data_type: string
+      - name: soa_ft_batch_details_hashkey
+        data_type: string
+      - name: branch_hashkey
+        data_type: string
+      - name: source_event_date
+        data_type: date
+      - name: record_source
+        data_type: string
+      - name: load_timestamp
+        data_type: timestamp
+
+  - name: link_soa_thq_register_customer
+    columns:
+      - name: link_soa_thq_register_customer_hashkey
+        data_type: string
+      - name: soa_thq_register_hashkey
+        data_type: string
+      - name: customer_hashkey
+        data_type: string
+      - name: source_event_date
+        data_type: date
+      - name: record_source
+        data_type: string
+      - name: load_timestamp
+        data_type: timestamp
+
+  - name: link_soa_thq_register_branch
+    columns:
+      - name: link_soa_thq_register_branch_hashkey
+        data_type: string
+      - name: soa_thq_register_hashkey
+        data_type: string
+      - name: branch_hashkey
+        data_type: string
+      - name: source_event_date
+        data_type: date
+      - name: record_source
+        data_type: string
+      - name: load_timestamp
+        data_type: timestamp
+
+  - name: link_soa_cust_ft_funds_transfer
+    columns:
+      - name: link_soa_cust_ft_funds_transfer_hashkey
+        data_type: string
+      - name: soa_cust_ft_hashkey
+        data_type: string
+      - name: funds_transfer_hashkey
+        data_type: string
+      - name: source_event_date
+        data_type: date
+      - name: record_source
+        data_type: string
+      - name: load_timestamp
+        data_type: timestamp
+
+  - name: link_soa_cust_ft_debit_account
+    columns:
+      - name: link_soa_cust_ft_debit_account_hashkey
+        data_type: string
+      - name: soa_cust_ft_hashkey
+        data_type: string
+      - name: account_hashkey
+        data_type: string
+      - name: source_event_date
+        data_type: date
+      - name: record_source
+        data_type: string
+      - name: load_timestamp
+        data_type: timestamp
+
+  - name: link_soa_cust_ft_credit_account
+    columns:
+      - name: link_soa_cust_ft_credit_account_hashkey
+        data_type: string
+      - name: soa_cust_ft_hashkey
+        data_type: string
+      - name: account_hashkey
+        data_type: string
+      - name: source_event_date
+        data_type: date
+      - name: record_source
+        data_type: string
+      - name: load_timestamp
+        data_type: timestamp
+
+  - name: link_soa_cust_ft_customer
+    columns:
+      - name: link_soa_cust_ft_customer_hashkey
+        data_type: string
+      - name: soa_cust_ft_hashkey
+        data_type: string
+      - name: customer_hashkey
+        data_type: string
+      - name: source_event_date
+        data_type: date
+      - name: record_source
+        data_type: string
+      - name: load_timestamp
+        data_type: timestamp
+
+  - name: link_soa_cust_ft_branch
+    columns:
+      - name: link_soa_cust_ft_branch_hashkey
+        data_type: string
+      - name: soa_cust_ft_hashkey
+        data_type: string
+      - name: branch_hashkey
+        data_type: string
+      - name: source_event_date
+        data_type: date
+      - name: record_source
+        data_type: string
+      - name: load_timestamp
+        data_type: timestamp
+
+  - name: link_soa_multi_crdr_trans_customer
+    columns:
+      - name: link_soa_multi_crdr_trans_customer_hashkey
+        data_type: string
+      - name: soa_multi_crdr_trans_hashkey
+        data_type: string
+      - name: customer_hashkey
+        data_type: string
+      - name: source_event_date
+        data_type: date
+      - name: record_source
+        data_type: string
+      - name: load_timestamp
+        data_type: timestamp
+
+  - name: link_soa_multi_crdr_trans_branch
+    columns:
+      - name: link_soa_multi_crdr_trans_branch_hashkey
+        data_type: string
+      - name: soa_multi_crdr_trans_hashkey
+        data_type: string
+      - name: branch_hashkey
+        data_type: string
+      - name: source_event_date
+        data_type: date
+      - name: record_source
+        data_type: string
+      - name: load_timestamp
+        data_type: timestamp
+
+  - name: link_soa_multi_crdr_trans_debit_account
+    columns:
+      - name: link_soa_multi_crdr_trans_debit_account_hashkey
+        data_type: string
+      - name: soa_multi_crdr_trans_hashkey
+        data_type: string
+      - name: account_hashkey
+        data_type: string
+      - name: source_event_date
+        data_type: date
+      - name: record_source
+        data_type: string
+      - name: load_timestamp
+        data_type: timestamp
+
+  - name: effsat_link_soa_multi_crdr_trans_debit_account
+    columns:
+      - name: link_soa_multi_crdr_trans_debit_account_hashkey
+        data_type: string
+      - name: source_event_date
+        data_type: date
+      - name: record_source
+        data_type: string
+      - name: load_timestamp
+        data_type: timestamp
+      - name: active_flag
+        data_type: int
+
+  - name: link_soa_multi_crdr_trans_credit_account
+    columns:
+      - name: link_soa_multi_crdr_trans_credit_account_hashkey
+        data_type: string
+      - name: soa_multi_crdr_trans_hashkey
+        data_type: string
+      - name: account_hashkey
+        data_type: string
+      - name: source_event_date
+        data_type: date
+      - name: record_source
+        data_type: string
+      - name: load_timestamp
+        data_type: timestamp
+
+  - name: effsat_link_soa_multi_crdr_trans_credit_account
+    columns:
+      - name: link_soa_multi_crdr_trans_credit_account_hashkey
+        data_type: string
+      - name: source_event_date
+        data_type: date
+      - name: record_source
+        data_type: string
+      - name: load_timestamp
+        data_type: timestamp
+      - name: active_flag
+        data_type: int
+
+  # ====================== SATELLITES ======================
+
+  - name: sat_admin_command_queue
+    columns:
+      - name: admin_command_queue_hashkey
+        data_type: string
+      - name: hashdiff
+        data_type: string
+      - name: source_event_date
+        data_type: date
+      - name: load_timestamp
+        data_type: timestamp
+      - name: record_source
+        data_type: string
+      - name: comamnd_type_id
+        data_type: string
+      - name: branch_code
+        data_type: string
+      - name: user_input
+        data_type: string
+      - name: date_input
+        data_type: string
+      - name: status
+        data_type: bigint
+      - name: user_authorised
+        data_type: string
+      - name: date_authorised
+        data_type: string
+      - name: notes
+        data_type: string
+      - name: cust_id
+        data_type: bigint
+      - name: full_name
+        data_type: string
+      - name: represent_name
+        data_type: string
+      - name: represent_tittle
+        data_type: string
+      - name: new_user_name
+        data_type: string
+      - name: new_password
+        data_type: string
+      - name: new_package_type
+        data_type: bigint
+      - name: new_authentication_type
+        data_type: bigint
+      - name: new_mobile
+        data_type: string
+      - name: new_user_type
+        data_type: string
+      - name: new_user_role
+        data_type: string
+      - name: new_user_group
+        data_type: string
+      - name: hard_token_seri_no
+        data_type: string
+      - name: old_package_type
+        data_type: decimal(38,0)
+      - name: old_mobile
+        data_type: string
+      - name: user_id
+        data_type: string
+      - name: channel
+        data_type: string
+      - name: fee_account
+        data_type: string
+      - name: rm_code_name
+        data_type: string
+      - name: is_restrict_acc_access
+        data_type: bigint
+      - name: restrict_access_acc_list
+        data_type: string
+      - name: json_val
+        data_type: string
+      - name: is_sequen
+        data_type: string
+      - name: fee_status
+        data_type: bigint
+
+  - name: sat_apportion_trans_batch_details
+    columns:
+      - name: apportion_trans_batch_details_hashkey
+        data_type: string
+      - name: hashdiff
+        data_type: string
+      - name: source_event_date
+        data_type: date
+      - name: load_timestamp
+        data_type: timestamp
+      - name: record_source
+        data_type: string
+      - name: ma_key
+        data_type: string
+      - name: item_id
+        data_type: bigint
+      - name: serial_no
+        data_type: string
+      - name: cust_name
+        data_type: string
+      - name: branch_code
+        data_type: string
+      - name: tax
+        data_type: string
+      - name: vat_form
+        data_type: string
+      - name: vat_inv_code
+        data_type: string
+      - name: vat_inv_serial
+        data_type: string
+      - name: vat_inv_date
+        data_type: string
+      - name: vat_inv_goods
+        data_type: string
+      - name: vat_rate
+        data_type: decimal(10,4)
+      - name: debit_account
+        data_type: string
+      - name: debit_currency
+        data_type: string
+      - name: credit_account
+        data_type: string
+      - name: credit_currency
+        data_type: string
+      - name: amount
+        data_type: decimal(20,4)
+      - name: description
+        data_type: string
+      - name: note
+        data_type: string
+      - name: department_id
+        data_type: string
+      - name: date_created
+        data_type: string
+      - name: user_created
+        data_type: string
+      - name: trans_type
+        data_type: string
+      - name: status_trans
+        data_type: string
+      - name: status
+        data_type: bigint
+      - name: validate_status
+        data_type: bigint
+      - name: validate_text
+        data_type: string
+      - name: is_processing
+        data_type: bigint
+      - name: processing_by
+        data_type: string
+      - name: prev_status
+        data_type: bigint
+      - name: last_access
+        data_type: string
+      - name: ft_no
+        data_type: string
+      - name: status_description
+        data_type: string
+      - name: vat_type
+        data_type: string
+
+  - name: sat_customer_file_information
+    columns:
+      - name: customer_file_hashkey
+        data_type: string
+      - name: hashdiff
+        data_type: string
+      - name: source_event_date
+        data_type: date
+      - name: load_timestamp
+        data_type: timestamp
+      - name: record_source
+        data_type: string
+      - name: serial_no
+        data_type: string
+      - name: reverse_serial_no
+        data_type: string
+      - name: cif
+        data_type: string
+      - name: full_name
+        data_type: string
+      - name: cif_branch_code
+        data_type: string
+      - name: cif_create_date
+        data_type: string
+      - name: application_type
+        data_type: string
+      - name: reference_id
+        data_type: string
+      - name: ecm_document_id
+        data_type: string
+
+  - name: sat_customer_file_detail
+    columns:
+      - name: customer_file_hashkey
+        data_type: string
+      - name: hashdiff
+        data_type: string
+      - name: source_event_date
+        data_type: date
+      - name: load_timestamp
+        data_type: timestamp
+      - name: record_source
+        data_type: string
+      - name: ecm_sync_status
+        data_type: bigint
+      - name: file_name
+        data_type: string
+      - name: media_type
+        data_type: string
+      - name: file_type
+        data_type: string
+      - name: document_type
+        data_type: string
+      - name: require_expired_date
+        data_type: bigint
+      - name: expired_date
+        data_type: string
+      - name: effective_status
+        data_type: bigint
+      - name: channel
+        data_type: string
+      - name: status
+        data_type: bigint
+      - name: prev_status
+        data_type: bigint
+      - name: is_processing
+        data_type: bigint
+      - name: description
+        data_type: string
+      - name: branch_code
+        data_type: string
+      - name: action_type
+        data_type: string
+      - name: record_no
+        data_type: bigint
+      - name: user_created
+        data_type: string
+      - name: user_created_t24
+        data_type: string
+      - name: datetime_created
+        data_type: string
+      - name: user_approved
+        data_type: string
+      - name: user_approved_t24
+        data_type: string
+      - name: datetime_approved
+        data_type: string
+      - name: user_updated
+        data_type: string
+      - name: datetime_updated
+        data_type: string
+      - name: last_update
+        data_type: string
+      - name: user_defined_filename
+        data_type: string
+      - name: channel_upload
+        data_type: string
+      - name: solar_ref_id
+        data_type: string
+      - name: ecm_sync_retry_date
+        data_type: string
+      - name: new_ecm_id
+        data_type: string
+      - name: new_ecm_upload_date
+        data_type: string
+      - name: issync
+        data_type: bigint
+
+  - name: sat_eb_user_channel_information
+    columns:
+      - name: eb_user_channel_hashkey
+        data_type: string
+      - name: hashdiff
+        data_type: string
+      - name: source_event_date
+        data_type: date
+      - name: load_timestamp
+        data_type: timestamp
+      - name: record_source
+        data_type: string
+      - name: ma_key
+        data_type: string
+      - name: channel
+        data_type: string
+      - name: status
+        data_type: string
+      - name: package_type_id
+        data_type: string
+      - name: authentication_type
+        data_type: string
+      - name: branch_code
+        data_type: string
+      - name: user_created
+        data_type: string
+      - name: created_date
+        data_type: string
+      - name: user_authorized
+        data_type: string
+
+  - name: sat_eb_user_channel_detail
+    columns:
+      - name: eb_user_channel_hashkey
+        data_type: string
+      - name: hashdiff
+        data_type: string
+      - name: source_event_date
+        data_type: date
+      - name: load_timestamp
+        data_type: timestamp
+      - name: record_source
+        data_type: string
+      - name: ma_key
+        data_type: string
+      - name: mobile_no
+        data_type: string
+      - name: seri_hardtoken
+        data_type: string
+      - name: user_assigned_token
+        data_type: string
+      - name: assigned_token_datetime
+        data_type: string
+      - name: user_role
+        data_type: string
+      - name: channel_pincode
+        data_type: string
+      - name: user_group
+        data_type: string
+      - name: datetime_authorized
+        data_type: string
+      - name: is_assigned_pki
+        data_type: decimal(38,0)
+      - name: user_assign_pki
+        data_type: string
+      - name: datetime_assign_pki
+        data_type: string
+      - name: source
+        data_type: string
+      - name: fee_account
+        data_type: string
+      - name: email
+        data_type: string
+      - name: last_authen_update
+        data_type: string
+      - name: omni_authentication_type
+        data_type: string
+      - name: prev_mobile_no
+        data_type: string
+      - name: soft_otp_company
+        data_type: string
+      - name: is_asigned_using_api
+        data_type: string
+      - name: first_login_time
+        data_type: string
+      - name: last_login_time
+        data_type: string
+      - name: last_change_pwd_date
+        data_type: string
+      - name: last_change_pwd_channel
+        data_type: string
+      - name: last_change_pwd_type
+        data_type: string
+      - name: change_pwd_cust_type
+        data_type: string
+      - name: login_attempt
+        data_type: decimal(38,0)
+      - name: soft_otp_active_status
+        data_type: bigint
+      - name: soft_otp_active_date
+        data_type: string
+      - name: signed_docs_downloadable
+        data_type: string
+      - name: open_api_using
+        data_type: string
+      - name: exception_limit
+        data_type: string
+      - name: cd_using
+        data_type: string
+
+  - name: sat_eb_user_session
+    columns:
+      - name: eb_user_session_hashkey
+        data_type: string
+      - name: hashdiff
+        data_type: string
+      - name: source_event_date
+        data_type: date
+      - name: load_timestamp
+        data_type: timestamp
+      - name: record_source
+        data_type: string
+      - name: ma_key
+        data_type: string
+      - name: login_session
+        data_type: string
+      - name: last_login
+        data_type: string
+      - name: channel
+        data_type: string
+      - name: session_expired
+        data_type: string
+
+  - name: sat_eb_users
+    columns:
+      - name: eb_users_hashkey
+        data_type: string
+      - name: hashdiff
+        data_type: string
+      - name: source_event_date
+        data_type: date
+      - name: load_timestamp
+        data_type: timestamp
+      - name: record_source
+        data_type: string
+      - name: user_name
+        data_type: string
+      - name: user_type
+        data_type: string
+      - name: full_name
+        data_type: string
+      - name: cif
+        data_type: string
+      - name: representname
+        data_type: string
+      - name: representtittle
+        data_type: string
+      - name: user_created
+        data_type: string
+      - name: created_date
+        data_type: string
+      - name: branch_code
+        data_type: string
+      - name: user_status
+        data_type: bigint
+      - name: pincode
+        data_type: string
+      - name: position
+        data_type: string
+      - name: user_group
+        data_type: string
+      - name: id_no
+        data_type: string
+      - name: user_authorized
+        data_type: string
+      - name: datetime_authorized
+        data_type: string
+      - name: default_keyword
+        data_type: string
+      - name: is_restrict_acc_access
+        data_type: bigint
+      - name: login_fail_num
+        data_type: bigint
+      - name: omni_user_id
+        data_type: string
+      - name: last_authen_update
+        data_type: string
+
+  - name: sat_ocb_bill_providers
+    columns:
+      - name: ocb_bill_providers_hashkey
+        data_type: string
+      - name: hashdiff
+        data_type: string
+      - name: source_event_date
+        data_type: date
+      - name: load_timestamp
+        data_type: timestamp
+      - name: record_source
+        data_type: string
+      - name: provider_name
+        data_type: string
+      - name: provider_name_vi
+        data_type: string
+      - name: provider_name_vins
+        data_type: string
+      - name: provider_name_en
+        data_type: string
+      - name: provider_name_fr
+        data_type: string
+      - name: status
+        data_type: bigint
+      - name: gateway
+        data_type: string
+      - name: display_order
+        data_type: bigint
+      - name: notes
+        data_type: string
+      - name: datetime_created
+        data_type: string
+      - name: trans_type
+        data_type: string
+      - name: service_ben
+        data_type: string
+      - name: allow_displayed
+        data_type: bigint
+      - name: channel
+        data_type: string
+      - name: fee_type
+        data_type: decimal(38,0)
+      - name: fee_amount
+        data_type: string
+      - name: auto_bill
+        data_type: decimal(38,0)
+      - name: provider_group_code
+        data_type: string
+      - name: provider_group_name
+        data_type: string
+      - name: provider_order
+        data_type: decimal(38,0)
+      - name: save_my_bill
+        data_type: decimal(38,0)
+
+  - name: sat_ocb_bill_service_provider
+    columns:
+      - name: ocb_bill_services_hashkey
+        data_type: string
+      - name: hashdiff
+        data_type: string
+      - name: source_event_date
+        data_type: date
+      - name: load_timestamp
+        data_type: timestamp
+      - name: record_source
+        data_type: string
+      - name: ma_key
+        data_type: string
+      - name: service_id
+        data_type: string
+      - name: provider_id
+        data_type: string
+      - name: status
+        data_type: bigint
+      - name: gw_service_id
+        data_type: string
+      - name: gw_provider_id
+        data_type: string
+      - name: gw_is_vat
+        data_type: bigint
+      - name: display_order
+        data_type: bigint
+      - name: notes
+        data_type: string
+      - name: datetime_created
+        data_type: string
+      - name: allow_auto
+        data_type: bigint
+      - name: gateway
+        data_type: string
+      - name: allow_query
+        data_type: bigint
+      - name: bill_payment_type
+        data_type: bigint
+      - name: channels
+        data_type: string
+      - name: query_type
+        data_type: string
+      - name: show_info_status
+        data_type: string
+      - name: auto_bill
+        data_type: decimal(38,0)
+      - name: provider_order
+        data_type: decimal(38,0)
+      - name: save_my_bill
+        data_type: decimal(38,0)
+
+  - name: sat_ocb_bill_services
+    columns:
+      - name: ocb_bill_services_hashkey
+        data_type: string
+      - name: hashdiff
+        data_type: string
+      - name: source_event_date
+        data_type: date
+      - name: load_timestamp
+        data_type: timestamp
+      - name: record_source
+        data_type: string
+      - name: service_name
+        data_type: string
+      - name: service_name_vi
+        data_type: string
+      - name: service_name_vins
+        data_type: string
+      - name: service_name_en
+        data_type: string
+      - name: service_name_fr
+        data_type: string
+      - name: status
+        data_type: bigint
+      - name: display_order
+        data_type: bigint
+      - name: notes
+        data_type: string
+      - name: datetime_created
+        data_type: string
+      - name: allow_display
+        data_type: decimal(38,0)
+      - name: cust_type
+        data_type: string
+      - name: service_type
+        data_type: string
+      - name: service_group_code
+        data_type: string
+      - name: service_group_name
+        data_type: string
+
+  - name: sat_soa_cust_account_information
+    columns:
+      - name: soa_cust_account_hashkey
+        data_type: string
+      - name: hashdiff
+        data_type: string
+      - name: source_event_date
+        data_type: date
+      - name: load_timestamp
+        data_type: timestamp
+      - name: record_source
+        data_type: string
+      - name: alt_account_id
+        data_type: string
+      - name: cif
+        data_type: string
+      - name: category
+        data_type: string
+      - name: product_code
+        data_type: string
+      - name: currency
+        data_type: string
+      - name: branch_code
+        data_type: string
+      - name: created_by
+        data_type: string
+      - name: created_date
+        data_type: string
+      - name: status
+        data_type: bigint
+      - name: is_processing
+        data_type: bigint
+      - name: processing_by
+        data_type: string
+      - name: channel
+        data_type: string
+      - name: last_access
+        data_type: string
+      - name: account_no
+        data_type: string
+
+  - name: sat_soa_cust_account_detail
+    columns:
+      - name: soa_cust_account_hashkey
+        data_type: string
+      - name: hashdiff
+        data_type: string
+      - name: source_event_date
+        data_type: date
+      - name: load_timestamp
+        data_type: timestamp
+      - name: record_source
+        data_type: string
+      - name: trans_type
+        data_type: string
+      - name: status_trans
+        data_type: string
+      - name: trans_date
+        data_type: string
+      - name: user_approved
+        data_type: string
+      - name: account_officer
+        data_type: string
+      - name: num_authorize_level
+        data_type: bigint
+      - name: account_name
+        data_type: string
+      - name: err_message
+        data_type: string
+      - name: serial_no
+        data_type: string
+      - name: datetime_approved
+        data_type: string
+      - name: mnemonic
+        data_type: string
+      - name: short_name
+        data_type: string
+      - name: user_deleted
+        data_type: string
+      - name: datetime_deleted
+        data_type: string
+      - name: override_msg
+        data_type: string
+      - name: posting_restrict
+        data_type: bigint
+      - name: description
+        data_type: string
+      - name: from_date
+        data_type: string
+      - name: to_date
+        data_type: string
+      - name: locked_amount
+        data_type: decimal(20,4)
+      - name: pre_status
+        data_type: bigint
+      - name: cif_account_officer
+        data_type: string
+      - name: changed_info
+        data_type: string
+      - name: partner_id
+        data_type: string
+      - name: program
+        data_type: string
+      - name: source
+        data_type: string
+      - name: posting_restrict_reason
+        data_type: string
+      - name: old_category
+        data_type: string
+      - name: old_partner_id
+        data_type: string
+      - name: package_date
+        data_type: string
+      - name: ac_middle_man
+        data_type: string
+      - name: email_sms_sent_date
+        data_type: string
+      - name: cust_name
+        data_type: string
+      - name: nice_acc_info
+        data_type: string
+      - name: restrict_reason_why
+        data_type: string
+      - name: restrict_reason_why_desc
+        data_type: string
+
+  - name: sat_soa_cust_package_information
+    columns:
+      - name: soa_cust_package_hashkey
+        data_type: string
+      - name: hashdiff
+        data_type: string
+      - name: source_event_date
+        data_type: date
+      - name: load_timestamp
+        data_type: timestamp
+      - name: record_source
+        data_type: string
+      - name: cif
+        data_type: bigint
+      - name: customer_type
+        data_type: string
+      - name: package_type_id
+        data_type: string
+      - name: created_date
+        data_type: string
+      - name: user_created
+        data_type: string
+      - name: user_approved
+        data_type: string
+      - name: date_approved
+        data_type: string
+      - name: is_create_current_acct
+        data_type: bigint
+      - name: is_create_sms
+        data_type: bigint
+      - name: is_create_ib
+        data_type: bigint
+      - name: is_create_mb
+        data_type: bigint
+      - name: status
+        data_type: bigint
+      - name: status_trans
+        data_type: string
+      - name: branch_code
+        data_type: string
+      - name: account_officer
+        data_type: string
+      - name: start_date
+        data_type: string
+      - name: end_date
+        data_type: string
+      - name: user_deleted
+        data_type: string
+      - name: date_deleted
+        data_type: string
+      - name: last_access
+        data_type: string
+
+  - name: sat_soa_cust_package_detail
+    columns:
+      - name: soa_cust_package_hashkey
+        data_type: string
+      - name: hashdiff
+        data_type: string
+      - name: source_event_date
+        data_type: date
+      - name: load_timestamp
+        data_type: timestamp
+      - name: record_source
+        data_type: string
+      - name: is_processing
+        data_type: bigint
+      - name: prev_status
+        data_type: bigint
+      - name: fee_account_opt
+        data_type: bigint
+      - name: fee_account
+        data_type: string
+      - name: status_message
+        data_type: string
+      - name: fee_account_category
+        data_type: string
+      - name: processing_step
+        data_type: bigint
+      - name: partner_id
+        data_type: string
+      - name: other_atm_account
+        data_type: string
+      - name: ecom_phone
+        data_type: string
+      - name: services
+        data_type: string
+      - name: program
+        data_type: string
+      - name: source
+        data_type: string
+      - name: cust_email
+        data_type: string
+      - name: cust_sms
+        data_type: string
+      - name: rm_email
+        data_type: string
+      - name: branch_code_ben
+        data_type: string
+      - name: is_open_atm
+        data_type: bigint
+      - name: ac_middle_man
+        data_type: string
+      - name: is_dics_fee_nice_ac
+        data_type: string
+      - name: is_new_omni
+        data_type: string
+      - name: is_pay_fee
+        data_type: string
+
+  - name: sat_soa_ntdt_register
+    columns:
+      - name: soa_ntdt_register_hashkey
+        data_type: string
+      - name: hashdiff
+        data_type: string
+      - name: source_event_date
+        data_type: date
+      - name: load_timestamp
+        data_type: timestamp
+      - name: record_source
+        data_type: string
+      - name: serial_no
+        data_type: string
+      - name: ma_gdich
+        data_type: string
+      - name: ngay_gui_gdich
+        data_type: string
+      - name: ma_gdich_tchieu
+        data_type: string
+      - name: pban_tlieu_xml
+        data_type: string
+      - name: mst
+        data_type: string
+      - name: ten_nnt
+        data_type: string
+      - name: diachi_nnt
+        data_type: string
+      - name: ma_cqt
+        data_type: string
+      - name: email_nnt
+        data_type: string
+      - name: sdt_nnt
+        data_type: string
+      - name: ten_lhe_nthue
+        data_type: string
+      - name: serial_cert_nthue
+        data_type: string
+      - name: subject_cert_nthue
+        data_type: string
+      - name: issuer_cert_nthue
+        data_type: string
+      - name: ma_nhang
+        data_type: string
+      - name: ten_nhang
+        data_type: string
+      - name: van_id
+        data_type: string
+      - name: ten_tvan
+        data_type: string
+      - name: ngay_gui
+        data_type: string
+      - name: branch_code
+        data_type: string
+      - name: status
+        data_type: bigint
+      - name: status_description
+        data_type: string
+      - name: created_date
+        data_type: string
+      - name: input_date
+        data_type: string
+      - name: approve_date
+        data_type: string
+      - name: user_inputer
+        data_type: string
+      - name: user_approver
+        data_type: string
+      - name: is_processing
+        data_type: bigint
+      - name: last_access
+        data_type: string
+
+  - name: sat_trans_type_mapping
+    columns:
+      - name: trans_type_mapping_hashkey
+        data_type: string
+      - name: hashdiff
+        data_type: string
+      - name: source_event_date
+        data_type: date
+      - name: load_timestamp
+        data_type: timestamp
+      - name: record_source
+        data_type: string
+      - name: ma_key
+        data_type: string
+      - name: application
+        data_type: string
+      - name: channel
+        data_type: string
+      - name: decriptions
+        data_type: string
+      - name: ofs
+        data_type: string
+      - name: t24_trans_type
+        data_type: string
+
+  - name: sat_user_login_log
+    columns:
+      - name: ocbchannel_user_login_log_hashkey
+        data_type: string
+      - name: hashdiff
+        data_type: string
+      - name: source_event_date
+        data_type: date
+      - name: load_timestamp
+        data_type: timestamp
+      - name: record_source
+        data_type: string
+      - name: ma_key
+        data_type: string
+      - name: user_name
+        data_type: string
+      - name: web_token
+        data_type: string
+      - name: datetime_login
+        data_type: string
+      - name: session_status
+        data_type: string
+      - name: lastdatetime_access
+        data_type: string
+      - name: channel
+        data_type: string
+
+  - name: sat_soa_cust_termdeposit_information
+    columns:
+      - name: soa_cust_termdeposit_hashkey
+        data_type: string
+      - name: hashdiff
+        data_type: string
+      - name: source_event_date
+        data_type: date
+      - name: load_timestamp
+        data_type: timestamp
+      - name: record_source
+        data_type: string
+      - name: account_no
+        data_type: string
+      - name: serial_no
+        data_type: string
+      - name: term
+        data_type: string
+      - name: open_date
+        data_type: string
+      - name: mature_date
+        data_type: string
+      - name: amount
+        data_type: decimal(20,4)
+      - name: currency
+        data_type: string
+      - name: datetime_created
+        data_type: string
+      - name: cif
+        data_type: bigint
+      - name: rollover_account
+        data_type: string
+      - name: rollover
+        data_type: bigint
+      - name: trans_type
+        data_type: string
+      - name: category
+        data_type: bigint
+      - name: status
+        data_type: bigint
+      - name: err_message
+        data_type: string
+      - name: last_updated
+        data_type: string
+      - name: prev_status
+        data_type: bigint
+      - name: channel
+        data_type: string
+      - name: branch_id
+        data_type: string
+      - name: last_access
+        data_type: string
+      - name: is_processing
+        data_type: bigint
+      - name: processing_by
+        data_type: string
+      - name: user_created
+        data_type: string
+      - name: user_approved
+        data_type: string
+      - name: status_trans
+        data_type: string
+      - name: num_authorize_level
+        data_type: bigint
+      - name: num_of_signed
+        data_type: bigint
+
+  - name: sat_soa_cust_termdeposit_detail
+    columns:
+      - name: soa_cust_termdeposit_hashkey
+        data_type: string
+      - name: hashdiff
+        data_type: string
+      - name: source_event_date
+        data_type: date
+      - name: load_timestamp
+        data_type: timestamp
+      - name: record_source
+        data_type: string
+      - name: user_signed_1
+        data_type: string
+      - name: user_signed_2
+        data_type: string
+      - name: user_signed_3
+        data_type: string
+      - name: user_signed_4
+        data_type: string
+      - name: user_signed_5
+        data_type: string
+      - name: debit_account
+        data_type: string
+      - name: product
+        data_type: string
+      - name: service_type
+        data_type: string
+      - name: interest_rate
+        data_type: decimal(38,0)
+      - name: customer_name
+        data_type: string
+      - name: trans_date
+        data_type: string
+      - name: debit_account_name
+        data_type: string
+      - name: account_officer_id
+        data_type: string
+      - name: user_deleted
+        data_type: string
+      - name: datetime_deleted
+        data_type: string
+      - name: frequency
+        data_type: string
+      - name: is_schedules
+        data_type: bigint
+      - name: calculation_base
+        data_type: string
+      - name: forward_backward
+        data_type: string
+      - name: schedule_type
+        data_type: string
+      - name: ref_officer_id
+        data_type: string
+      - name: override_msg
+        data_type: string
+      - name: joint_holder_cif_1
+        data_type: bigint
+      - name: relation_code_1
+        data_type: bigint
+      - name: joint_notes_1
+        data_type: string
+      - name: joint_holder_cif_2
+        data_type: bigint
+      - name: relation_code_2
+        data_type: bigint
+      - name: joint_notes_2
+        data_type: string
+      - name: user_created_t24
+        data_type: string
+      - name: pi_key
+        data_type: string
+      - name: roll_product
+        data_type: string
+      - name: tutor_cif
+        data_type: bigint
+      - name: processing_step
+        data_type: bigint
+      - name: extra_info
+        data_type: string
+      - name: sub_product
+        data_type: string
+      - name: hdtg_dn_id
+        data_type: string
+      - name: process_step
+        data_type: bigint
+      - name: mobile_no
+        data_type: string
+      - name: mobile_no_co_owner
+        data_type: string
+      - name: debit_acc_type
+        data_type: string
+      - name: deposit_prgm
+        data_type: string
+      - name: cust_group
+        data_type: bigint
+      - name: prefer_intt_rate
+        data_type: decimal(20,4)
+      - name: term_commit
+        data_type: string
+      - name: maturity_date_commit
+        data_type: string
+      - name: ocb_auth_level
+        data_type: string
+      - name: ocb_hotro_xuly_id
+        data_type: string
+      - name: ref_id
+        data_type: decimal(38,0)
+      - name: account_name
+        data_type: string
+      - name: denominations
+        data_type: decimal(25,0)
+      - name: quantity
+        data_type: decimal(25,0)
+      - name: issuer_code
+        data_type: string
+      - name: ref_no
+        data_type: string
+      - name: voucher_code
+        data_type: string
+      - name: voucher_interest_rate
+        data_type: bigint
+      - name: voucher_trace_id
+        data_type: string
+
+  - name: sat_soa_hdtg_da_nang_information
+    columns:
+      - name: soa_hdtg_da_nang_hashkey
+        data_type: string
+      - name: hashdiff
+        data_type: string
+      - name: source_event_date
+        data_type: date
+      - name: load_timestamp
+        data_type: timestamp
+      - name: record_source
+        data_type: string
+      - name: account_no
+        data_type: string
+      - name: serial_no
+        data_type: string
+      - name: term
+        data_type: string
+      - name: open_date
+        data_type: string
+      - name: mature_date
+        data_type: string
+      - name: amount
+        data_type: decimal(20,4)
+      - name: currency
+        data_type: string
+      - name: datetime_created
+        data_type: string
+      - name: cif
+        data_type: bigint
+      - name: rollover_account
+        data_type: string
+      - name: rollover
+        data_type: decimal(20,0)
+      - name: trans_type
+        data_type: string
+      - name: category
+        data_type: decimal(20,0)
+      - name: status
+        data_type: bigint
+      - name: err_message
+        data_type: string
+      - name: last_updated
+        data_type: string
+      - name: prev_status
+        data_type: bigint
+      - name: channel
+        data_type: string
+      - name: branch_id
+        data_type: string
+      - name: last_access
+        data_type: string
+      - name: is_processing
+        data_type: bigint
+      - name: processing_by
+        data_type: string
+      - name: user_created
+        data_type: string
+      - name: debit_account
+        data_type: string
+      - name: product
+        data_type: string
+      - name: service_type
+        data_type: string
+      - name: interest_rate
+        data_type: decimal(38,0)
+      - name: customer_name
+        data_type: string
+      - name: trans_date
+        data_type: string
+      - name: debit_account_name
+        data_type: string
+      - name: account_officer_id
+        data_type: string
+      - name: user_deleted
+        data_type: string
+      - name: mobile_no
+        data_type: string
+
+  - name: sat_soa_hdtg_da_nang_detail
+    columns:
+      - name: soa_hdtg_da_nang_hashkey
+        data_type: string
+      - name: hashdiff
+        data_type: string
+      - name: source_event_date
+        data_type: date
+      - name: load_timestamp
+        data_type: timestamp
+      - name: record_source
+        data_type: string
+      - name: user_approved
+        data_type: string
+      - name: status_trans
+        data_type: string
+      - name: num_authorize_level
+        data_type: bigint
+      - name: num_of_signed
+        data_type: bigint
+      - name: user_signed_1
+        data_type: string
+      - name: user_signed_2
+        data_type: string
+      - name: user_signed_3
+        data_type: string
+      - name: user_signed_4
+        data_type: string
+      - name: user_signed_5
+        data_type: string
+      - name: datetime_deleted
+        data_type: string
+      - name: frequency
+        data_type: string
+      - name: is_schedules
+        data_type: bigint
+      - name: calculation_base
+        data_type: string
+      - name: forward_backward
+        data_type: string
+      - name: schedule_type
+        data_type: string
+      - name: ref_officer_id
+        data_type: string
+      - name: override_msg
+        data_type: string
+      - name: joint_holder_cif_1
+        data_type: bigint
+      - name: relation_code_1
+        data_type: bigint
+      - name: joint_notes_1
+        data_type: string
+      - name: joint_holder_cif_2
+        data_type: bigint
+      - name: relation_code_2
+        data_type: bigint
+      - name: joint_notes_2
+        data_type: string
+      - name: user_created_t24
+        data_type: string
+      - name: pi_key
+        data_type: string
+      - name: roll_product
+        data_type: string
+      - name: tutor_cif
+        data_type: bigint
+      - name: processing_step
+        data_type: bigint
+      - name: extra_info
+        data_type: string
+      - name: org_term
+        data_type: string
+      - name: mobile_no_co_owner
+        data_type: string
+      - name: cust_group
+        data_type: bigint
+
+  - name: sat_branch_mapping
+    columns:
+      - name: branch_hashkey
+        data_type: string
+      - name: hashdiff
+        data_type: string
+      - name: source_event_date
+        data_type: date
+      - name: load_timestamp
+        data_type: timestamp
+      - name: record_source
+        data_type: string
+      - name: branch_name
+        data_type: string
+      - name: parent_branch_code
+        data_type: string
+      - name: date_start
+        data_type: string
+      - name: cif
+        data_type: string
+      - name: address
+        data_type: string
+      - name: phone_number
+        data_type: string
+      - name: fax
+        data_type: string
+      - name: province
+        data_type: string
+      - name: tax
+        data_type: string
+      - name: branch_name_vi
+        data_type: string
+      - name: represented_by
+        data_type: string
+      - name: represented_position
+        data_type: string
+      - name: t24_province
+        data_type: string
+      - name: t24_district
+        data_type: string
+      - name: is_dvkd
+        data_type: string
+      - name: branch_short_name
+        data_type: string
+
+  - name: sat_soa_ft_batch_details
+    columns:
+      - name: soa_ft_batch_details_hashkey
+        data_type: string
+      - name: hashdiff
+        data_type: string
+      - name: source_event_date
+        data_type: date
+      - name: load_timestamp
+        data_type: timestamp
+      - name: record_source
+        data_type: string
+      - name: ma_key
+        data_type: string
+      - name: item_id
+        data_type: decimal(20,0)
+      - name: item_no
+        data_type: string
+      - name: serial_no
+        data_type: string
+      - name: ft_no
+        data_type: string
+      - name: debit_account
+        data_type: string
+      - name: credit_account
+        data_type: string
+      - name: beneficiary_account
+        data_type: string
+      - name: trans_type
+        data_type: string
+      - name: amount_input
+        data_type: string
+      - name: amount
+        data_type: decimal(20,4)
+      - name: currency
+        data_type: string
+      - name: cif
+        data_type: bigint
+      - name: beneficiary_bank_branch_code
+        data_type: string
+      - name: beneficiary_bank_name
+        data_type: string
+      - name: fee_amount
+        data_type: decimal(20,4)
+      - name: validate_status
+        data_type: string
+      - name: validate_code
+        data_type: string
+      - name: validate_string
+        data_type: string
+      - name: is_processing
+        data_type: bigint
+      - name: time_begin_process
+        data_type: string
+      - name: date_created
+        data_type: string
+      - name: item_type
+        data_type: string
+      - name: err_code
+        data_type: string
+      - name: err_message
+        data_type: string
+      - name: branch_code
+        data_type: string
+      - name: t24_trans_type
+        data_type: string
+      - name: description
+        data_type: string
+      - name: status
+        data_type: bigint
+      - name: trans_no
+        data_type: string
+      - name: last_access
+        data_type: string
+      - name: processing_by
+        data_type: string
+      - name: status_description
+        data_type: string
+      - name: ft_date
+        data_type: string
+      - name: beneficiary
+        data_type: string
+      - name: prev_status
+        data_type: bigint
+      - name: last_updated
+        data_type: string
+      - name: commissioncode
+        data_type: string
+      - name: comissiontype
+        data_type: string
+      - name: user_t24_created
+        data_type: string
+      - name: source
+        data_type: string
+      - name: source_ref
+        data_type: string
+      - name: note
+        data_type: string
+      - name: bc_bank_sort_code
+        data_type: string
+      - name: account_name_input
+        data_type: string
+      - name: beneficiary_address
+        data_type: string
+      - name: profit_cif
+        data_type: decimal(32,0)
+      - name: virtual_account
+        data_type: string
+
+  - name: sat_soa_thq_register
+    columns:
+      - name: soa_thq_register_hashkey
+        data_type: string
+      - name: hashdiff
+        data_type: string
+      - name: source_event_date
+        data_type: date
+      - name: load_timestamp
+        data_type: timestamp
+      - name: record_source
+        data_type: string
+      - name: serial_no
+        data_type: string
+      - name: so_hs
+        data_type: string
+      - name: ma_dv
+        data_type: string
+      - name: ten_dv
+        data_type: string
+      - name: dia_chi
+        data_type: string
+      - name: so_cmt
+        data_type: string
+      - name: ho_ten
+        data_type: string
+      - name: ngay_sinh
+        data_type: string
+      - name: nguyen_quan
+        data_type: string
+      - name: tt_lienhe
+        data_type: string
+      - name: taikhoan_th
+        data_type: string
+      - name: cif
+        data_type: bigint
+      - name: chung_thu_so
+        data_type: string
+      - name: branch_code
+        data_type: string
+      - name: status
+        data_type: bigint
+      - name: status_desc
+        data_type: string
+      - name: is_processing
+        data_type: bigint
+      - name: last_access
+        data_type: string
+      - name: created_date
+        data_type: string
+      - name: last_update
+        data_type: string
+
+  - name: sat_soa_apportion_detail
+    columns:
+      - name: soa_apportion_detail_hashkey
+        data_type: string
+      - name: hashdiff
+        data_type: string
+      - name: source_event_date
+        data_type: date
+      - name: load_timestamp
+        data_type: timestamp
+      - name: record_source
+        data_type: string
+      - name: department_id
+        data_type: string
+      - name: apportion_amount
+        data_type: decimal(19,4)
+
+  - name: sat_soa_cust_ft_information
+    columns:
+      - name: soa_cust_ft_hashkey
+        data_type: string
+      - name: hashdiff
+        data_type: string
+      - name: source_event_date
+        data_type: date
+      - name: load_timestamp
+        data_type: timestamp
+      - name: record_source
+        data_type: string
+      - name: id
+        data_type: decimal(38,0)
+      - name: ft_no
+        data_type: string
+      - name: serial_no
+        data_type: string
+      - name: debit_account
+        data_type: string
+      - name: debit_currency
+        data_type: string
+      - name: credit_account
+        data_type: string
+      - name: credit_currency
+        data_type: string
+      - name: amount
+        data_type: decimal(20,2)
+      - name: payment_details
+        data_type: string
+      - name: trans_date
+        data_type: string
+      - name: datetime_created
+        data_type: string
+      - name: cif
+        data_type: bigint
+      - name: branchid
+        data_type: string
+      - name: status
+        data_type: decimal(38,0)
+      - name: err_message
+        data_type: string
+      - name: last_updated
+        data_type: string
+      - name: channel
+        data_type: string
+      - name: last_access
+        data_type: string
+      - name: user_created
+        data_type: string
+      - name: user_approved
+        data_type: string
+      - name: t24_trans_type
+        data_type: string
+
+  - name: sat_soa_cust_ft_party
+    columns:
+      - name: soa_cust_ft_hashkey
+        data_type: string
+      - name: hashdiff
+        data_type: string
+      - name: source_event_date
+        data_type: date
+      - name: load_timestamp
+        data_type: timestamp
+      - name: record_source
+        data_type: string
+      - name: cust_id_no
+        data_type: string
+      - name: cust_id_date
+        data_type: string
+      - name: cust_id_place
+        data_type: string
+      - name: cust_id_type
+        data_type: string
+      - name: cust_type
+        data_type: string
+      - name: cust_address
+        data_type: string
+      - name: cust_taxcode
+        data_type: string
+      - name: cust_name
+        data_type: string
+      - name: cust_phone_no
+        data_type: string
+      - name: cif_advance
+        data_type: bigint
+      - name: cif_deposit
+        data_type: decimal(38,0)
+      - name: fee_charge_cif
+        data_type: string
+      - name: user_created_t24
+        data_type: string
+      - name: beneficiary
+        data_type: string
+      - name: beneficiary_id_no
+        data_type: string
+      - name: beneficiary_id_date
+        data_type: string
+      - name: beneficiary_id_place
+        data_type: string
+      - name: beneficiary_account
+        data_type: string
+      - name: beneficiary_currency
+        data_type: string
+      - name: beneficiary_bank
+        data_type: string
+      - name: beneficiary_bank_branch
+        data_type: string
+      - name: beneficiary_address
+        data_type: string
+      - name: bc_bank_sort_code
+        data_type: string
+      - name: beneficiary_phone
+        data_type: string
+      - name: adhoc_beneficiary
+        data_type: string
+
+  - name: sat_soa_cust_ft_processing
+    columns:
+      - name: soa_cust_ft_hashkey
+        data_type: string
+      - name: hashdiff
+        data_type: string
+      - name: source_event_date
+        data_type: date
+      - name: load_timestamp
+        data_type: timestamp
+      - name: record_source
+        data_type: string
+      - name: prev_status
+        data_type: decimal(38,0)
+      - name: secret_question
+        data_type: string
+      - name: secret_answer
+        data_type: string
+      - name: is_processing
+        data_type: bigint
+      - name: processing_by
+        data_type: string
+      - name: trans_password
+        data_type: string
+      - name: paid_status
+        data_type: string
+      - name: status_trans
+        data_type: string
+      - name: num_authorize_level
+        data_type: bigint
+      - name: num_of_signed
+        data_type: bigint
+      - name: user_signed_1
+        data_type: string
+      - name: user_signed_2
+        data_type: string
+      - name: user_signed_3
+        data_type: string
+      - name: user_signed_4
+        data_type: string
+      - name: user_signed_5
+        data_type: string
+      - name: datetime_approved
+        data_type: string
+      - name: processing_step
+        data_type: bigint
+      - name: user_deleted
+        data_type: string
+      - name: datetime_deleted
+        data_type: string
+      - name: user_reverse_created
+        data_type: string
+      - name: datetime_reverse
+        data_type: string
+      - name: user_reverse_approved
+        data_type: string
+      - name: datetime_reverse_approved
+        data_type: string
+      - name: override_msg
+        data_type: string
+      - name: reversed_override_msg
+        data_type: string
+
+  - name: sat_soa_cust_ft_detail
+    columns:
+      - name: soa_cust_ft_hashkey
+        data_type: string
+      - name: hashdiff
+        data_type: string
+      - name: source_event_date
+        data_type: date
+      - name: load_timestamp
+        data_type: timestamp
+      - name: record_source
+        data_type: string
+      - name: commission_amount
+        data_type: decimal(38,0)
+      - name: commission_option
+        data_type: string
+      - name: commission_type
+        data_type: string
+      - name: exchange_rate
+        data_type: decimal(22,6)
+      - name: tax_amount
+        data_type: decimal(38,0)
+      - name: amount_credited
+        data_type: decimal(22,4)
+      - name: fee_charge_acc
+        data_type: string
+      - name: discount_fee_type
+        data_type: string
+      - name: discount_fee_amount
+        data_type: decimal(20,4)
+      - name: credit_card_no
+        data_type: string
+      - name: credit_card_pay_status
+        data_type: bigint
+      - name: credit_card_pay_info
+        data_type: string
+      - name: credit_card_rev_status
+        data_type: bigint
+      - name: credit_card_rev_info
+        data_type: string
+      - name: credit_card_token_number
+        data_type: string
+      - name: credit_card_pay_trans_id
+        data_type: string
+      - name: credit_card_cif
+        data_type: bigint
+      - name: credit_card_account
+        data_type: string
+      - name: credit_card_name
+        data_type: string
+      - name: trans_type
+        data_type: string
+      - name: ft_type
+        data_type: decimal(38,0)
+      - name: extra_info
+        data_type: string
+      - name: ref_type
+        data_type: string
+      - name: ref_no
+        data_type: string
+      - name: ref_id
+        data_type: decimal(38,0)
+      - name: branch_code_transfer
+        data_type: string
+      - name: smartlink_type
+        data_type: string
+      - name: debit_type
+        data_type: string
+      - name: debit_account_name
+        data_type: string
+      - name: debit_account_1
+        data_type: string
+      - name: classify_code
+        data_type: string
+      - name: virtual_account
+        data_type: string
+      - name: virtual_account_name
+        data_type: string
+      - name: ld_no
+        data_type: string
+      - name: profit_period
+        data_type: string
+      - name: is_onegate_trans
+        data_type: bigint
+      - name: trans_branch_code
+        data_type: string
+      - name: is_refund
+        data_type: string
+      - name: refund_account
+        data_type: string
+      - name: credit_cif
+        data_type: bigint
+      - name: credit_account_name
+        data_type: string
+
+  - name: sat_soa_multi_crdr_trans_information
+    columns:
+      - name: soa_multi_crdr_trans_hashkey
+        data_type: string
+      - name: hashdiff
+        data_type: string
+      - name: source_event_date
+        data_type: date
+      - name: load_timestamp
+        data_type: timestamp
+      - name: record_source
+        data_type: string
+      - name: tt_no
+        data_type: string
+      - name: serial_no
+        data_type: string
+      - name: debit_account_1
+        data_type: string
+      - name: debit_account_2
+        data_type: string
+      - name: debit_account_3
+        data_type: string
+      - name: debit_account_4
+        data_type: string
+      - name: credit_account_1
+        data_type: string
+      - name: credit_account_2
+        data_type: string
+      - name: credit_account_3
+        data_type: string
+      - name: credit_account_4
+        data_type: string
+      - name: debit_amount_1
+        data_type: decimal(20,4)
+      - name: debit_amount_2
+        data_type: decimal(20,4)
+      - name: debit_amount_3
+        data_type: decimal(20,4)
+      - name: debit_amount_4
+        data_type: decimal(20,4)
+      - name: credit_amount_1
+        data_type: decimal(20,4)
+      - name: credit_amount_2
+        data_type: decimal(20,4)
+      - name: credit_amount_3
+        data_type: decimal(20,4)
+      - name: credit_amount_4
+        data_type: decimal(20,4)
+      - name: payment_details
+        data_type: string
+      - name: trans_date
+        data_type: string
+      - name: datetime_created
+        data_type: string
+      - name: cif
+        data_type: bigint
+      - name: trans_type
+        data_type: string
+      - name: status
+        data_type: bigint
+      - name: err_message
+        data_type: string
+      - name: last_updated
+        data_type: string
+      - name: prev_status
+        data_type: bigint
+      - name: channel
+        data_type: string
+      - name: currency
+        data_type: string
+      - name: user_created
+        data_type: string
+      - name: user_approved
+        data_type: string
+      - name: processing_by
+        data_type: string
+      - name: branchid
+        data_type: string
+
+  - name: sat_soa_multi_crdr_trans_party
+    columns:
+      - name: soa_multi_crdr_trans_hashkey
+        data_type: string
+      - name: hashdiff
+        data_type: string
+      - name: source_event_date
+        data_type: date
+      - name: load_timestamp
+        data_type: timestamp
+      - name: record_source
+        data_type: string
+      - name: debit_cif
+        data_type: bigint
+      - name: cif_withdraw
+        data_type: bigint
+      - name: cust_name
+        data_type: string
+      - name: cust_id_type
+        data_type: string
+      - name: cust_id_no
+        data_type: string
+      - name: cust_id_date
+        data_type: string
+      - name: cust_id_place
+        data_type: string
+      - name: cust_tax_code
+        data_type: string
+      - name: cust_address
+        data_type: string
+      - name: cust_national
+        data_type: string
+      - name: cust_home_phone
+        data_type: string
+      - name: account_officer_id
+        data_type: string
+      - name: apportion_branch_code
+        data_type: string
+      - name: contract_no
+        data_type: string
+      - name: pro_partner
+        data_type: string
+      - name: user_created_t24
+        data_type: string
+
+  - name: sat_soa_multi_crdr_trans_processing
+    columns:
+      - name: soa_multi_crdr_trans_hashkey
+        data_type: string
+      - name: hashdiff
+        data_type: string
+      - name: source_event_date
+        data_type: date
+      - name: load_timestamp
+        data_type: timestamp
+      - name: record_source
+        data_type: string
+      - name: status_trans
+        data_type: string
+      - name: num_authorize_level
+        data_type: bigint
+      - name: num_of_signed
+        data_type: bigint
+      - name: user_signed_1
+        data_type: string
+      - name: user_signed_2
+        data_type: string
+      - name: user_signed_3
+        data_type: string
+      - name: user_signed_4
+        data_type: string
+      - name: user_signed_5
+        data_type: string
+      - name: is_processing
+        data_type: bigint
+      - name: last_access
+        data_type: string
+      - name: datetime_approved
+        data_type: string
+      - name: user_deleted
+        data_type: string
+      - name: datetime_deleted
+        data_type: string
+      - name: user_reverse_created
+        data_type: string
+      - name: datetime_reverse
+        data_type: string
+      - name: override_msg
+        data_type: string
+      - name: reversed_override_msg
+        data_type: string
+      - name: t24user_created
+        data_type: string
+      - name: t24user_approved
+        data_type: string
+      - name: is_onegate_trans
+        data_type: bigint
+      - name: user_ireve
+        data_type: string
+      - name: date_ireve
+        data_type: string
+      - name: user_areve
+        data_type: string
+      - name: date_areve
+        data_type: string
+
+  - name: sat_soa_multi_crdr_trans_detail
+    columns:
+      - name: soa_multi_crdr_trans_hashkey
+        data_type: string
+      - name: hashdiff
+        data_type: string
+      - name: source_event_date
+        data_type: date
+      - name: load_timestamp
+        data_type: timestamp
+      - name: record_source
+        data_type: string
+      - name: service_type
+        data_type: string
+      - name: fee_amount
+        data_type: decimal(20,4)
+      - name: trans_type_details_id
+        data_type: bigint
+      - name: debit_currency
+        data_type: string
+      - name: credit_currency
+        data_type: string
+      - name: exchange_rate
+        data_type: decimal(22,6)
+      - name: value_date
+        data_type: string
+      - name: booking_date
+        data_type: string
+      - name: vat_form
+        data_type: string
+      - name: vat_inv_code
+        data_type: string
+      - name: vat_inv_serial
+        data_type: string
+      - name: vat_inv_date
+        data_type: string
+      - name: vat_inv_goods
+        data_type: string
+      - name: vat_rate
+        data_type: decimal(20,4)
+      - name: vat_amount
+        data_type: decimal(20,4)
+      - name: transaction_code
+        data_type: string
+      - name: gw_log_id
+        data_type: decimal(38,0)
+      - name: net_amount
+        data_type: decimal(20,4)
+      - name: amount_local_2
+        data_type: decimal(20,4)
+      - name: virtual_account
+        data_type: string
+      - name: virtual_account_name
+        data_type: string
+      - name: nice_acc
+        data_type: string
+      - name: nice_acc_price
+        data_type: decimal(38,0)
+      - name: nice_acc_feeoff
+        data_type: decimal(38,0)
+      - name: credit_card_number
+        data_type: string
+      - name: credit_card_type
+        data_type: string
+      - name: credit_card_account
+        data_type: string
+      - name: credit_card_token_number
+        data_type: string
+      - name: credit_card_pay_trans_id
+        data_type: string
+      - name: credit_card_name
+        data_type: string
+      - name: credit_card_cif
+        data_type: bigint
+      - name: ref_trans_id
+        data_type: decimal(20,0)
+      - name: ref_trans_no
+        data_type: string
+      - name: debit_type
+        data_type: string
+      - name: other_info
+        data_type: string
+      - name: cheque_numbers
+        data_type: string
+
+  - name: sat_soa_ntdt_register_bank_account
+    columns:
+      - name: soa_ntdt_register_hashkey
+        data_type: string
+      - name: hashdiff
+        data_type: string
+      - name: source_event_date
+        data_type: date
+      - name: load_timestamp
+        data_type: timestamp
+      - name: record_source
+        data_type: string
+      - name: ma_key
+        data_type: string
+      - name: bank_account
+        data_type: string

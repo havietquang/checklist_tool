@@ -1,0 +1,71 @@
+bundle:
+  name: dbrjobs-run-daily-datavault-model-2.0
+
+include:
+  - resources/*.yml
+
+variables:
+  env:
+    description: environment name passed from CI (dev/pilot/prod)
+    default: "dev"
+  host:
+    description: host of the databricks workspace
+    default: ""
+  sql_warehouse_http_path:
+    description: SQL Warehouse HTTP PATH
+    default: ""
+  sql_warehouse_id:
+    description: SQL Warehouse ID
+    default: ""
+  destination_catalog:
+    description: databricks destination catalog
+    default: ""
+  destination_schema:
+    description: databricks destination schema
+    default: ""
+  service_principal_name:
+    description: uuid of service principal
+    default: ""
+  group_name:
+    description: group name
+    default: "op_ntdl_gr"
+
+
+  root_path:
+    default: "/Workspace/Users/${workspace.current_user.userName}/.bundle/${bundle.name}/${bundle.target}"
+  
+
+targets:
+  dev:
+    mode: production
+    default: true
+    workspace:
+      host: ""
+      root_path: "/Workspace/Users/${workspace.current_user.userName}/.bundle/${bundle.name}/${bundle.target}/datavault-model"
+    run_as:
+      service_principal_name:  "${var.service_principal_name}"
+
+  pilotcloud:
+    mode: production
+    default: true
+    workspace:
+      host: ""
+      root_path: "/Workspace/Users/${workspace.current_user.userName}/.bundle/${bundle.name}/${bundle.target}/datavault-model"
+    run_as:
+      service_principal_name:  "${var.service_principal_name}"
+    permissions:
+      - group_name: "${var.group_name}"
+        level: CAN_MANAGE
+
+  prod:
+    mode: production
+    default: true
+    workspace:
+      host: ""
+      root_path: "/Workspace/Users/${workspace.current_user.userName}/.bundle/${bundle.name}/${bundle.target}/datavault-model"
+    run_as:
+      service_principal_name:  "${var.service_principal_name}"
+
+permissions:
+- group_name: "op_ntdl_gr"
+  level: CAN_MANAGE

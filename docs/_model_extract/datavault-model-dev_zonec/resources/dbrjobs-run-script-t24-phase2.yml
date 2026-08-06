@@ -1,0 +1,325 @@
+resources:
+  jobs:
+    dbrjobs_run_script_t24_phase2:
+      name: dbrjobs-run-script-t24-phase2
+      email_notifications:
+        on_failure:
+          - anhptv6@ocb.com.vn
+      max_concurrent_runs: 1
+
+      parameters:
+        - name: start_date
+          default: "20250101"
+        - name: end_date
+          default: "20250110"
+        - name: environment
+          default: "${var.env}"
+        - name: catalog_sourcing
+          default: "ocb_datavault_${var.env}_sourcing"
+        - name: catalog_cleaned
+          default: "ocb_datavault_${var.env}_cleaned"
+
+      tasks:
+
+        - task_key: t24__t24_accr_acct_cr
+          run_if: ALL_SUCCESS
+          sql_task:
+            file: {path: ../analyses/phase2/t24/t24_accr_acct_cr.sql, source: WORKSPACE}
+            warehouse_id: "${var.sql_warehouse_id}"
+            parameters: {start_date: "{{job.parameters.start_date}}", end_date: "{{job.parameters.end_date}}", catalog_sourcing: "{{job.parameters.catalog_sourcing}}", catalog_cleaned: "{{job.parameters.catalog_cleaned}}"}
+
+        - task_key: t24__t24_accr_acct_dr
+          run_if: ALL_SUCCESS
+          sql_task:
+            file: {path: ../analyses/phase2/t24/t24_accr_acct_dr.sql, source: WORKSPACE}
+            warehouse_id: "${var.sql_warehouse_id}"
+            parameters: {start_date: "{{job.parameters.start_date}}", end_date: "{{job.parameters.end_date}}", catalog_sourcing: "{{job.parameters.catalog_sourcing}}", catalog_cleaned: "{{job.parameters.catalog_cleaned}}"}
+
+        - task_key: t24__t24_acct_activity
+          run_if: ALL_SUCCESS
+          sql_task:
+            file: {path: ../analyses/phase2/t24/t24_acct_activity.sql, source: WORKSPACE}
+            warehouse_id: "${var.sql_warehouse_id}"
+            parameters: {start_date: "{{job.parameters.start_date}}", end_date: "{{job.parameters.end_date}}", catalog_sourcing: "{{job.parameters.catalog_sourcing}}", catalog_cleaned: "{{job.parameters.catalog_cleaned}}"}
+
+        - task_key: t24__t24_acct_gen_condition
+          run_if: ALL_SUCCESS
+          sql_task:
+            file: {path: ../analyses/phase2/t24/t24_acct_gen_condition.sql, source: WORKSPACE}
+            warehouse_id: "${var.sql_warehouse_id}"
+            parameters: {start_date: "{{job.parameters.start_date}}", end_date: "{{job.parameters.end_date}}", catalog_sourcing: "{{job.parameters.catalog_sourcing}}", catalog_cleaned: "{{job.parameters.catalog_cleaned}}"}
+
+        - task_key: t24__t24_acct_group_condition
+          run_if: ALL_SUCCESS
+          sql_task:
+            file: {path: ../analyses/phase2/t24/t24_acct_group_condition.sql, source: WORKSPACE}
+            warehouse_id: "${var.sql_warehouse_id}"
+            parameters: {start_date: "{{job.parameters.start_date}}", end_date: "{{job.parameters.end_date}}", catalog_sourcing: "{{job.parameters.catalog_sourcing}}", catalog_cleaned: "{{job.parameters.catalog_cleaned}}"}
+
+        - task_key: t24__t24_apportion_acct_categ
+          run_if: ALL_SUCCESS
+          sql_task:
+            file: {path: ../analyses/phase2/t24/t24_apportion_acct_categ.sql, source: WORKSPACE}
+            warehouse_id: "${var.sql_warehouse_id}"
+            parameters: {start_date: "{{job.parameters.start_date}}", end_date: "{{job.parameters.end_date}}", catalog_sourcing: "{{job.parameters.catalog_sourcing}}", catalog_cleaned: "{{job.parameters.catalog_cleaned}}"}
+
+        - task_key: t24__t24_auto_name
+          run_if: ALL_SUCCESS
+          sql_task:
+            file: {path: ../analyses/phase2/t24/t24_auto_name.sql, source: WORKSPACE}
+            warehouse_id: "${var.sql_warehouse_id}"
+            parameters: {start_date: "{{job.parameters.start_date}}", end_date: "{{job.parameters.end_date}}", catalog_sourcing: "{{job.parameters.catalog_sourcing}}", catalog_cleaned: "{{job.parameters.catalog_cleaned}}"}
+
+        - task_key: t24__t24_bank_assure_inp
+          run_if: ALL_SUCCESS
+          sql_task:
+            file: {path: ../analyses/phase2/t24/t24_bank_assure_inp.sql, source: WORKSPACE}
+            warehouse_id: "${var.sql_warehouse_id}"
+            parameters: {start_date: "{{job.parameters.start_date}}", end_date: "{{job.parameters.end_date}}", catalog_sourcing: "{{job.parameters.catalog_sourcing}}", catalog_cleaned: "{{job.parameters.catalog_cleaned}}"}
+
+        - task_key: t24__t24_bosc_comp_reg
+          run_if: ALL_SUCCESS
+          sql_task:
+            file: {path: ../analyses/phase2/t24/t24_bosc_comp_reg.sql, source: WORKSPACE}
+            warehouse_id: "${var.sql_warehouse_id}"
+            parameters: {start_date: "{{job.parameters.start_date}}", end_date: "{{job.parameters.end_date}}", catalog_sourcing: "{{job.parameters.catalog_sourcing}}", catalog_cleaned: "{{job.parameters.catalog_cleaned}}"}
+
+        - task_key: t24__t24_collateral
+          run_if: ALL_SUCCESS
+          sql_task:
+            file: {path: ../analyses/phase2/t24/t24_collateral.sql, source: WORKSPACE}
+            warehouse_id: "${var.sql_warehouse_id}"
+            parameters: {start_date: "{{job.parameters.start_date}}", end_date: "{{job.parameters.end_date}}", catalog_sourcing: "{{job.parameters.catalog_sourcing}}", catalog_cleaned: "{{job.parameters.catalog_cleaned}}"}
+
+        - task_key: t24__t24_comp_level_group
+          run_if: ALL_SUCCESS
+          sql_task:
+            file: {path: ../analyses/phase2/t24/t24_comp_level_group.sql, source: WORKSPACE}
+            warehouse_id: "${var.sql_warehouse_id}"
+            parameters: {start_date: "{{job.parameters.start_date}}", end_date: "{{job.parameters.end_date}}", catalog_sourcing: "{{job.parameters.catalog_sourcing}}", catalog_cleaned: "{{job.parameters.catalog_cleaned}}"}
+
+        - task_key: t24__t24_denom_exchange
+          run_if: ALL_SUCCESS
+          sql_task:
+            file: {path: ../analyses/phase2/t24/t24_denom_exchange.sql, source: WORKSPACE}
+            warehouse_id: "${var.sql_warehouse_id}"
+            parameters: {start_date: "{{job.parameters.start_date}}", end_date: "{{job.parameters.end_date}}", catalog_sourcing: "{{job.parameters.catalog_sourcing}}", catalog_cleaned: "{{job.parameters.catalog_cleaned}}"}
+
+        - task_key: t24__t24_diary
+          run_if: ALL_SUCCESS
+          sql_task:
+            file: {path: ../analyses/phase2/t24/t24_diary.sql, source: WORKSPACE}
+            warehouse_id: "${var.sql_warehouse_id}"
+            parameters: {start_date: "{{job.parameters.start_date}}", end_date: "{{job.parameters.end_date}}", catalog_sourcing: "{{job.parameters.catalog_sourcing}}", catalog_cleaned: "{{job.parameters.catalog_cleaned}}"}
+
+        - task_key: t24__t24_entitlement
+          run_if: ALL_SUCCESS
+          sql_task:
+            file: {path: ../analyses/phase2/t24/t24_entitlement.sql, source: WORKSPACE}
+            warehouse_id: "${var.sql_warehouse_id}"
+            parameters: {start_date: "{{job.parameters.start_date}}", end_date: "{{job.parameters.end_date}}", catalog_sourcing: "{{job.parameters.catalog_sourcing}}", catalog_cleaned: "{{job.parameters.catalog_cleaned}}"}
+
+        - task_key: t24__t24_group_capitalisation
+          run_if: ALL_SUCCESS
+          sql_task:
+            file: {path: ../analyses/phase2/t24/t24_group_capitalisation.sql, source: WORKSPACE}
+            warehouse_id: "${var.sql_warehouse_id}"
+            parameters: {start_date: "{{job.parameters.start_date}}", end_date: "{{job.parameters.end_date}}", catalog_sourcing: "{{job.parameters.catalog_sourcing}}", catalog_cleaned: "{{job.parameters.catalog_cleaned}}"}
+
+        - task_key: t24__t24_int_chg_type
+          run_if: ALL_SUCCESS
+          sql_task:
+            file: {path: ../analyses/phase2/t24/t24_int_chg_type.sql, source: WORKSPACE}
+            warehouse_id: "${var.sql_warehouse_id}"
+            parameters: {start_date: "{{job.parameters.start_date}}", end_date: "{{job.parameters.end_date}}", catalog_sourcing: "{{job.parameters.catalog_sourcing}}", catalog_cleaned: "{{job.parameters.catalog_cleaned}}"}
+
+        - task_key: t24__t24_job_title
+          run_if: ALL_SUCCESS
+          sql_task:
+            file: {path: ../analyses/phase2/t24/t24_job_title.sql, source: WORKSPACE}
+            warehouse_id: "${var.sql_warehouse_id}"
+            parameters: {start_date: "{{job.parameters.start_date}}", end_date: "{{job.parameters.end_date}}", catalog_sourcing: "{{job.parameters.catalog_sourcing}}", catalog_cleaned: "{{job.parameters.catalog_cleaned}}"}
+
+        - task_key: t24__t24_lc_enrichment
+          run_if: ALL_SUCCESS
+          sql_task:
+            file: {path: ../analyses/phase2/t24/t24_lc_enrichment.sql, source: WORKSPACE}
+            warehouse_id: "${var.sql_warehouse_id}"
+            parameters: {start_date: "{{job.parameters.start_date}}", end_date: "{{job.parameters.end_date}}", catalog_sourcing: "{{job.parameters.catalog_sourcing}}", catalog_cleaned: "{{job.parameters.catalog_cleaned}}"}
+
+        - task_key: t24__t24_li_comp_level_right
+          run_if: ALL_SUCCESS
+          sql_task:
+            file: {path: ../analyses/phase2/t24/t24_li_comp_level_right.sql, source: WORKSPACE}
+            warehouse_id: "${var.sql_warehouse_id}"
+            parameters: {start_date: "{{job.parameters.start_date}}", end_date: "{{job.parameters.end_date}}", catalog_sourcing: "{{job.parameters.catalog_sourcing}}", catalog_cleaned: "{{job.parameters.catalog_cleaned}}"}
+
+        - task_key: t24__t24_limit_level_auth
+          run_if: ALL_SUCCESS
+          sql_task:
+            file: {path: ../analyses/phase2/t24/t24_limit_level_auth.sql, source: WORKSPACE}
+            warehouse_id: "${var.sql_warehouse_id}"
+            parameters: {start_date: "{{job.parameters.start_date}}", end_date: "{{job.parameters.end_date}}", catalog_sourcing: "{{job.parameters.catalog_sourcing}}", catalog_cleaned: "{{job.parameters.catalog_cleaned}}"}
+
+        - task_key: t24__t24_ocbh_ac_restrict
+          run_if: ALL_SUCCESS
+          sql_task:
+            file: {path: ../analyses/phase2/t24/t24_ocbh_ac_restrict.sql, source: WORKSPACE}
+            warehouse_id: "${var.sql_warehouse_id}"
+            parameters: {start_date: "{{job.parameters.start_date}}", end_date: "{{job.parameters.end_date}}", catalog_sourcing: "{{job.parameters.catalog_sourcing}}", catalog_cleaned: "{{job.parameters.catalog_cleaned}}"}
+
+        - task_key: t24__t24_ocbh_coll_bpm_store
+          run_if: ALL_SUCCESS
+          sql_task:
+            file: {path: ../analyses/phase2/t24/t24_ocbh_coll_bpm_store.sql, source: WORKSPACE}
+            warehouse_id: "${var.sql_warehouse_id}"
+            parameters: {start_date: "{{job.parameters.start_date}}", end_date: "{{job.parameters.end_date}}", catalog_sourcing: "{{job.parameters.catalog_sourcing}}", catalog_cleaned: "{{job.parameters.catalog_cleaned}}"}
+
+        - task_key: t24__t24_ocbh_cu_add_inf_corp_vn
+          run_if: ALL_SUCCESS
+          sql_task:
+            file: {path: ../analyses/phase2/t24/t24_ocbh_cu_add_inf_corp_vn.sql, source: WORKSPACE}
+            warehouse_id: "${var.sql_warehouse_id}"
+            parameters: {start_date: "{{job.parameters.start_date}}", end_date: "{{job.parameters.end_date}}", catalog_sourcing: "{{job.parameters.catalog_sourcing}}", catalog_cleaned: "{{job.parameters.catalog_cleaned}}"}
+
+        - task_key: t24__t24_ocbh_industry_tt15
+          run_if: ALL_SUCCESS
+          sql_task:
+            file: {path: ../analyses/phase2/t24/t24_ocbh_industry_tt15.sql, source: WORKSPACE}
+            warehouse_id: "${var.sql_warehouse_id}"
+            parameters: {start_date: "{{job.parameters.start_date}}", end_date: "{{job.parameters.end_date}}", catalog_sourcing: "{{job.parameters.catalog_sourcing}}", catalog_cleaned: "{{job.parameters.catalog_cleaned}}"}
+
+        - task_key: t24__t24_ocbh_scm_extra_info
+          run_if: ALL_SUCCESS
+          sql_task:
+            file: {path: ../analyses/phase2/t24/t24_ocbh_scm_extra_info.sql, source: WORKSPACE}
+            warehouse_id: "${var.sql_warehouse_id}"
+            parameters: {start_date: "{{job.parameters.start_date}}", end_date: "{{job.parameters.end_date}}", catalog_sourcing: "{{job.parameters.catalog_sourcing}}", catalog_cleaned: "{{job.parameters.catalog_cleaned}}"}
+
+        - task_key: t24__t24_periodic_interest
+          run_if: ALL_SUCCESS
+          sql_task:
+            file: {path: ../analyses/phase2/t24/t24_periodic_interest.sql, source: WORKSPACE}
+            warehouse_id: "${var.sql_warehouse_id}"
+            parameters: {start_date: "{{job.parameters.start_date}}", end_date: "{{job.parameters.end_date}}", catalog_sourcing: "{{job.parameters.catalog_sourcing}}", catalog_cleaned: "{{job.parameters.catalog_cleaned}}"}
+
+        - task_key: t24__t24_prod_package_cb
+          run_if: ALL_SUCCESS
+          sql_task:
+            file: {path: ../analyses/phase2/t24/t24_prod_package_cb.sql, source: WORKSPACE}
+            warehouse_id: "${var.sql_warehouse_id}"
+            parameters: {start_date: "{{job.parameters.start_date}}", end_date: "{{job.parameters.end_date}}", catalog_sourcing: "{{job.parameters.catalog_sourcing}}", catalog_cleaned: "{{job.parameters.catalog_cleaned}}"}
+
+        - task_key: t24__t24_re_txn_code
+          run_if: ALL_SUCCESS
+          sql_task:
+            file: {path: ../analyses/phase2/t24/t24_re_txn_code.sql, source: WORKSPACE}
+            warehouse_id: "${var.sql_warehouse_id}"
+            parameters: {start_date: "{{job.parameters.start_date}}", end_date: "{{job.parameters.end_date}}", catalog_sourcing: "{{job.parameters.catalog_sourcing}}", catalog_cleaned: "{{job.parameters.catalog_cleaned}}"}
+
+        - task_key: t24__t24_sc_block_sec_pos
+          run_if: ALL_SUCCESS
+          sql_task:
+            file: {path: ../analyses/phase2/t24/t24_sc_block_sec_pos.sql, source: WORKSPACE}
+            warehouse_id: "${var.sql_warehouse_id}"
+            parameters: {start_date: "{{job.parameters.start_date}}", end_date: "{{job.parameters.end_date}}", catalog_sourcing: "{{job.parameters.catalog_sourcing}}", catalog_cleaned: "{{job.parameters.catalog_cleaned}}"}
+
+        - task_key: t24__t24_sc_trans_pos_history
+          run_if: ALL_SUCCESS
+          sql_task:
+            file: {path: ../analyses/phase2/t24/t24_sc_trans_pos_history.sql, source: WORKSPACE}
+            warehouse_id: "${var.sql_warehouse_id}"
+            parameters: {start_date: "{{job.parameters.start_date}}", end_date: "{{job.parameters.end_date}}", catalog_sourcing: "{{job.parameters.catalog_sourcing}}", catalog_cleaned: "{{job.parameters.catalog_cleaned}}"}
+
+        - task_key: t24__t24_security_master
+          run_if: ALL_SUCCESS
+          sql_task:
+            file: {path: ../analyses/phase2/t24/t24_security_master.sql, source: WORKSPACE}
+            warehouse_id: "${var.sql_warehouse_id}"
+            parameters: {start_date: "{{job.parameters.start_date}}", end_date: "{{job.parameters.end_date}}", catalog_sourcing: "{{job.parameters.catalog_sourcing}}", catalog_cleaned: "{{job.parameters.catalog_cleaned}}"}
+
+        - task_key: t24__t24_security_position
+          run_if: ALL_SUCCESS
+          sql_task:
+            file: {path: ../analyses/phase2/t24/t24_security_position.sql, source: WORKSPACE}
+            warehouse_id: "${var.sql_warehouse_id}"
+            parameters: {start_date: "{{job.parameters.start_date}}", end_date: "{{job.parameters.end_date}}", catalog_sourcing: "{{job.parameters.catalog_sourcing}}", catalog_cleaned: "{{job.parameters.catalog_cleaned}}"}
+
+        - task_key: t24__t24_standing_order
+          run_if: ALL_SUCCESS
+          sql_task:
+            file: {path: ../analyses/phase2/t24/t24_standing_order.sql, source: WORKSPACE}
+            warehouse_id: "${var.sql_warehouse_id}"
+            parameters: {start_date: "{{job.parameters.start_date}}", end_date: "{{job.parameters.end_date}}", catalog_sourcing: "{{job.parameters.catalog_sourcing}}", catalog_cleaned: "{{job.parameters.catalog_cleaned}}"}
+
+        - task_key: t24__t24_stmt_acct_cr
+          run_if: ALL_SUCCESS
+          sql_task:
+            file: {path: ../analyses/phase2/t24/t24_stmt_acct_cr.sql, source: WORKSPACE}
+            warehouse_id: "${var.sql_warehouse_id}"
+            parameters: {start_date: "{{job.parameters.start_date}}", end_date: "{{job.parameters.end_date}}", catalog_sourcing: "{{job.parameters.catalog_sourcing}}", catalog_cleaned: "{{job.parameters.catalog_cleaned}}"}
+
+        - task_key: t24__t24_stmt_acct_dr
+          run_if: ALL_SUCCESS
+          sql_task:
+            file: {path: ../analyses/phase2/t24/t24_stmt_acct_dr.sql, source: WORKSPACE}
+            warehouse_id: "${var.sql_warehouse_id}"
+            parameters: {start_date: "{{job.parameters.start_date}}", end_date: "{{job.parameters.end_date}}", catalog_sourcing: "{{job.parameters.catalog_sourcing}}", catalog_cleaned: "{{job.parameters.catalog_cleaned}}"}
+
+        - task_key: t24__t24_teller_id
+          run_if: ALL_SUCCESS
+          sql_task:
+            file: {path: ../analyses/phase2/t24/t24_teller_id.sql, source: WORKSPACE}
+            warehouse_id: "${var.sql_warehouse_id}"
+            parameters: {start_date: "{{job.parameters.start_date}}", end_date: "{{job.parameters.end_date}}", catalog_sourcing: "{{job.parameters.catalog_sourcing}}", catalog_cleaned: "{{job.parameters.catalog_cleaned}}"}
+
+        - task_key: t24__t24_teller_transaction
+          run_if: ALL_SUCCESS
+          sql_task:
+            file: {path: ../analyses/phase2/t24/t24_teller_transaction.sql, source: WORKSPACE}
+            warehouse_id: "${var.sql_warehouse_id}"
+            parameters: {start_date: "{{job.parameters.start_date}}", end_date: "{{job.parameters.end_date}}", catalog_sourcing: "{{job.parameters.catalog_sourcing}}", catalog_cleaned: "{{job.parameters.catalog_cleaned}}"}
+
+        - task_key: t24__t24_transfer_deposit
+          run_if: ALL_SUCCESS
+          sql_task:
+            file: {path: ../analyses/phase2/t24/t24_transfer_deposit.sql, source: WORKSPACE}
+            warehouse_id: "${var.sql_warehouse_id}"
+            parameters: {start_date: "{{job.parameters.start_date}}", end_date: "{{job.parameters.end_date}}", catalog_sourcing: "{{job.parameters.catalog_sourcing}}", catalog_cleaned: "{{job.parameters.catalog_cleaned}}"}
+
+        - task_key: t24__t24_user_level_auth
+          run_if: ALL_SUCCESS
+          sql_task:
+            file: {path: ../analyses/phase2/t24/t24_user_level_auth.sql, source: WORKSPACE}
+            warehouse_id: "${var.sql_warehouse_id}"
+            parameters: {start_date: "{{job.parameters.start_date}}", end_date: "{{job.parameters.end_date}}", catalog_sourcing: "{{job.parameters.catalog_sourcing}}", catalog_cleaned: "{{job.parameters.catalog_cleaned}}"}
+
+        - task_key: t24__t24_vmbh_rpt_pl_vat
+          run_if: ALL_SUCCESS
+          sql_task:
+            file: {path: ../analyses/phase2/t24/t24_vmbh_rpt_pl_vat.sql, source: WORKSPACE}
+            warehouse_id: "${var.sql_warehouse_id}"
+            parameters: {start_date: "{{job.parameters.start_date}}", end_date: "{{job.parameters.end_date}}", catalog_sourcing: "{{job.parameters.catalog_sourcing}}", catalog_cleaned: "{{job.parameters.catalog_cleaned}}"}
+
+        - task_key: t24__t24_vmbh_teller_limit
+          run_if: ALL_SUCCESS
+          sql_task:
+            file: {path: ../analyses/phase2/t24/t24_vmbh_teller_limit.sql, source: WORKSPACE}
+            warehouse_id: "${var.sql_warehouse_id}"
+            parameters: {start_date: "{{job.parameters.start_date}}", end_date: "{{job.parameters.end_date}}", catalog_sourcing: "{{job.parameters.catalog_sourcing}}", catalog_cleaned: "{{job.parameters.catalog_cleaned}}"}
+
+        - task_key: t24__t24_vmbl_fx_fwsw_work
+          run_if: ALL_SUCCESS
+          sql_task:
+            file: {path: ../analyses/phase2/t24/t24_vmbl_fx_fwsw_work.sql, source: WORKSPACE}
+            warehouse_id: "${var.sql_warehouse_id}"
+            parameters: {start_date: "{{job.parameters.start_date}}", end_date: "{{job.parameters.end_date}}", catalog_sourcing: "{{job.parameters.catalog_sourcing}}", catalog_cleaned: "{{job.parameters.catalog_cleaned}}"}
+
+      tags:
+        project: datavault-model
+        zone: silver
+        phase: phase2
+
+        map-migrated: migV58YOK697G
+      queue:
+        enabled: true

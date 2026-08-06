@@ -1,0 +1,68 @@
+resources:
+  jobs:
+    dbrschema-create-cleaned--business-vault-tables:
+      name: dbrschema-create-cleaned--business-vault-tables
+      max_concurrent_runs: 1
+
+      parameters:
+        - name: environment
+          default: "${var.env}"
+
+      tasks:
+        - task_key: run_create_business_vault_tables_ddl
+          notebook_task:
+            notebook_path: ${workspace.file_path}/sourcing/run_ddl_bv
+            base_parameters:
+              environment: "{{job.parameters.environment}}"
+          job_cluster_key: dbt_job_cluster
+
+      job_clusters:
+        - job_cluster_key: dbt_job_cluster
+          new_cluster:
+            spark_version: 15.4.x-scala2.12
+            spark_conf:
+              spark.sql.redaction.string.regex: \"(password|user)\"[\s]*[^\"]*\"[^\"]*\"
+              spark.hadoop.datanucleus.fixedDatastore: "false"
+              spark.hadoop.javax.jdo.option.ConnectionDriverName: org.apache.derby.jdbc.EmbeddedDriver
+              spark.hadoop.javax.jdo.option.ConnectionURL: jdbc:derby:memory:myInMemDB;create=true
+              spark.hadoop.javax.jdo.option.ConnectionUserName: hiveuser
+              spark.hadoop.javax.jdo.option.ConnectionPassword: hivepass
+              spark.hadoop.datanucleus.autoCreateSchema: "true"
+              spark.hadoop.datanucleus.autoCreateTables: "true"
+              spark.sql.catalogImplementation: hive
+            node_type_id: m5d.xlarge
+            custom_tags:
+              costproject: datavault-model
+              zone: silver
+              map-migrated: migV58YOK697G
+            spark_env_vars:
+              PYSPARK_PYTHON: /databricks/python3/bin/python3
+              DATABRICKS_HOST: "${var.host}"
+              DATABRICKS_SQL_WAREHOUSE_HTTP_PATH: "${var.sql_warehouse_http_path}"
+              DATABRICKS_DESTINATION_CATALOG: "${var.destination_catalog}"
+              DATABRICKS_DESTINATION_SCHEMA: "${var.destination_schema}"
+              DATABRICKS_CLIENT_ID: "{{secrets/ocb-cdp-datavault/datavault_dbt_job_client_id}}"
+              DATABRICKS_CLIENT_SECRET: "{{secrets/ocb-cdp-datavault/datavault_dbt_job_client_secret}}"
+            init_scripts:
+              - volumes:
+                  destination: /Volumes/ocb_cdp_python_library_jdbc/default/init_script/ocb_datavault_dbt_shared_cluster.sh
+            data_security_mode: DATA_SECURITY_MODE_DEDICATED
+            runtime_engine: STANDARD
+            kind: CLASSIC_PREVIEW
+            is_single_node: true
+
+      tags:
+        map-migrated: migV58YOK697G
+
+      queue:
+        enabled: true
+
+      environments:
+        - environment_key: Default
+          spec:
+            environment_version: "4"
+        - environment_key: dbt-default
+          spec:
+            dependencies:
+              - dbt-databricks>=1.0.0,<2.0.0
+            environment_version: "4"

@@ -1,0 +1,33 @@
+version: 2
+
+models:
+  - name: ref_qldt_ldm_partner_type
+    config:
+      contract:
+        enforced: true
+    columns:
+      - name: ref_hashkey
+        data_type: string
+        tests:
+          - unique:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+          - not_null:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+      - name: ref_type
+        data_type: string
+      - name: ref_code
+        data_type: string
+      - name: ref_description
+        data_type: string
+      - name: url
+        data_type: string
+      - name: hashdiff
+        data_type: string
+      - name: source_event_date
+        data_type: date
+      - name: record_source
+        data_type: string
+      - name: load_timestamp
+        data_type: timestamp

@@ -1,0 +1,4 @@
+#packages:
+#  - local: /Volumes/ocb_datavault_dev_cleaned/raw_vault/libs/dbt_packages/datavault4dbt-main
+#    name: datavault4dbt
+#sha1_hash: c9934336eead476f9c32186770772b186985b710

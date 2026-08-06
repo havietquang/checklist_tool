@@ -1,0 +1,43 @@
+version: 2
+
+models:
+  - name: link_contact_hist_callcenter
+    config:
+      contract:
+        enforced: true
+    columns:
+      - name: link_contact_hist_callcenter_hashkey
+        data_type: string
+        tests:
+          - unique:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+          - not_null:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+      - name: crm_contact_hist_hashkey
+        data_type: string
+        tests:
+          - relationships:
+              arguments:
+                to: ref('hub_crm_contact_hist')
+                field: crm_contact_hist_hashkey
+          - not_null:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+      - name: callcenter_hashkey
+        data_type: string
+        tests:
+          - relationships:
+              arguments:
+                to: ref('hub_callcenter')
+                field: callcenter_hashkey
+          - not_null:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+      - name: source_event_date
+        data_type: date
+      - name: record_source
+        data_type: string
+      - name: load_timestamp
+        data_type: timestamp

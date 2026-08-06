@@ -1,0 +1,484 @@
+version: 2
+
+sources:
+  - name: staging
+    database: "{{ var('raw_vault_database') }}"
+    schema: staging
+    config:
+      tags: [all]
+      freshness:
+        warn_after:
+          count: 1
+          period: day
+      filter: "source_event_date = to_date('{{ var(\"target_date\") }}','yyyyMMdd')"
+      loaded_at_field: "case when source_event_date is not null then current_timestamp else cast(null as timestamp) end"
+
+    tables:
+      # ========================================
+      # BPM — Phase 1
+      # ========================================
+      - name: v_stg_bpm_auth_nhom
+      - name: v_stg_bpm_auth_nhan_vien
+      - name: v_stg_bpm_auth_to_chuc_don_vi
+      - name: v_stg_bpm_c_danh_muc
+      - name: v_stg_bpm_danh_muc
+      - name: v_stg_bpm_giao_dich
+        tags: [phase2]
+      - name: v_stg_bpm_giao_dich_link
+      - name: v_stg_bpm_giao_dich_sla
+      - name: v_stg_bpm_giao_dich_tsbd
+      - name: v_stg_bpm_khach_hang
+        tags: [phase2]
+      - name: v_stg_bpm_pdtd_nhom_giao_dich
+        tags: [phase2]
+      - name: v_stg_bpm_pdtd_san_pham
+      - name: v_stg_bpm_pdtd_tsbd_link
+      - name: v_stg_bpm_qlns_nguoi_lao_dong_info
+        tags: [phase2]
+      - name: v_stg_bpm_sk10_san_pham
+      - name: v_stg_bpm_tdcn_tai_san_bao_dam
+      - name: v_stg_bpm_tdcn_thong_tin_chung
+      - name: v_stg_bpm_tdcn_xl_gdtd
+      - name: v_stg_bpm_tdtc_nghiep_vu_xl_gdtd
+      - name: v_stg_bpm_tdtc_thong_tin_chung
+      - name: v_stg_bpm_tdtc_thong_tin_to_trinh
+      - name: v_stg_bpm_tht_nhom_chinh_sach_the
+      - name: v_stg_bpm_tsbd_giaodich_chinh
+      - name: v_stg_bpm_tsbd_giaodich_chitiet
+      - name: v_stg_bpm_tsbd_giaodich_lich_su_v2
+      - name: v_stg_bpm_tsbd_giaodich_taisan_chusohuu
+        tags: [phase2]
+      - name: v_stg_bpm_tsbd_tai_san
+      - name: v_stg_bpm_xl_ct_han_muc
+      - name: v_stg_bpm_xl_ct_lich_su
+      - name: v_stg_bpm_xl_ksgn_chung
+      - name: v_stg_bpm_xl_ksgn_ct
+      - name: v_stg_bpm_xl_pdtd_link
+      # -------- BPM — Phase 2 --------
+      - name: v_stg_bpm_giao_dich_the
+        tags: [phase2]
+      - name: v_stg_bpm_h_pdtd_gdich_ctiet_pduyet
+        tags: [phase2]
+      - name: v_stg_bpm_h_pdtd_gdich_lsu_pduyet
+        tags: [phase2]
+      - name: v_stg_bpm_khach_hang_ca_nhan
+        tags: [phase2]
+      - name: v_stg_bpm_khach_hang_doanh_nghiep
+        tags: [phase2]
+      - name: v_stg_bpm_lich_su_giao_dich
+        tags: [phase2]
+      - name: v_stg_bpm_pdtd_giao_dich_tin_dung
+        tags: [phase2]
+      - name: v_stg_bpm_tc_stk_lich_su
+        tags: [phase2]
+      - name: v_stg_bpm_tc_stk_thong_tin_tong_hop
+        tags: [phase2]
+      - name: v_stg_bpm_tcstk_thong_tin_bao_dam
+        tags: [phase2]
+      - name: v_stg_bpm_tcstk_thong_tin_chung
+        tags: [phase2]
+      - name: v_stg_bpm_tcstk_thong_tin_giao_dich
+        tags: [phase2]
+      - name: v_stg_bpm_tdcn_chi_tiet_san_pham
+        tags: [phase2]
+      - name: v_stg_bpm_tdcn_khoan_cap_td_the
+        tags: [phase2]
+      - name: v_stg_bpm_tdcn_nguoi_dong_vay
+        tags: [phase2]
+      - name: v_stg_bpm_tdcn_sp_nhu_cau_td
+        tags: [phase2]
+      - name: v_stg_bpm_tdcn_thu_nhap_tra_no
+        tags: [phase2]
+      - name: v_stg_bpm_tsbd_chu_so_huu
+        tags: [phase2]
+      - name: v_stg_bpm_ttd_giao_dich_igen
+        tags: [phase2]
+
+      # ========================================
+      # OMNI — Phase 1
+      # ========================================
+      - name: v_stg_omni_acknowledgement
+      - name: v_stg_omni_audit_message
+      - name: v_stg_omni_auto_debit
+      - name: v_stg_omni_en_user
+      - name: v_stg_omni_master_data
+      - name: v_stg_omni_omni_service
+      - name: v_stg_omni_oversea_ft_request
+      - name: v_stg_omni_package
+      - name: v_stg_omni_service_provider
+      - name: v_stg_omni_services
+      # -------- OMNI — Phase 2 --------
+      - name: v_stg_omni_account_information
+        tags: [phase2]
+      - name: v_stg_omni_clevertap_tracking
+        tags: [phase2]
+      - name: v_stg_omni_credit_card_registration
+        tags: [phase2]
+      - name: v_stg_omni_customer_data_sharing_consent
+        tags: [phase2]
+      - name: v_stg_omni_customers
+      - name: v_stg_omni_device
+        tags: [phase2]
+      - name: v_stg_omni_device_detail
+        tags: [phase2]
+      - name: v_stg_omni_fee_discount
+        tags: [phase2]
+      - name: v_stg_omni_message
+        tags: [phase2]
+      - name: v_stg_omni_od_linked_deposit
+        tags: [phase2]
+      - name: v_stg_omni_od_registration
+        tags: [phase2]
+      - name: v_stg_omni_onboarding_report
+        tags: [phase2]
+      - name: v_stg_omni_party
+        tags: [phase2]
+      - name: v_stg_omni_payment_history
+        tags: [phase2]
+      - name: v_stg_omni_payment_order
+        tags: [phase2]
+      - name: v_stg_omni_service_type
+        tags: [phase2]
+      - name: v_stg_omni_transfer_bill_history
+        tags: [phase2]
+      - name: v_stg_omni_user_notification
+        tags: [phase2]
+      - name: v_stg_omni_voucher
+        tags: [phase2]
+      - name: v_stg_omni_voucher_campaign
+        tags: [phase2]
+      - name: v_stg_omni_voucher_generate
+        tags: [phase2]
+
+      # ========================================
+      # T24 — Phase 1
+      # ========================================
+      - name: v_stg_t24_t24_account
+        tags: [phase2]
+      - name: v_stg_t24_t24_account_closed
+        tags: [phase2]
+      - name: v_stg_t24_t24_account_credit_int
+        tags: [phase2]
+      - name: v_stg_t24_t24_account_debit_int
+        tags: [phase2]
+      - name: v_stg_t24_t24_ac_locked_events
+      - name: v_stg_t24_t24_az_account
+        tags: [phase2]
+      - name: v_stg_t24_t24_az_product_parameter
+      - name: v_stg_t24_t24_basic_interest
+      - name: v_stg_t24_t24_bc_sort_code
+      - name: v_stg_t24_t24_category
+      - name: v_stg_t24_t24_ocbh_cat_prod
+        tags: [zonec]
+      - name: v_stg_t24_t24_categ_entry
+      - name: v_stg_t24_t24_collateral
+        tags: [phase2]
+      - name: v_stg_t24_t24_collateral_code
+      - name: v_stg_t24_t24_collateral_right
+      - name: v_stg_t24_t24_collateral_type
+      - name: v_stg_t24_t24_company
+      - name: v_stg_t24_t24_consolidate_prft_loss
+      - name: v_stg_t24_t24_country
+      - name: v_stg_t24_t24_crb
+      - name: v_stg_t24_t24_currency
+      - name: v_stg_t24_t24_customer
+      - name: v_stg_t24_t24_cus_pkg
+      - name: v_stg_t24_t24_dealer_desk
+      - name: v_stg_t24_t24_department
+      - name: v_stg_t24_t24_dept_acct_officer
+      - name: v_stg_t24_t24_de_bic
+      - name: v_stg_t24_t24_drawings
+      - name: v_stg_t24_t24_forex
+      - name: v_stg_t24_t24_ft_txn_type_condition
+      - name: v_stg_t24_t24_funds_transfer
+      - name: v_stg_t24_t24_gci
+      - name: v_stg_t24_t24_gdi
+      - name: v_stg_t24_t24_holiday
+      - name: v_stg_t24_t24_industry
+      - name: v_stg_t24_t24_lc_types
+      - name: v_stg_t24_t24_ld_aprv_info
+        tags: [phase2]
+      - name: v_stg_t24_t24_ld_aprv_user
+      - name: v_stg_t24_t24_ld_economic_sector
+      - name: v_stg_t24_t24_ld_extra_info
+        tags: [phase2]
+      - name: v_stg_t24_t24_ld_ins_type_comp
+      - name: v_stg_t24_t24_ld_partner
+      - name: v_stg_t24_t24_ld_promotion
+      - name: v_stg_t24_t24_ld_schedule_define
+        tags: [phase2]
+      - name: v_stg_t24_t24_letter_of_credit
+      - name: v_stg_t24_t24_limit
+      - name: v_stg_t24_t24_limit_reference
+      - name: v_stg_t24_t24_line_mvmt_toanhang
+      - name: v_stg_t24_t24_lmm_account_balances
+        tags: [phase2]
+      - name: v_stg_t24_t24_ln_cust_revs_dtls
+        tags: [phase2]
+      - name: v_stg_t24_t24_loans_and_deposits
+        tags: [phase2]
+      - name: v_stg_t24_t24_loan_method
+      - name: v_stg_t24_t24_loan_purpose
+      - name: v_stg_t24_t24_loan_subproduct
+      - name: v_stg_t24_t24_md_deal
+      - name: v_stg_t24_t24_money_market
+      - name: v_stg_t24_t24_ocbh_classification
+      - name: v_stg_t24_t24_ocbh_coll_basel
+      - name: v_stg_t24_t24_ocbh_coll_borrow_purpose
+      - name: v_stg_t24_t24_ocbh_coll_rev_agent
+      - name: v_stg_t24_t24_ocbh_cus_ext_info
+      - name: v_stg_t24_t24_ocbh_cus_group
+      - name: v_stg_t24_t24_ocbh_deposit_prgm
+      - name: v_stg_t24_t24_ocbh_ft_outward_purpose
+      - name: v_stg_t24_t24_ocbh_fx_buyfcy_purpose
+      - name: v_stg_t24_t24_ocbh_ld_basel
+        tags: [phase2]
+      - name: v_stg_t24_t24_ocbh_ld_prod_main
+      - name: v_stg_t24_t24_ocbh_loan_pro_bundle
+      - name: v_stg_t24_t24_ocbh_md_purpose
+      - name: v_stg_t24_t24_ocbh_product_package
+      - name: v_stg_t24_t24_ocbh_prod_package_partner
+      - name: v_stg_t24_t24_ocbh_sub_virtual_account
+      - name: v_stg_t24_t24_ocbt_sub_industry
+      - name: v_stg_t24_t24_occupation
+      - name: v_stg_t24_t24_payment_due
+      - name: v_stg_t24_t24_pc_re_stat_line_bal
+      - name: v_stg_t24_t24_posting_restrict
+      - name: v_stg_t24_t24_province
+      - name: v_stg_t24_t24_repo
+      - name: v_stg_t24_t24_re_consol_spec_entry
+      - name: v_stg_t24_t24_re_stat_line_bal
+      - name: v_stg_t24_t24_re_stat_line_cont
+      - name: v_stg_t24_t24_re_stat_rep_line
+      - name: v_stg_t24_t24_sc_trading_position
+        tags: [phase2]
+      - name: v_stg_t24_t24_sc_trans_name
+      - name: v_stg_t24_t24_sector
+      - name: v_stg_t24_t24_security_master
+        tags: [phase2]
+      - name: v_stg_t24_t24_sec_acc_master
+      - name: v_stg_t24_t24_sec_trade
+      - name: v_stg_t24_t24_stmt_entry
+      - name: v_stg_t24_t24_sub_asset_type
+      - name: v_stg_t24_t24_teller
+      - name: v_stg_t24_t24_town
+      - name: v_stg_t24_t24_transaction
+      - name: v_stg_t24_t24_user
+        tags: [phase2]
+      - name: v_stg_t24_t24_vmbl_int_clr_citad
+      # -------- T24 — Phase 2 --------
+      - name: v_stg_t24_t24_accr_acct_cr
+        tags: [phase2]
+      - name: v_stg_t24_t24_accr_acct_dr
+        tags: [phase2]
+      - name: v_stg_t24_t24_acct_activity
+        tags: [phase2]
+      - name: v_stg_t24_t24_acct_gen_condition
+        tags: [phase2]
+      - name: v_stg_t24_t24_acct_group_condition
+        tags: [phase2]
+      - name: v_stg_t24_t24_apportion_acct_categ
+        tags: [phase2]
+      - name: v_stg_t24_t24_auto_name
+        tags: [phase2]
+      - name: v_stg_t24_t24_bank_assure_inp
+        tags: [phase2]
+      - name: v_stg_t24_t24_bosc_comp_reg
+        tags: [phase2]
+      - name: v_stg_t24_t24_comp_level_group
+        tags: [phase2]
+      - name: v_stg_t24_t24_denom_exchange
+        tags: [phase2]
+      - name: v_stg_t24_t24_diary
+        tags: [phase2]
+      - name: v_stg_t24_t24_entitlement
+        tags: [phase2]
+      - name: v_stg_t24_t24_group_capitalisation
+        tags: [phase2]
+      - name: v_stg_t24_t24_int_chg_type
+        tags: [phase2]
+      - name: v_stg_t24_t24_job_title
+        tags: [phase2]
+      - name: v_stg_t24_t24_lc_enrichment
+        tags: [phase2]
+      - name: v_stg_t24_t24_li_comp_level_right
+        tags: [phase2]
+      - name: v_stg_t24_t24_limit_level_auth
+        tags: [phase2]
+      - name: v_stg_t24_t24_ocbh_ac_restrict
+        tags: [phase2]
+      - name: v_stg_t24_t24_ocbh_coll_bpm_store
+        tags: [phase2]
+      - name: v_stg_t24_t24_ocbh_cu_add_inf_corp_vn
+        tags: [phase2]
+      - name: v_stg_t24_t24_ocbh_industry_tt15
+        tags: [phase2]
+      - name: v_stg_t24_t24_ocbh_scm_extra_info
+        tags: [phase2]
+      - name: v_stg_t24_t24_periodic_interest
+        tags: [phase2]
+      - name: v_stg_t24_t24_prod_package_cb
+        tags: [phase2]
+      - name: v_stg_t24_t24_re_txn_code
+        tags: [phase2]
+      - name: v_stg_t24_t24_sc_block_sec_pos
+        tags: [phase2]
+      - name: v_stg_t24_t24_sc_trans_pos_history
+        tags: [phase2]
+      - name: v_stg_t24_t24_security_position
+        tags: [phase2]
+      - name: v_stg_t24_t24_standing_order
+        tags: [phase2]
+      - name: v_stg_t24_t24_stmt_acct_cr
+        tags: [phase2]
+      - name: v_stg_t24_t24_stmt_acct_dr
+        tags: [phase2]
+      - name: v_stg_t24_t24_teller_id
+        tags: [phase2]
+      - name: v_stg_t24_t24_teller_transaction
+        tags: [phase2]
+      - name: v_stg_t24_t24_transfer_deposit
+        tags: [phase2]
+      - name: v_stg_t24_t24_user_level_auth
+        tags: [phase2]
+      - name: v_stg_t24_t24_vmbh_rpt_pl_vat
+        tags: [phase2]
+      - name: v_stg_t24_t24_vmbh_teller_limit
+        tags: [phase2]
+      - name: v_stg_t24_t24_vmbl_fx_fwsw_work
+        tags: [phase2]
+
+      # ========================================
+      # WAY4 — Phase 1
+      # ========================================
+      - name: v_stg_way4_account_type
+      - name: v_stg_way4_acnt_contract
+        tags: [phase2]
+      - name: v_stg_way4_acq_dev_cycle
+      - name: v_stg_way4_appl_product
+      - name: v_stg_way4_balance
+      - name: v_stg_way4_billing
+      - name: v_stg_way4_billing_log
+      - name: v_stg_way4_client
+        tags: [phase2]
+      - name: v_stg_way4_client_address
+      - name: v_stg_way4_contr_status
+      - name: v_stg_way4_cs_status_log
+      - name: v_stg_way4_cs_status_type
+      - name: v_stg_way4_cs_status_value
+      - name: v_stg_way4_device_rec
+      - name: v_stg_way4_doc
+        tags: [phase2]
+      - name: v_stg_way4_entry
+        tags: [phase2]
+      - name: v_stg_way4_mess_channel
+      - name: v_stg_way4_m_transaction
+      - name: v_stg_way4_payment
+      - name: v_stg_way4_resp_code
+      - name: v_stg_way4_sic
+      - name: v_stg_way4_templ_approved
+        tags: [phase2]
+      - name: v_stg_way4_trans_cond
+      - name: v_stg_way4_trans_type
+      # -------- WAY4 — Phase 2 --------
+      - name: v_stg_way4_account
+        tags: [phase2]
+      - name: v_stg_way4_acc_templ
+        tags: [phase2]
+      - name: v_stg_way4_card_info
+        tags: [phase2]
+      - name: v_stg_way4_gl_trace
+        tags: [phase2]
+      - name: v_stg_way4_invoice_log
+        tags: [phase2]
+      - name: v_stg_way4_item
+        tags: [phase2]
+      - name: v_stg_way4_ows_add_data
+        tags: [phase2]
+      - name: v_stg_way4_ows_bank_unit
+        tags: [phase2]
+      - name: v_stg_way4_ows_bin_table
+        tags: [phase2]
+      - name: v_stg_way4_ows_event_type
+        tags: [phase2]
+      - name: v_stg_way4_ows_evnt_action
+        tags: [phase2]
+      - name: v_stg_way4_ows_td_auth_type
+        tags: [phase2]
+      - name: v_stg_way4_td_auth_sch
+        tags: [phase2]
+      - name: v_stg_way4_usage_action
+        tags: [phase2]
+
+      # ========================================
+      # CRM — Phase 2
+      # ========================================
+      - name: v_stg_crm_crm_contact_hist
+        tags: [phase2]
+      - name: v_stg_crm_crm_contact_notes
+        tags: [phase2]
+      - name: v_stg_crm_crm_contact_result
+        tags: [phase2]
+      - name: v_stg_crm_crm_contact_status
+        tags: [phase2]
+      - name: v_stg_crm_crm_contact_type
+        tags: [phase2]
+      - name: v_stg_crm_crm_naming_custgroup
+        tags: [phase2]
+      - name: v_stg_crm_crm_users
+        tags: [phase2]
+      - name: v_stg_crm_crm_user_structure
+        tags: [zonec]
+
+      # ========================================
+      # CALLCENTER — Phase 2
+      # ========================================
+      - name: v_stg_callcenter_callcenter
+        tags: [phase2]
+
+      # ========================================
+      # APPSFLYER — Phase 2
+      # ========================================
+      - name: v_stg_appsflyer_in_app_events_report
+        tags: [phase2]
+      - name: v_stg_appsflyer_installs_report
+        tags: [phase2]
+      - name: v_stg_appsflyer_organic_in_app_events_report
+        tags: [phase2]
+      - name: v_stg_appsflyer_organic_installs_report
+        tags: [phase2]
+      - name: v_stg_appsflyer_organic_uninstall_events_report
+        tags: [phase2]
+      - name: v_stg_appsflyer_reinstalls
+        tags: [phase2]
+      - name: v_stg_appsflyer_reinstalls_organic
+        tags: [phase2]
+      - name: v_stg_appsflyer_uninstall_events_report
+        tags: [phase2]
+
+      # ========================================
+      # CLEVERTAP — Phase 2
+      # ========================================
+      - name: v_stg_clevertap_events
+        tags: [phase2]
+      - name: v_stg_clevertap_campaigns
+        tags: [phase2]
+      - name: v_stg_clevertap_profiles
+        tags: [zonec]
+
+      # BPA
+      # ========================================
+      - name: v_stg_bpa_loan_approval_loan_approvals
+        tags: [bpa_db]
+      - name: v_stg_bpa_cm_identification_documents
+        tags: [bpa_db]
+      - name: v_stg_bpa_la_loan_approval_data_group
+        tags: [bpa_db]
+      - name: v_stg_bpa_tm_transaction
+        tags: [bpa_db]
+      - name: v_stg_bpa_tm_transaction_customer
+        tags: [bpa_db]
+      - name: v_stg_bpa_cm_customers
+        tags: [bpa_db]
+      - name: v_stg_bpa_la_financial_income_source
+        tags: [bpa_db]

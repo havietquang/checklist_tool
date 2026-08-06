@@ -1,0 +1,171 @@
+resources:
+  jobs:
+    dbrjobs_run_script_omni_phase2:
+      name: dbrjobs-run-script-omni-phase2
+      email_notifications:
+        on_failure:
+          - anhptv6@ocb.com.vn
+      max_concurrent_runs: 1
+
+      parameters:
+        - name: start_date
+          default: "20250101"
+        - name: end_date
+          default: "20250110"
+        - name: environment
+          default: "${var.env}"
+        - name: catalog_sourcing
+          default: "ocb_datavault_${var.env}_sourcing"
+        - name: catalog_cleaned
+          default: "ocb_datavault_${var.env}_cleaned"
+
+      tasks:
+
+        - task_key: omni__account_information
+          run_if: ALL_SUCCESS
+          sql_task:
+            file: {path: ../analyses/phase2/omni/account_information.sql, source: WORKSPACE}
+            warehouse_id: "${var.sql_warehouse_id}"
+            parameters: {start_date: "{{job.parameters.start_date}}", end_date: "{{job.parameters.end_date}}", catalog_sourcing: "{{job.parameters.catalog_sourcing}}", catalog_cleaned: "{{job.parameters.catalog_cleaned}}"}
+
+        - task_key: omni__clevertap_tracking
+          run_if: ALL_SUCCESS
+          sql_task:
+            file: {path: ../analyses/phase2/omni/clevertap_tracking.sql, source: WORKSPACE}
+            warehouse_id: "${var.sql_warehouse_id}"
+            parameters: {start_date: "{{job.parameters.start_date}}", end_date: "{{job.parameters.end_date}}", catalog_sourcing: "{{job.parameters.catalog_sourcing}}", catalog_cleaned: "{{job.parameters.catalog_cleaned}}"}
+
+        - task_key: omni__credit_card_registration
+          run_if: ALL_SUCCESS
+          sql_task:
+            file: {path: ../analyses/phase2/omni/credit_card_registration.sql, source: WORKSPACE}
+            warehouse_id: "${var.sql_warehouse_id}"
+            parameters: {start_date: "{{job.parameters.start_date}}", end_date: "{{job.parameters.end_date}}", catalog_sourcing: "{{job.parameters.catalog_sourcing}}", catalog_cleaned: "{{job.parameters.catalog_cleaned}}"}
+
+        - task_key: omni__customer_data_sharing_consent
+          run_if: ALL_SUCCESS
+          sql_task:
+            file: {path: ../analyses/phase2/omni/customer_data_sharing_consent.sql, source: WORKSPACE}
+            warehouse_id: "${var.sql_warehouse_id}"
+            parameters: {start_date: "{{job.parameters.start_date}}", end_date: "{{job.parameters.end_date}}", catalog_sourcing: "{{job.parameters.catalog_sourcing}}", catalog_cleaned: "{{job.parameters.catalog_cleaned}}"}
+
+        - task_key: omni__device
+          run_if: ALL_SUCCESS
+          sql_task:
+            file: {path: ../analyses/phase2/omni/device.sql, source: WORKSPACE}
+            warehouse_id: "${var.sql_warehouse_id}"
+            parameters: {start_date: "{{job.parameters.start_date}}", end_date: "{{job.parameters.end_date}}", catalog_sourcing: "{{job.parameters.catalog_sourcing}}", catalog_cleaned: "{{job.parameters.catalog_cleaned}}"}
+
+        - task_key: omni__device_detail
+          run_if: ALL_SUCCESS
+          sql_task:
+            file: {path: ../analyses/phase2/omni/device_detail.sql, source: WORKSPACE}
+            warehouse_id: "${var.sql_warehouse_id}"
+            parameters: {start_date: "{{job.parameters.start_date}}", end_date: "{{job.parameters.end_date}}", catalog_sourcing: "{{job.parameters.catalog_sourcing}}", catalog_cleaned: "{{job.parameters.catalog_cleaned}}"}
+
+        - task_key: omni__fee_discount
+          run_if: ALL_SUCCESS
+          sql_task:
+            file: {path: ../analyses/phase2/omni/fee_discount.sql, source: WORKSPACE}
+            warehouse_id: "${var.sql_warehouse_id}"
+            parameters: {start_date: "{{job.parameters.start_date}}", end_date: "{{job.parameters.end_date}}", catalog_sourcing: "{{job.parameters.catalog_sourcing}}", catalog_cleaned: "{{job.parameters.catalog_cleaned}}"}
+
+        - task_key: omni__message
+          run_if: ALL_SUCCESS
+          sql_task:
+            file: {path: ../analyses/phase2/omni/message.sql, source: WORKSPACE}
+            warehouse_id: "${var.sql_warehouse_id}"
+            parameters: {start_date: "{{job.parameters.start_date}}", end_date: "{{job.parameters.end_date}}", catalog_sourcing: "{{job.parameters.catalog_sourcing}}", catalog_cleaned: "{{job.parameters.catalog_cleaned}}"}
+
+        - task_key: omni__od_linked_deposit
+          run_if: ALL_SUCCESS
+          sql_task:
+            file: {path: ../analyses/phase2/omni/od_linked_deposit.sql, source: WORKSPACE}
+            warehouse_id: "${var.sql_warehouse_id}"
+            parameters: {start_date: "{{job.parameters.start_date}}", end_date: "{{job.parameters.end_date}}", catalog_sourcing: "{{job.parameters.catalog_sourcing}}", catalog_cleaned: "{{job.parameters.catalog_cleaned}}"}
+
+        - task_key: omni__od_registration
+          run_if: ALL_SUCCESS
+          sql_task:
+            file: {path: ../analyses/phase2/omni/od_registration.sql, source: WORKSPACE}
+            warehouse_id: "${var.sql_warehouse_id}"
+            parameters: {start_date: "{{job.parameters.start_date}}", end_date: "{{job.parameters.end_date}}", catalog_sourcing: "{{job.parameters.catalog_sourcing}}", catalog_cleaned: "{{job.parameters.catalog_cleaned}}"}
+
+        - task_key: omni__onboarding_report
+          run_if: ALL_SUCCESS
+          sql_task:
+            file: {path: ../analyses/phase2/omni/onboarding_report.sql, source: WORKSPACE}
+            warehouse_id: "${var.sql_warehouse_id}"
+            parameters: {start_date: "{{job.parameters.start_date}}", end_date: "{{job.parameters.end_date}}", catalog_sourcing: "{{job.parameters.catalog_sourcing}}", catalog_cleaned: "{{job.parameters.catalog_cleaned}}"}
+
+        - task_key: omni__party
+          run_if: ALL_SUCCESS
+          sql_task:
+            file: {path: ../analyses/phase2/omni/party.sql, source: WORKSPACE}
+            warehouse_id: "${var.sql_warehouse_id}"
+            parameters: {start_date: "{{job.parameters.start_date}}", end_date: "{{job.parameters.end_date}}", catalog_sourcing: "{{job.parameters.catalog_sourcing}}", catalog_cleaned: "{{job.parameters.catalog_cleaned}}"}
+
+        - task_key: omni__payment_history
+          run_if: ALL_SUCCESS
+          sql_task:
+            file: {path: ../analyses/phase2/omni/payment_history.sql, source: WORKSPACE}
+            warehouse_id: "${var.sql_warehouse_id}"
+            parameters: {start_date: "{{job.parameters.start_date}}", end_date: "{{job.parameters.end_date}}", catalog_sourcing: "{{job.parameters.catalog_sourcing}}", catalog_cleaned: "{{job.parameters.catalog_cleaned}}"}
+
+        - task_key: omni__payment_order
+          run_if: ALL_SUCCESS
+          sql_task:
+            file: {path: ../analyses/phase2/omni/payment_order.sql, source: WORKSPACE}
+            warehouse_id: "${var.sql_warehouse_id}"
+            parameters: {start_date: "{{job.parameters.start_date}}", end_date: "{{job.parameters.end_date}}", catalog_sourcing: "{{job.parameters.catalog_sourcing}}", catalog_cleaned: "{{job.parameters.catalog_cleaned}}"}
+
+        - task_key: omni__service_type
+          run_if: ALL_SUCCESS
+          sql_task:
+            file: {path: ../analyses/phase2/omni/service_type.sql, source: WORKSPACE}
+            warehouse_id: "${var.sql_warehouse_id}"
+            parameters: {start_date: "{{job.parameters.start_date}}", end_date: "{{job.parameters.end_date}}", catalog_sourcing: "{{job.parameters.catalog_sourcing}}", catalog_cleaned: "{{job.parameters.catalog_cleaned}}"}
+
+        - task_key: omni__transfer_bill_history
+          run_if: ALL_SUCCESS
+          sql_task:
+            file: {path: ../analyses/phase2/omni/transfer_bill_history.sql, source: WORKSPACE}
+            warehouse_id: "${var.sql_warehouse_id}"
+            parameters: {start_date: "{{job.parameters.start_date}}", end_date: "{{job.parameters.end_date}}", catalog_sourcing: "{{job.parameters.catalog_sourcing}}", catalog_cleaned: "{{job.parameters.catalog_cleaned}}"}
+
+        - task_key: omni__user_notification
+          run_if: ALL_SUCCESS
+          sql_task:
+            file: {path: ../analyses/phase2/omni/user_notification.sql, source: WORKSPACE}
+            warehouse_id: "${var.sql_warehouse_id}"
+            parameters: {start_date: "{{job.parameters.start_date}}", end_date: "{{job.parameters.end_date}}", catalog_sourcing: "{{job.parameters.catalog_sourcing}}", catalog_cleaned: "{{job.parameters.catalog_cleaned}}"}
+
+        - task_key: omni__voucher
+          run_if: ALL_SUCCESS
+          sql_task:
+            file: {path: ../analyses/phase2/omni/voucher.sql, source: WORKSPACE}
+            warehouse_id: "${var.sql_warehouse_id}"
+            parameters: {start_date: "{{job.parameters.start_date}}", end_date: "{{job.parameters.end_date}}", catalog_sourcing: "{{job.parameters.catalog_sourcing}}", catalog_cleaned: "{{job.parameters.catalog_cleaned}}"}
+
+        - task_key: omni__voucher_campaign
+          run_if: ALL_SUCCESS
+          sql_task:
+            file: {path: ../analyses/phase2/omni/voucher_campaign.sql, source: WORKSPACE}
+            warehouse_id: "${var.sql_warehouse_id}"
+            parameters: {start_date: "{{job.parameters.start_date}}", end_date: "{{job.parameters.end_date}}", catalog_sourcing: "{{job.parameters.catalog_sourcing}}", catalog_cleaned: "{{job.parameters.catalog_cleaned}}"}
+
+        - task_key: omni__voucher_generate
+          run_if: ALL_SUCCESS
+          sql_task:
+            file: {path: ../analyses/phase2/omni/voucher_generate.sql, source: WORKSPACE}
+            warehouse_id: "${var.sql_warehouse_id}"
+            parameters: {start_date: "{{job.parameters.start_date}}", end_date: "{{job.parameters.end_date}}", catalog_sourcing: "{{job.parameters.catalog_sourcing}}", catalog_cleaned: "{{job.parameters.catalog_cleaned}}"}
+
+      tags:
+        project: datavault-model
+        zone: silver
+        phase: phase2
+
+        map-migrated: migV58YOK697G
+      queue:
+        enabled: true

@@ -1,0 +1,714 @@
+version: 2
+
+models:
+  - name: calendar
+    config:
+      contract:
+        enforced: true
+    columns:
+      - name: ref_holiday_hashkey
+        data_type: string
+      - name: msr_prd_id
+        data_type: string
+      - name: cdr_yr
+        data_type: int
+      - name: cdr_qtr
+        data_type: int
+      - name: day_of_wk
+        data_type: int
+      - name: msr_prd_dt
+        data_type: date
+      - name: bsn_day_f
+        data_type: int
+      - name: pblc_hol_f
+        data_type: int
+      - name: last_bsn_day_f
+        data_type: int
+      - name: next_wk_id
+        data_type: string
+      - name: last_wk_id
+        data_type: string
+      - name: next_wk_dt
+        data_type: date
+      - name: last_wk_dt
+        data_type: date
+      - name: is_w_bom
+        data_type: int
+      - name: is_w_eom
+        data_type: int
+      - name: is_w_boy
+        data_type: int
+      - name: is_w_eoy
+        data_type: int
+      - name: source_event_date
+        data_type: date
+      - name: record_source
+        data_type: string
+      - name: load_timestamp
+        data_type: timestamp
+
+  - name: bridge_account
+    config:
+      contract:
+        enforced: true
+    data_tests:
+      - unique_combination_of_columns:
+          arguments:
+            combination_of_columns:
+              - crb_hashkey
+              - snapshot_date
+          config:
+            severity: warn
+    columns:
+      - name: account_hashkey
+        data_type: string
+        tests:
+          - not_null:
+              config:
+                severity: warn
+      - name: crb_hashkey
+        data_type: string
+        tests:
+          - not_null:
+              config:
+                severity: warn
+      - name: loans_hashkey
+        data_type: string
+        tests:
+          - not_null:
+              config:
+                severity: warn
+      - name: branch_hashkey
+        data_type: string
+        tests:
+          - not_null:
+              config:
+                severity: warn
+      - name: customer_hashkey
+        data_type: string
+        tests:
+          - not_null:
+              config:
+                severity: warn
+      - name: dept_acct_officer_hashkey
+        data_type: string
+        tests:
+          - not_null:
+              config:
+                severity: warn
+      - name: account_business_key
+        data_type: string
+      - name: crb_gl
+        data_type: string
+      - name: crb_tieukhoan
+        data_type: string
+      - name: loans_business_key
+        data_type: string
+      - name: branch_business_key
+        data_type: string
+      - name: customer_business_key
+        data_type: bigint
+      - name: dept_acct_officer_business_key
+        data_type: string
+      - name: snapshot_date
+        data_type: date
+      # - name: end_date
+      #   data_type: date   --MaiPT yêu cầu xóa
+
+  - name: bridge_card
+    config:
+      contract:
+        enforced: true
+    data_tests:
+      - unique_combination_of_columns:
+          arguments:
+            combination_of_columns:
+              - card_hashkey
+              - snapshot_date
+          config:
+            severity: warn
+    columns:
+      - name: card_hashkey
+        data_type: string
+        tests:
+          - not_null:
+              config:
+                severity: warn
+      - name: account_contract_hashkey
+        data_type: string
+        tests:
+          - not_null:
+              config:
+                severity: warn
+      - name: client_hashkey
+        data_type: string
+        tests:
+          - not_null:
+              config:
+                severity: warn
+      - name: customer_hashkey
+        data_type: string
+        tests:
+          - not_null:
+              config:
+                severity: warn
+      - name: branch_hashkey
+        data_type: string
+        tests:
+          - not_null:
+              config:
+                severity: warn
+      - name: product_hashkey
+        data_type: string
+        tests:
+          - not_null:
+              config:
+                severity: warn
+      - name: card_business_key
+        data_type: bigint
+      - name: account_contract_business_key
+        data_type: bigint
+      - name: client_business_key
+        data_type: bigint
+      - name: customer_business_key
+        data_type: bigint
+      - name: branch_business_key
+        data_type: string
+      - name: product_business_key
+        data_type: bigint
+      - name: snapshot_date
+        data_type: date
+
+  - name: bridge_doc
+    config:
+      contract:
+        enforced: true
+    data_tests:
+      - unique_combination_of_columns:
+          arguments:
+            combination_of_columns:
+              - document_fin_hashkey
+              - snapshot_date
+          config:
+            severity: warn
+    columns:
+      - name: document_fin_hashkey
+        data_type: string
+        tests:
+          - not_null:
+              config:
+                severity: warn
+      - name: document_auth_hashkey
+        data_type: string
+        tests:
+          - not_null:
+              config:
+                severity: warn
+      - name: m_transaction_hashkey
+        data_type: string
+        tests:
+          - not_null:
+              config:
+                severity: warn
+      - name: acnt_contract_hashkey
+        data_type: string
+        tests:
+          - not_null:
+              config:
+                severity: warn
+      - name: client_hashkey
+        data_type: string
+        tests:
+          - not_null:
+              config:
+                severity: warn
+      - name: customer_hashkey
+        data_type: string
+        tests:
+          - not_null:
+              config:
+                severity: warn
+      - name: document_business_key
+        data_type: bigint
+      - name: m_transaction_business_key
+        data_type: bigint
+      - name: acnt_contract_business_key
+        data_type: bigint
+      - name: client_business_key
+        data_type: bigint
+      - name: customer_business_key
+        data_type: bigint
+      - name: snapshot_date
+        data_type: date
+
+  - name: bridge_ft
+    config:
+      contract:
+        enforced: true
+    data_tests:
+      - unique_combination_of_columns:
+          arguments:
+            combination_of_columns:
+              - funds_transfer_hashkey
+              - snapshot_date
+          config:
+            severity: warn
+    columns:
+      - name: funds_transfer_hashkey
+        data_type: string
+        tests:
+          - not_null:
+              config:
+                severity: warn
+      - name: account_debit_hashkey
+        data_type: string
+        tests:
+          - not_null:
+              config:
+                severity: warn
+      - name: account_credit_hashkey
+        data_type: string
+        tests:
+          - not_null:
+              config:
+                severity: warn
+      - name: customer_debit_hashkey
+        data_type: string
+        tests:
+          - not_null:
+              config:
+                severity: warn
+      - name: customer_credit_hashkey
+        data_type: string
+        tests:
+          - not_null:
+              config:
+                severity: warn
+      - name: branch_hashkey
+        data_type: string
+        tests:
+          - not_null:
+              config:
+                severity: warn
+      - name: clearing_citad_hashkey
+        data_type: string
+        tests:
+          - not_null:
+              config:
+                severity: warn
+      - name: funds_transfer_business_key
+        data_type: string
+      - name: account_debit_business_key
+        data_type: string
+      - name: account_credit_business_key
+        data_type: string
+      - name: customer_debit_business_key
+        data_type: bigint
+      - name: customer_credit_business_key
+        data_type: bigint
+      - name: branch_business_key
+        data_type: string
+      - name: clearing_citad_business_key
+        data_type: string
+      - name: snapshot_date
+        data_type: date
+
+  - name: bridge_loan
+    config:
+      contract:
+        enforced: true
+    data_tests:
+      - unique_combination_of_columns:
+          arguments:
+            combination_of_columns:
+              - crb_hashkey
+              - snapshot_date
+          config:
+            severity: warn
+    columns:
+      - name: crb_hashkey
+        data_type: string
+        tests:
+          - not_null:
+              config:
+                severity: warn
+      - name: acct_hashkey
+        data_type: string
+        tests:
+          - not_null:
+              config:
+                severity: warn
+      - name: loans_hashkey
+        data_type: string
+        tests:
+          - not_null:
+              config:
+                severity: warn
+      - name: branch_hashkey
+        data_type: string
+        tests:
+          - not_null:
+              config:
+                severity: warn
+      - name: customer_hashkey
+        data_type: string
+        tests:
+          - not_null:
+              config:
+                severity: warn
+      - name: dept_acct_officer_hashkey
+        data_type: string
+        tests:
+          - not_null:
+              config:
+                severity: warn
+      - name: saleid_hashkey
+        data_type: string
+        tests:
+          - not_null:
+              config:
+                severity: warn
+      - name: loans_payment_due_hashkey
+        data_type: string
+        tests:
+          - not_null:
+              config:
+                severity: warn
+      - name: loans_business_key
+        data_type: string
+      - name: loans_payment_due_business_key
+        data_type: string
+      - name: acct_business_key
+        data_type: string
+      - name: crb_gl
+        data_type: string
+      - name: crb_tieukhoan
+        data_type: string
+      - name: branch_business_key
+        data_type: string
+      - name: customer_business_key
+        data_type: bigint
+      - name: dept_acct_officer_business_key
+        data_type: string
+      - name: saleid_business_key
+        data_type: string
+      - name: snapshot_date
+        data_type: date
+      # - name: end_date
+      #   data_type: date   --MaiPT yêu cầu xóa
+
+
+  - name: pit_account
+    config:
+      contract:
+        enforced: true
+    data_tests:
+      - unique_combination_of_columns:
+          arguments:
+            combination_of_columns:
+              - account_hashkey
+              - snapshot_date
+          config:
+            severity: warn
+    columns:
+      - name: account_hashkey
+        data_type: string
+      - name: snapshot_date
+        data_type: date
+      - name: sat_deposits_rate_src_ev_dt
+        data_type: date
+      - name: sat_deposits_information_src_ev_dt
+        data_type: date
+      - name: sat_deposits_terms_src_ev_dt
+        data_type: date
+      - name: sat_account_balance_src_ev_dt
+        data_type: date
+      - name: sat_account_information_src_ev_dt
+        data_type: date
+      - name: sat_account_classification_src_ev_dt
+        data_type: date
+      # - name: end_date
+      #   data_type: date   --MaiPT yêu cầu xóa
+
+  - name: pit_acnt_contract
+    config:
+      contract:
+        enforced: true
+    data_tests:
+      - unique_combination_of_columns:
+          arguments:
+            combination_of_columns:
+              - acnt_contract_hashkey
+              - snapshot_date
+          config:
+            severity: warn
+    columns:
+      - name: acnt_contract_hashkey
+        data_type: string
+      - name: snapshot_date
+        data_type: date
+      - name: sat_acnt_contract_cs_status_log_src_ev_dt
+        data_type: date
+      - name: sat_acnt_contract_information_src_ev_dt
+        data_type: date
+      - name: sat_acnt_contract_other_src_ev_dt
+        data_type: date
+      - name: sat_acnt_contract_add_data_src_ev_dt
+        data_type: date
+      - name: sat_acnt_contract_type_src_ev_dt
+        data_type: date
+
+  - name: pit_customer
+    config:
+      contract:
+        enforced: true
+    data_tests:
+      - unique_combination_of_columns:
+          arguments:
+            combination_of_columns:
+              - customer_hashkey
+              - snapshot_date
+          config:
+            severity: warn
+    columns:
+      - name: customer_hashkey
+        data_type: string
+      - name: snapshot_date
+        data_type: date
+      - name: sat_customer_information_src_ev_dt
+        data_type: date
+      - name: sat_customer_extra_information_src_ev_dt
+        data_type: date
+      - name: sat_customer_contact_src_ev_dt
+        data_type: date
+      - name: sat_customer_classification_src_ev_dt
+        data_type: date
+      - name: sat_customer_kyc_src_ev_dt
+        data_type: date
+      - name: sat_customer_financial_statement_src_ev_dt
+        data_type: date
+      - name: sat_cust_package_src_ev_dt
+        data_type: date
+      # - name: end_date
+      #   data_type: date   --MaiPT yêu cầu xóa
+
+  - name: pit_loan
+    config:
+      contract:
+        enforced: true
+    data_tests:
+      - unique_combination_of_columns:
+          arguments:
+            combination_of_columns:
+              - loans_hashkey
+              - snapshot_date
+          config:
+            severity: warn
+    columns:
+      - name: loans_hashkey
+        data_type: string
+      - name: snapshot_date
+        data_type: date
+      - name: sat_loans_information_src_ev_dt
+        data_type: date
+      - name: sat_loans_classification_src_ev_dt
+        data_type: date
+      - name: sat_loans_rate_src_ev_dt
+        data_type: date
+      - name: sat_loans_terms_src_ev_dt
+        data_type: date
+      # - name: end_date
+      #   data_type: date   --MaiPT yêu cầu xóa
+
+  - name: csat_crb_balance
+    config:
+      contract:
+        enforced: true
+    columns:
+      - name: crb_hashkey
+        data_type: string
+        tests:
+          - relationships:
+              arguments:
+                to: ref('hub_crb')
+                field: crb_hashkey
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+          - not_null:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+      - name: gl
+        data_type: string
+      - name: tieukhoan
+        data_type: string
+      - name: currency
+        data_type: string
+      - name: ngoaite
+        data_type: decimal(38,10)
+      - name: noite
+        data_type: decimal(38,10)
+      - name: source_event_date
+        data_type: date
+      - name: load_timestamp
+        data_type: timestamp
+      - name: record_source
+        data_type: string
+      - name: hashdiff
+        data_type: string
+    data_tests:
+      - unique_combination_of_columns:
+          arguments:
+            combination_of_columns:
+              - crb_hashkey
+              - currency
+              - hashdiff
+              - source_event_date
+
+  - name: csat_customer_sum_balance
+    config:
+      contract:
+        enforced: true
+    columns:
+      - name: customer_hashkey
+        data_type: string
+        tests:
+          - relationships:
+              arguments:
+                to: ref('hub_customer')
+                field: customer_hashkey
+              config:
+                severity: warn
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+          - not_null:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+      - name: so_du_tien_gui
+        data_type: decimal(38,10)
+      - name: so_du_tien_vay
+        data_type: decimal(38,10)
+      - name: so_du_bao_lanh
+        data_type: decimal(38,10)
+      - name: so_du_lc
+        data_type: decimal(38,10)
+      - name: source_event_date
+        data_type: date
+      - name: load_timestamp
+        data_type: timestamp
+      - name: record_source
+        data_type: string
+      - name: hashdiff
+        data_type: string
+    data_tests:
+      - unique_combination_of_columns:
+          arguments:
+            combination_of_columns:
+              - customer_hashkey
+              - hashdiff
+              - source_event_date        
+
+  - name: csat_loans_payment_due
+    config:
+      contract:
+        enforced: true
+    columns:
+      - name: loans_payment_due_hashkey
+        data_type: string
+        tests:
+          - relationships:
+              arguments:
+                to: ref('hub_loans_payment_due')
+                field: loans_payment_due_hashkey
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+          - not_null:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+      - name: tot_pd_pr
+        data_type: decimal(38,10)
+      - name: tot_pd_int
+        data_type: decimal(38,10)
+      - name: tot_pd_pe
+        data_type: decimal(38,10)
+      - name: tot_pd_ps
+        data_type: decimal(38,10)
+      - name: max_pd_pr_days
+        data_type: int
+      - name: max_pd_in_days
+        data_type: int
+      - name: max_pd_pe_days
+        data_type: int
+      - name: max_pd_ps_days
+        data_type: int
+      - name: source_event_date
+        data_type: date
+      - name: load_timestamp
+        data_type: timestamp
+      - name: record_source
+        data_type: string
+      - name: hashdiff
+        data_type: string
+    data_tests:
+      - unique_combination_of_columns:
+          arguments:
+            combination_of_columns:
+              - loans_payment_due_hashkey
+              - hashdiff
+              - source_event_date
+
+  - name: csat_loans_schedule
+    config:
+      contract:
+        enforced: true
+    columns:
+      - name: loans_hashkey
+        data_type: string
+        tests:
+          - relationships:
+              arguments:
+                to: ref('hub_loans')
+                field: loans_hashkey
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+          - not_null:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+      - name: t_k_date
+        data_type: date
+      - name: k_date_seq
+        data_type: int
+      - name: t_sch_type
+        data_type: string
+      - name: t_frequency
+        data_type: string
+      - name: t_number
+        data_type: int
+      - name: t_cycled_dates
+        data_type: string
+      - name: cycled_dates_seq
+        data_type: int
+      - name: t_currency
+        data_type: string
+      - name: t_amount
+        data_type: decimal(38,10)
+      - name: t_date_time
+        data_type: string
+      - name: source_event_date
+        data_type: date
+      - name: load_timestamp
+        data_type: timestamp
+      - name: record_source
+        data_type: string
+      - name: hashdiff
+        data_type: string
+    data_tests:
+      - unique_combination_of_columns:
+          arguments:
+            combination_of_columns:
+              - loans_hashkey
+              - t_k_date
+              - k_date_seq
+              - t_sch_type
+              - t_cycled_dates
+              - cycled_dates_seq
+              - hashdiff
+              - source_event_date

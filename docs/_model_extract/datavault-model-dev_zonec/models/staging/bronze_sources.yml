@@ -1,0 +1,2858 @@
+version: 2
+sources:
+  - name: t24
+    database: "{{ var('bronze_database') }}"
+    schema: "{{ var('t24_schema') }}"
+
+    tables:
+      - name: t24_aa_arrangement
+        meta:
+          run_mode:
+            backfill:
+              - source_event_date_col: 'data_date'
+              - source_event_date_dttype: 'yyyyMMdd'
+            daily:
+              - source_event_date_col: 'data_date'
+              - source_event_date_dttype: 'yyyyMMdd'
+      - name: t24_aa_arr_account
+        meta:
+          run_mode:
+            backfill:
+              - source_event_date_col: 'data_date'
+              - source_event_date_dttype: 'yyyyMMdd'
+            daily:
+              - source_event_date_col: 'data_date'
+              - source_event_date_dttype: 'yyyyMMdd'
+      - name: t24_account
+        meta:
+          run_mode:
+            backfill:
+              - source_event_date_col: 'data_date'
+              - source_event_date_dttype: 'yyyyMMdd'
+            daily:
+              - source_event_date_col: 'data_date'
+              - source_event_date_dttype: 'yyyyMMdd'
+        columns:
+          - name: t_customer
+            data_type: bigint
+      - name: t24_az_account
+        meta:
+          run_mode:
+            backfill:
+              - source_event_date_col: 'data_date'
+              - source_event_date_dttype: 'yyyyMMdd'
+            daily:
+              - source_event_date_col: 'data_date'
+              - source_event_date_dttype: 'yyyyMMdd'
+        columns:
+          - name: t_customer
+            data_type: bigint
+      - name: t24_categ_entry
+        meta:
+          run_mode:
+            backfill:
+              - source_event_date_col: 'data_date'
+              - source_event_date_dttype: 'yyyyMMdd'
+            daily:
+              - source_event_date_col: 'data_date'
+              - source_event_date_dttype: 'yyyyMMdd'
+        columns:
+          - name: t_customer_id
+            data_type: bigint
+      - name: t24_collateral
+        meta:
+          run_mode:
+            backfill:
+              - source_event_date_col: 'data_date'
+              - source_event_date_dttype: 'yyyyMMdd'
+            daily:
+              - source_event_date_col: 'data_date'
+              - source_event_date_dttype: 'yyyyMMdd'
+      - name: t24_collateral_right
+        meta:
+          run_mode:
+            backfill:
+              - source_event_date_col: 'data_date'
+              - source_event_date_dttype: 'yyyyMMdd'
+            daily:
+              - source_event_date_col: 'data_date'
+              - source_event_date_dttype: 'yyyyMMdd'
+      - name: t24_company
+        meta:
+          run_mode:
+            backfill:
+              - source_event_date_col: 'data_date'
+              - source_event_date_dttype: 'yyyyMMdd'
+            daily:
+              - source_event_date_col: 'data_date'
+              - source_event_date_dttype: 'yyyyMMdd'
+      - name: t24_crb
+        meta:
+          run_mode:
+            backfill:
+              - source_event_date_col: 'data_date'
+              - source_event_date_dttype: 'yyyyMMdd'
+            daily:
+              - source_event_date_col: 'data_date'
+              - source_event_date_dttype: 'yyyyMMdd'
+        columns:
+          - name: cif
+            data_type: bigint
+      - name: t24_customer
+        meta:
+          run_mode:
+            backfill:
+              - source_event_date_col: 'data_date'
+              - source_event_date_dttype: 'yyyyMMdd'
+            daily:
+              - source_event_date_col: 'data_date'
+              - source_event_date_dttype: 'yyyyMMdd'
+        columns:
+          - name: id
+            data_type: bigint
+      - name: t24_dept_acct_officer
+        meta:
+          run_mode:
+            backfill:
+              - source_event_date_col: 'data_date'
+              - source_event_date_dttype: 'yyyyMMdd'
+            daily:
+              - source_event_date_col: 'data_date'
+              - source_event_date_dttype: 'yyyyMMdd'
+      - name: t24_drawings
+        meta:
+          run_mode:
+            backfill:
+              - source_event_date_col: 'data_date'
+              - source_event_date_dttype: 'yyyyMMdd'
+            daily:
+              - source_event_date_col: 'data_date'
+              - source_event_date_dttype: 'yyyyMMdd'
+      - name: t24_forex
+        meta:
+          run_mode:
+            backfill:
+              - source_event_date_col: 'data_date'
+              - source_event_date_dttype: 'yyyyMMdd'
+            daily:
+              - source_event_date_col: 'data_date'
+              - source_event_date_dttype: 'yyyyMMdd'
+        columns:
+          - name: t_counterparty
+            data_type: bigint
+      - name: t24_funds_transfer
+        meta:
+          run_mode:
+            backfill:
+              - source_event_date_col: 'data_date'
+              - source_event_date_dttype: 'yyyyMMdd'
+            daily:
+              - source_event_date_col: 'data_date'
+              - source_event_date_dttype: 'yyyyMMdd'
+      - name: t24_letter_of_credit
+        meta:
+          run_mode:
+            backfill:
+              - source_event_date_col: 'data_date'
+              - source_event_date_dttype: 'yyyyMMdd'
+            daily:
+              - source_event_date_col: 'data_date'
+              - source_event_date_dttype: 'yyyyMMdd'
+        columns:
+          - name: t_applicant_custno
+            data_type: bigint
+          - name: t_beneficiary_custno
+            data_type: bigint
+      - name: t24_limit
+        meta:
+          run_mode:
+            backfill:
+              - source_event_date_col: 'data_date'
+              - source_event_date_dttype: 'yyyyMMdd'
+            daily:
+              - source_event_date_col: 'data_date'
+              - source_event_date_dttype: 'yyyyMMdd'
+        columns:
+          - name: t_liability_number
+            data_type: bigint
+      - name: t24_loans_and_deposits
+        meta:
+          run_mode:
+            backfill:
+              - source_event_date_col: 'data_date'
+              - source_event_date_dttype: 'yyyyMMdd'
+            daily:
+              - source_event_date_col: 'data_date'
+              - source_event_date_dttype: 'yyyyMMdd'
+      - name: t24_md_deal
+        meta:
+          run_mode:
+            backfill:
+              - source_event_date_col: 'data_date'
+              - source_event_date_dttype: 'yyyyMMdd'
+            daily:
+              - source_event_date_col: 'data_date'
+              - source_event_date_dttype: 'yyyyMMdd'
+        columns:
+          - name: t_customer
+            data_type: bigint
+      - name: t24_money_market
+        meta:
+          run_mode:
+            backfill:
+              - source_event_date_col: 'data_date'
+              - source_event_date_dttype: 'yyyyMMdd'
+            daily:
+              - source_event_date_col: 'data_date'
+              - source_event_date_dttype: 'yyyyMMdd'
+        columns:
+          - name: t_customer_id
+            data_type: bigint
+      - name: t24_payment_due
+        meta:
+          run_mode:
+            backfill:
+              - source_event_date_col: 'data_date'
+              - source_event_date_dttype: 'yyyyMMdd'
+            daily:
+              - source_event_date_col: 'data_date'
+              - source_event_date_dttype: 'yyyyMMdd'
+        columns:
+          - name: t_customer
+            data_type: bigint
+      - name: t24_re_consol_spec_entry
+        meta:
+          run_mode:
+            backfill:
+              - source_event_date_col: 'data_date'
+              - source_event_date_dttype: 'yyyyMMdd'
+            daily:
+              - source_event_date_col: 'data_date'
+              - source_event_date_dttype: 'yyyyMMdd'
+        columns:
+          - name: t_customer_id
+            data_type: bigint
+      - name: t24_re_stat_line_bal
+        meta:
+          run_mode:
+            backfill:
+              - source_event_date_col: 'data_date'
+              - source_event_date_dttype: 'yyyyMMdd'
+            daily:
+              - source_event_date_col: 'data_date'
+              - source_event_date_dttype: 'yyyyMMdd'
+      - name: t24_repo
+        meta:
+          run_mode:
+            backfill:
+              - source_event_date_col: 'data_date'
+              - source_event_date_dttype: 'yyyyMMdd'
+            daily:
+              - source_event_date_col: 'data_date'
+              - source_event_date_dttype: 'yyyyMMdd'
+      - name: t24_sc_trading_position
+        meta:
+          run_mode:
+            backfill:
+              - source_event_date_col: 'data_date'
+              - source_event_date_dttype: 'yyyyMMdd'
+            daily:
+              - source_event_date_col: 'data_date'
+              - source_event_date_dttype: 'yyyyMMdd'
+      - name: t24_sec_trade
+        meta:
+          run_mode:
+            backfill:
+              - source_event_date_col: 'data_date'
+              - source_event_date_dttype: 'yyyyMMdd'
+            daily:
+              - source_event_date_col: 'data_date'
+              - source_event_date_dttype: 'yyyyMMdd'
+      - name: t24_security_master
+        meta:
+          run_mode:
+            backfill:
+              - source_event_date_col: 'data_date'
+              - source_event_date_dttype: 'yyyyMMdd'
+            daily:
+              - source_event_date_col: 'data_date'
+              - source_event_date_dttype: 'yyyyMMdd'
+      - name: t24_stmt_entry
+        meta:
+          run_mode:
+            backfill:
+              - source_event_date_col: 'data_date'
+              - source_event_date_dttype: 'yyyyMMdd'
+            daily:
+              - source_event_date_col: 'data_date'
+              - source_event_date_dttype: 'yyyyMMdd'
+        columns:
+          - name: t_customer_id
+            data_type: bigint
+      - name: t24_teller
+        meta:
+          run_mode:
+            backfill:
+              - source_event_date_col: 'data_date'
+              - source_event_date_dttype: 'yyyyMMdd'
+            daily:
+              - source_event_date_col: 'data_date'
+              - source_event_date_dttype: 'yyyyMMdd'
+        columns:
+          - name: t_customer_1
+            data_type: bigint
+          - name: t_customer_2
+            data_type: bigint
+      - name: t24_user
+        meta:
+          run_mode:
+            backfill:
+              - source_event_date_col: 'data_date'
+              - source_event_date_dttype: 'yyyyMMdd'
+            daily:
+              - source_event_date_col: 'data_date'
+              - source_event_date_dttype: 'yyyyMMdd'
+      - name: t24_account_closed
+        meta:
+          run_mode:
+            backfill:
+              - source_event_date_col: 'data_date'
+              - source_event_date_dttype: 'yyyyMMdd'
+            daily:
+              - source_event_date_col: 'data_date'
+              - source_event_date_dttype: 'yyyyMMdd'
+      - name: t24_account_debit_int
+        meta:
+          run_mode:
+            backfill:
+              - source_event_date_col: 'data_date'
+              - source_event_date_dttype: 'yyyyMMdd'
+            daily:
+              - source_event_date_col: 'data_date'
+              - source_event_date_dttype: 'yyyyMMdd'
+        columns:
+          - name: t_curr_no
+            data_type: bigint
+      - name: t24_account_credit_int
+        meta:
+          run_mode:
+            backfill:
+              - source_event_date_col: 'data_date'
+              - source_event_date_dttype: 'yyyyMMdd'
+            daily:
+              - source_event_date_col: 'data_date'
+              - source_event_date_dttype: 'yyyyMMdd'
+      - name: t24_ld_extra_info
+        meta:
+          run_mode:
+            backfill:
+              - source_event_date_col: 'data_date'
+              - source_event_date_dttype: 'yyyyMMdd'
+            daily:
+              - source_event_date_col: 'data_date'
+              - source_event_date_dttype: 'yyyyMMdd'
+      - name: t24_currency
+        meta:
+          run_mode:
+            backfill:
+              - source_event_date_col: 'data_date'
+              - source_event_date_dttype: 'yyyyMMdd'
+            daily:
+              - source_event_date_col: 'data_date'
+              - source_event_date_dttype: 'yyyyMMdd'
+      - name: t24_basic_interest
+        meta:
+          run_mode:
+            backfill:
+              - source_event_date_col: 'data_date'
+              - source_event_date_dttype: 'yyyyMMdd'
+            daily:
+              - source_event_date_col: 'data_date'
+              - source_event_date_dttype: 'yyyyMMdd'
+      - name: t24_bc_sort_code
+        meta:
+          run_mode:
+            backfill:
+              - source_event_date_col: 'data_date'
+              - source_event_date_dttype: 'yyyyMMdd'
+            daily:
+              - source_event_date_col: 'data_date'
+              - source_event_date_dttype: 'yyyyMMdd'
+      - name: t24_category
+        meta:
+          run_mode:
+            backfill:
+              - source_event_date_col: 'data_date'
+              - source_event_date_dttype: 'yyyyMMdd'
+            daily:
+              - source_event_date_col: 'data_date'
+              - source_event_date_dttype: 'yyyyMMdd'
+      - name: t24_ocbh_cat_prod
+        meta:
+          run_mode:
+            backfill:
+              - source_event_date_col: 'data_date'
+              - source_event_date_dttype: 'yyyyMMdd'
+            daily:
+              - source_event_date_col: 'data_date'
+              - source_event_date_dttype: 'yyyyMMdd'
+      - name: t24_collateral_code
+        meta:
+          run_mode:
+            backfill:
+              - source_event_date_col: 'data_date'
+              - source_event_date_dttype: 'yyyyMMdd'
+            daily:
+              - source_event_date_col: 'data_date'
+              - source_event_date_dttype: 'yyyyMMdd'
+      - name: t24_collateral_type
+        meta:
+          run_mode:
+            backfill:
+              - source_event_date_col: 'data_date'
+              - source_event_date_dttype: 'yyyyMMdd'
+            daily:
+              - source_event_date_col: 'data_date'
+              - source_event_date_dttype: 'yyyyMMdd'
+      - name: t24_country
+        meta:
+          run_mode:
+            backfill:
+              - source_event_date_col: 'data_date'
+              - source_event_date_dttype: 'yyyyMMdd'
+            daily:
+              - source_event_date_col: 'data_date'
+              - source_event_date_dttype: 'yyyyMMdd'
+      - name: t24_de_bic
+        meta:
+          run_mode:
+            backfill:
+              - source_event_date_col: 'data_date'
+              - source_event_date_dttype: 'yyyyMMdd'
+            daily:
+              - source_event_date_col: 'data_date'
+              - source_event_date_dttype: 'yyyyMMdd'
+      - name: t24_dealer_desk
+        meta:
+          run_mode:
+            backfill:
+              - source_event_date_col: 'data_date'
+              - source_event_date_dttype: 'yyyyMMdd'
+            daily:
+              - source_event_date_col: 'data_date'
+              - source_event_date_dttype: 'yyyyMMdd'
+      - name: t24_department
+        meta:
+          run_mode:
+            backfill:
+              - source_event_date_col: 'data_date'
+              - source_event_date_dttype: 'yyyyMMdd'
+            daily:
+              - source_event_date_col: 'data_date'
+              - source_event_date_dttype: 'yyyyMMdd'
+      - name: t24_gci
+        meta:
+          run_mode:
+            backfill:
+              - source_event_date_col: 'data_date'
+              - source_event_date_dttype: 'yyyyMMdd'
+            daily:
+              - source_event_date_col: 'data_date'
+              - source_event_date_dttype: 'yyyyMMdd'
+      - name: t24_gdi
+        meta:
+          run_mode:
+            backfill:
+              - source_event_date_col: 'data_date'
+              - source_event_date_dttype: 'yyyyMMdd'
+            daily:
+              - source_event_date_col: 'data_date'
+              - source_event_date_dttype: 'yyyyMMdd'
+      - name: t24_industry
+        meta:
+          run_mode:
+            backfill:
+              - source_event_date_col: 'data_date'
+              - source_event_date_dttype: 'yyyyMMdd'
+            daily:
+              - source_event_date_col: 'data_date'
+              - source_event_date_dttype: 'yyyyMMdd'
+      - name: t24_lc_types
+        meta:
+          run_mode:
+            backfill:
+              - source_event_date_col: 'data_date'
+              - source_event_date_dttype: 'yyyyMMdd'
+            daily:
+              - source_event_date_col: 'data_date'
+              - source_event_date_dttype: 'yyyyMMdd'
+      - name: t24_ld_partner
+        meta:
+          run_mode:
+            backfill:
+              - source_event_date_col: 'data_date'
+              - source_event_date_dttype: 'yyyyMMdd'
+            daily:
+              - source_event_date_col: 'data_date'
+              - source_event_date_dttype: 'yyyyMMdd'
+      - name: t24_ld_promotion
+        meta:
+          run_mode:
+            backfill:
+              - source_event_date_col: 'data_date'
+              - source_event_date_dttype: 'yyyyMMdd'
+            daily:
+              - source_event_date_col: 'data_date'
+              - source_event_date_dttype: 'yyyyMMdd'
+      - name: t24_limit_reference
+        meta:
+          run_mode:
+            backfill:
+              - source_event_date_col: 'data_date'
+              - source_event_date_dttype: 'yyyyMMdd'
+            daily:
+              - source_event_date_col: 'data_date'
+              - source_event_date_dttype: 'yyyyMMdd'
+      - name: t24_loan_method
+        meta:
+          run_mode:
+            backfill:
+              - source_event_date_col: 'data_date'
+              - source_event_date_dttype: 'yyyyMMdd'
+            daily:
+              - source_event_date_col: 'data_date'
+              - source_event_date_dttype: 'yyyyMMdd'
+      - name: t24_loan_purpose
+        meta:
+          run_mode:
+            backfill:
+              - source_event_date_col: 'data_date'
+              - source_event_date_dttype: 'yyyyMMdd'
+            daily:
+              - source_event_date_col: 'data_date'
+              - source_event_date_dttype: 'yyyyMMdd'
+      - name: t24_loan_subproduct
+        meta:
+          run_mode:
+            backfill:
+              - source_event_date_col: 'data_date'
+              - source_event_date_dttype: 'yyyyMMdd'
+            daily:
+              - source_event_date_col: 'data_date'
+              - source_event_date_dttype: 'yyyyMMdd'
+      - name: t24_province
+        meta:
+          run_mode:
+            backfill:
+              - source_event_date_col: 'data_date'
+              - source_event_date_dttype: 'yyyyMMdd'
+            daily:
+              - source_event_date_col: 'data_date'
+              - source_event_date_dttype: 'yyyyMMdd'
+      - name: t24_sec_acc_master
+        meta:
+          run_mode:
+            backfill:
+              - source_event_date_col: 'data_date'
+              - source_event_date_dttype: 'yyyyMMdd'
+            daily:
+              - source_event_date_col: 'data_date'
+              - source_event_date_dttype: 'yyyyMMdd'
+      - name: t24_sector
+        meta:
+          run_mode:
+            backfill:
+              - source_event_date_col: 'data_date'
+              - source_event_date_dttype: 'yyyyMMdd'
+            daily:
+              - source_event_date_col: 'data_date'
+              - source_event_date_dttype: 'yyyyMMdd'
+      - name: t24_sub_asset_type
+        meta:
+          run_mode:
+            backfill:
+              - source_event_date_col: 'data_date'
+              - source_event_date_dttype: 'yyyyMMdd'
+            daily:
+              - source_event_date_col: 'data_date'
+              - source_event_date_dttype: 'yyyyMMdd'
+      - name: t24_ocbh_ft_outward_purpose
+        meta:
+          run_mode:
+            backfill:
+              - source_event_date_col: 'data_date'
+              - source_event_date_dttype: 'yyyyMMdd'
+            daily:
+              - source_event_date_col: 'data_date'
+              - source_event_date_dttype: 'yyyyMMdd'
+      - name: t24_vmbl_int_clr_citad
+        meta:
+          run_mode:
+            backfill:
+              - source_event_date_col: 'data_date'
+              - source_event_date_dttype: 'yyyyMMdd'
+            daily:
+              - source_event_date_col: 'data_date'
+              - source_event_date_dttype: 'yyyyMMdd'
+      - name: t24_ocbh_coll_basel
+        meta:
+          run_mode:
+            backfill:
+              - source_event_date_col: 'data_date'
+              - source_event_date_dttype: 'yyyyMMdd'
+            daily:
+              - source_event_date_col: 'data_date'
+              - source_event_date_dttype: 'yyyyMMdd'
+      - name: t24_ld_aprv_info
+        meta:
+          run_mode:
+            backfill:
+              - source_event_date_col: 'data_date'
+              - source_event_date_dttype: 'yyyyMMdd'
+            daily:
+              - source_event_date_col: 'data_date'
+              - source_event_date_dttype: 'yyyyMMdd'
+      - name: t24_ld_ins_type_comp
+        meta:
+          run_mode:
+            backfill:
+              - source_event_date_col: 'data_date'
+              - source_event_date_dttype: 'yyyyMMdd'
+            daily:
+              - source_event_date_col: 'data_date'
+              - source_event_date_dttype: 'yyyyMMdd'
+      - name: t24_ld_schedule_define
+        meta:
+          run_mode:
+            backfill:
+              - source_event_date_col: 'data_date'
+              - source_event_date_dttype: 'yyyyMMdd'
+            daily:
+              - source_event_date_col: 'data_date'
+              - source_event_date_dttype: 'yyyyMMdd'
+      - name: t24_lmm_account_balances
+        meta:
+          run_mode:
+            backfill:
+              - source_event_date_col: 'data_date'
+              - source_event_date_dttype: 'yyyyMMdd'
+            daily:
+              - source_event_date_col: 'data_date'
+              - source_event_date_dttype: 'yyyyMMdd'
+      - name: t24_ln_cust_revs_dtls
+        meta:
+          run_mode:
+            backfill:
+              - source_event_date_col: 'data_date'
+              - source_event_date_dttype: 'yyyyMMdd'
+            daily:
+              - source_event_date_col: 'data_date'
+              - source_event_date_dttype: 'yyyyMMdd'
+      - name: t24_ocbh_ld_basel
+        meta:
+          run_mode:
+            backfill:
+              - source_event_date_col: 'data_date'
+              - source_event_date_dttype: 'yyyyMMdd'
+            daily:
+              - source_event_date_col: 'data_date'
+              - source_event_date_dttype: 'yyyyMMdd'
+      - name: t24_ac_locked_events
+        meta:
+          run_mode:
+            backfill:
+              - source_event_date_col: 'data_date'
+              - source_event_date_dttype: 'yyyyMMdd'
+            daily:
+              - source_event_date_col: 'data_date'
+              - source_event_date_dttype: 'yyyyMMdd'
+      - name: t24_ocbh_sub_virtual_account
+        meta:
+          run_mode:
+            backfill:
+              - source_event_date_col: 'data_date'
+              - source_event_date_dttype: 'yyyyMMdd'
+            daily:
+              - source_event_date_col: 'data_date'
+              - source_event_date_dttype: 'yyyyMMdd'
+      - name: t24_ocbh_prod_package_partner
+        meta:
+          run_mode:
+            backfill:
+              - source_event_date_col: 'data_date'
+              - source_event_date_dttype: 'yyyyMMdd'
+            daily:
+              - source_event_date_col: 'data_date'
+              - source_event_date_dttype: 'yyyyMMdd'
+      - name: t24_ocbh_cus_ext_info
+        meta:
+          run_mode:
+            backfill:
+              - source_event_date_col: 'data_date'
+              - source_event_date_dttype: 'yyyyMMdd'
+            daily:
+              - source_event_date_col: 'data_date'
+              - source_event_date_dttype: 'yyyyMMdd'
+      - name: t24_cus_pkg
+        meta:
+          run_mode:
+            backfill:
+              - source_event_date_col: 'data_date'
+              - source_event_date_dttype: 'yyyyMMdd'
+            daily:
+              - source_event_date_col: 'data_date'
+              - source_event_date_dttype: 'yyyyMMdd'
+      - name: t24_line_mvmt_toanhang
+        meta:
+          run_mode:
+            backfill:
+              - source_event_date_col: 'data_date'
+              - source_event_date_dttype: 'yyyyMMdd'
+            daily:
+              - source_event_date_col: 'data_date'
+              - source_event_date_dttype: 'yyyyMMdd'
+      - name: t24_consolidate_prft_loss
+        meta:
+          run_mode:
+            backfill:
+              - source_event_date_col: 'data_date'
+              - source_event_date_dttype: 'yyyyMMdd'
+            daily:
+              - source_event_date_col: 'data_date'
+              - source_event_date_dttype: 'yyyyMMdd'
+      - name: t24_pc_re_stat_line_bal
+        meta:
+          run_mode:
+            backfill:
+              - source_event_date_col: 'data_date'
+              - source_event_date_dttype: 'yyyyMMdd'
+            daily:
+              - source_event_date_col: 'data_date'
+              - source_event_date_dttype: 'yyyyMMdd'
+      - name: t24_sc_trans_name
+        meta:
+          run_mode:
+            backfill:
+              - source_event_date_col: 'data_date'
+              - source_event_date_dttype: 'yyyyMMdd'
+            daily:
+              - source_event_date_col: 'data_date'
+              - source_event_date_dttype: 'yyyyMMdd'
+      - name: t24_town
+        meta:
+          run_mode:
+            backfill:
+              - source_event_date_col: 'data_date'
+              - source_event_date_dttype: 'yyyyMMdd'
+            daily:
+              - source_event_date_col: 'data_date'
+              - source_event_date_dttype: 'yyyyMMdd'
+      - name: t24_ft_txn_type_condition
+        meta:
+          run_mode:
+            backfill:
+              - source_event_date_col: 'data_date'
+              - source_event_date_dttype: 'yyyyMMdd'
+            daily:
+              - source_event_date_col: 'data_date'
+              - source_event_date_dttype: 'yyyyMMdd'
+      - name: t24_ld_economic_sector
+        meta:
+          run_mode:
+            backfill:
+              - source_event_date_col: 'data_date'
+              - source_event_date_dttype: 'yyyyMMdd'
+            daily:
+              - source_event_date_col: 'data_date'
+              - source_event_date_dttype: 'yyyyMMdd'
+      - name: t24_occupation
+        meta:
+          run_mode:
+            backfill:
+              - source_event_date_col: 'data_date'
+              - source_event_date_dttype: 'yyyyMMdd'
+            daily:
+              - source_event_date_col: 'data_date'
+              - source_event_date_dttype: 'yyyyMMdd'
+      - name: t24_ocbh_coll_rev_agent
+        meta:
+          run_mode:
+            backfill:
+              - source_event_date_col: 'data_date'
+              - source_event_date_dttype: 'yyyyMMdd'
+            daily:
+              - source_event_date_col: 'data_date'
+              - source_event_date_dttype: 'yyyyMMdd'
+      - name: t24_transaction
+        meta:
+          run_mode:
+            backfill:
+              - source_event_date_col: 'data_date'
+              - source_event_date_dttype: 'yyyyMMdd'
+            daily:
+              - source_event_date_col: 'data_date'
+              - source_event_date_dttype: 'yyyyMMdd'
+      - name: t24_posting_restrict
+        meta:
+          run_mode:
+            backfill:
+              - source_event_date_col: 'data_date'
+              - source_event_date_dttype: 'yyyyMMdd'
+            daily:
+              - source_event_date_col: 'data_date'
+              - source_event_date_dttype: 'yyyyMMdd'
+      - name: t24_ld_aprv_user
+        meta:
+          run_mode:
+            backfill:
+              - source_event_date_col: 'data_date'
+              - source_event_date_dttype: 'yyyyMMdd'
+            daily:
+              - source_event_date_col: 'data_date'
+              - source_event_date_dttype: 'yyyyMMdd'
+      - name: t24_re_stat_line_cont
+        meta:
+          run_mode:
+            backfill:
+              - source_event_date_col: 'data_date'
+              - source_event_date_dttype: 'yyyyMMdd'
+            daily:
+              - source_event_date_col: 'data_date'
+              - source_event_date_dttype: 'yyyyMMdd'
+      - name: t24_re_stat_rep_line
+        meta:
+          run_mode:
+            backfill:
+              - source_event_date_col: 'data_date'
+              - source_event_date_dttype: 'yyyyMMdd'
+            daily:
+              - source_event_date_col: 'data_date'
+              - source_event_date_dttype: 'yyyyMMdd'
+      - name: t24_ocbh_coll_borrow_purpose
+        meta:
+          run_mode:
+            backfill:
+              - source_event_date_col: 'data_date'
+              - source_event_date_dttype: 'yyyyMMdd'
+            daily:
+              - source_event_date_col: 'data_date'
+              - source_event_date_dttype: 'yyyyMMdd'
+      - name: t24_ocbt_sub_industry
+        meta:
+          run_mode:
+            backfill:
+              - source_event_date_col: 'data_date'
+              - source_event_date_dttype: 'yyyyMMdd'
+            daily:
+              - source_event_date_col: 'data_date'
+              - source_event_date_dttype: 'yyyyMMdd'
+      - name: t24_az_product_parameter
+        meta:
+          run_mode:
+            backfill:
+              - source_event_date_col: 'data_date'
+              - source_event_date_dttype: 'yyyyMMdd'
+            daily:
+              - source_event_date_col: 'data_date'
+              - source_event_date_dttype: 'yyyyMMdd'
+      - name: t24_ocbh_classification
+        meta:
+          run_mode:
+            backfill:
+              - source_event_date_col: 'data_date'
+              - source_event_date_dttype: 'yyyyMMdd'
+            daily:
+              - source_event_date_col: 'data_date'
+              - source_event_date_dttype: 'yyyyMMdd'
+      - name: t24_ocbh_cus_group
+        meta:
+          run_mode:
+            backfill:
+              - source_event_date_col: 'data_date'
+              - source_event_date_dttype: 'yyyyMMdd'
+            daily:
+              - source_event_date_col: 'data_date'
+              - source_event_date_dttype: 'yyyyMMdd'
+      - name: t24_ocbh_deposit_prgm
+        meta:
+          run_mode:
+            backfill:
+              - source_event_date_col: 'data_date'
+              - source_event_date_dttype: 'yyyyMMdd'
+            daily:
+              - source_event_date_col: 'data_date'
+              - source_event_date_dttype: 'yyyyMMdd'
+      - name: t24_ocbh_fx_buyfcy_purpose
+        meta:
+          run_mode:
+            backfill:
+              - source_event_date_col: 'data_date'
+              - source_event_date_dttype: 'yyyyMMdd'
+            daily:
+              - source_event_date_col: 'data_date'
+              - source_event_date_dttype: 'yyyyMMdd'
+      - name: t24_ocbh_ld_prod_main
+        meta:
+          run_mode:
+            backfill:
+              - source_event_date_col: 'data_date'
+              - source_event_date_dttype: 'yyyyMMdd'
+            daily:
+              - source_event_date_col: 'data_date'
+              - source_event_date_dttype: 'yyyyMMdd'
+      - name: t24_ocbh_loan_pro_bundle
+        meta:
+          run_mode:
+            backfill:
+              - source_event_date_col: 'data_date'
+              - source_event_date_dttype: 'yyyyMMdd'
+            daily:
+              - source_event_date_col: 'data_date'
+              - source_event_date_dttype: 'yyyyMMdd'
+      - name: t24_ocbh_md_purpose
+        meta:
+          run_mode:
+            backfill:
+              - source_event_date_col: 'data_date'
+              - source_event_date_dttype: 'yyyyMMdd'
+            daily:
+              - source_event_date_col: 'data_date'
+              - source_event_date_dttype: 'yyyyMMdd'
+      - name: t24_ocbh_product_package
+        meta:
+          run_mode:
+            backfill:
+              - source_event_date_col: 'data_date'
+              - source_event_date_dttype: 'yyyyMMdd'
+            daily:
+              - source_event_date_col: 'data_date'
+              - source_event_date_dttype: 'yyyyMMdd'
+      - name: t24_holiday
+        meta:
+          run_mode:
+            backfill:
+              - source_event_date_col: 'data_date'
+              - source_event_date_dttype: 'yyyyMMdd'
+            daily:
+              - source_event_date_col: 'data_date'
+              - source_event_date_dttype: 'yyyyMMdd'
+      - name: t24_ocbh_industry_tt15
+        meta:
+          run_mode:
+            backfill:
+              - source_event_date_col: 'data_date'
+              - source_event_date_dttype: 'yyyyMMdd'
+            daily:
+              - source_event_date_col: 'data_date'
+              - source_event_date_dttype: 'yyyyMMdd'
+      - name: t24_periodic_interest
+        meta:
+          run_mode:
+            backfill:
+              - source_event_date_col: 'data_date'
+              - source_event_date_dttype: 'yyyyMMdd'
+            daily:
+              - source_event_date_col: 'data_date'
+              - source_event_date_dttype: 'yyyyMMdd'
+      - name: t24_teller_id
+        meta:
+          run_mode:
+            backfill:
+              - source_event_date_col: 'data_date'
+              - source_event_date_dttype: 'yyyyMMdd'
+            daily:
+              - source_event_date_col: 'data_date'
+              - source_event_date_dttype: 'yyyyMMdd'
+
+      - name: t24_auto_name
+        meta:
+          run_mode:
+            backfill:
+              - source_event_date_col: 'data_date'
+              - source_event_date_dttype: 'yyyyMMdd'
+            daily:
+              - source_event_date_col: 'data_date'
+              - source_event_date_dttype: 'yyyyMMdd'
+      - name: t24_int_chg_type
+        meta:
+          run_mode:
+            backfill:
+              - source_event_date_col: 'data_date'
+              - source_event_date_dttype: 'yyyyMMdd'
+            daily:
+              - source_event_date_col: 'data_date'
+              - source_event_date_dttype: 'yyyyMMdd'
+      - name: t24_job_title
+        meta:
+          run_mode:
+            backfill:
+              - source_event_date_col: 'data_date'
+              - source_event_date_dttype: 'yyyyMMdd'
+            daily:
+              - source_event_date_col: 'data_date'
+              - source_event_date_dttype: 'yyyyMMdd'
+      - name: t24_limit_level_auth
+        meta:
+          run_mode:
+            backfill:
+              - source_event_date_col: 'data_date'
+              - source_event_date_dttype: 'yyyyMMdd'
+            daily:
+              - source_event_date_col: 'data_date'
+              - source_event_date_dttype: 'yyyyMMdd'
+      - name: t24_prod_package_cb
+        meta:
+          run_mode:
+            backfill:
+              - source_event_date_col: 'data_date'
+              - source_event_date_dttype: 'yyyyMMdd'
+            daily:
+              - source_event_date_col: 'data_date'
+              - source_event_date_dttype: 'yyyyMMdd'
+      - name: t24_re_txn_code
+        meta:
+          run_mode:
+            backfill:
+              - source_event_date_col: 'data_date'
+              - source_event_date_dttype: 'yyyyMMdd'
+            daily:
+              - source_event_date_col: 'data_date'
+              - source_event_date_dttype: 'yyyyMMdd'
+      - name: t24_teller_transaction
+        meta:
+          run_mode:
+            backfill:
+              - source_event_date_col: 'data_date'
+              - source_event_date_dttype: 'yyyyMMdd'
+            daily:
+              - source_event_date_col: 'data_date'
+              - source_event_date_dttype: 'yyyyMMdd'
+      - name: t24_comp_level_group
+        meta:
+          run_mode:
+            backfill:
+              - source_event_date_col: 'data_date'
+              - source_event_date_dttype: 'yyyyMMdd'
+            daily:
+              - source_event_date_col: 'data_date'
+              - source_event_date_dttype: 'yyyyMMdd'
+      - name: t24_li_comp_level_right
+        meta:
+          run_mode:
+            backfill:
+              - source_event_date_col: 'data_date'
+              - source_event_date_dttype: 'yyyyMMdd'
+            daily:
+              - source_event_date_col: 'data_date'
+              - source_event_date_dttype: 'yyyyMMdd'
+      - name: t24_user_level_auth
+        meta:
+          run_mode:
+            backfill:
+              - source_event_date_col: 'data_date'
+              - source_event_date_dttype: 'yyyyMMdd'
+            daily:
+              - source_event_date_col: 'data_date'
+              - source_event_date_dttype: 'yyyyMMdd'
+      - name: t24_vmbh_teller_limit
+        meta:
+          run_mode:
+            backfill:
+              - source_event_date_col: 'data_date'
+              - source_event_date_dttype: 'yyyyMMdd'
+            daily:
+              - source_event_date_col: 'data_date'
+              - source_event_date_dttype: 'yyyyMMdd'
+      - name: t24_accr_acct_cr
+        meta:
+          run_mode:
+            backfill:
+              - source_event_date_col: 'data_date'
+              - source_event_date_dttype: 'yyyyMMdd'
+            daily:
+              - source_event_date_col: 'data_date'
+              - source_event_date_dttype: 'yyyyMMdd'
+      - name: t24_accr_acct_dr
+        meta:
+          run_mode:
+            backfill:
+              - source_event_date_col: 'data_date'
+              - source_event_date_dttype: 'yyyyMMdd'
+            daily:
+              - source_event_date_col: 'data_date'
+              - source_event_date_dttype: 'yyyyMMdd'
+      - name: t24_ocbh_ac_restrict
+        meta:
+          run_mode:
+            backfill:
+              - source_event_date_col: 'data_date'
+              - source_event_date_dttype: 'yyyyMMdd'
+            daily:
+              - source_event_date_col: 'data_date'
+              - source_event_date_dttype: 'yyyyMMdd'
+        columns:
+          - name: t_customer
+            data_type: bigint
+      - name: t24_ocbh_cu_add_inf_corp_vn
+        meta:
+          run_mode:
+            backfill:
+              - source_event_date_col: 'data_date'
+              - source_event_date_dttype: 'yyyyMMdd'
+            daily:
+              - source_event_date_col: 'data_date'
+              - source_event_date_dttype: 'yyyyMMdd'
+      - name: t24_standing_order
+        meta:
+          run_mode:
+            backfill:
+              - source_event_date_col: 'data_date'
+              - source_event_date_dttype: 'yyyyMMdd'
+            daily:
+              - source_event_date_col: 'data_date'
+              - source_event_date_dttype: 'yyyyMMdd'
+      - name: t24_acct_activity
+        meta:
+          run_mode:
+            backfill:
+              - source_event_date_col: 'data_date'
+              - source_event_date_dttype: 'yyyyMMdd'
+            daily:
+              - source_event_date_col: 'data_date'
+              - source_event_date_dttype: 'yyyyMMdd'    
+      - name: t24_denom_exchange
+        meta:
+          run_mode:
+            backfill:
+              - source_event_date_col: 'data_date'
+              - source_event_date_dttype: 'yyyyMMdd'
+            daily:
+              - source_event_date_col: 'data_date'
+              - source_event_date_dttype: 'yyyyMMdd'
+      - name: t24_acct_group_condition
+        meta:
+          run_mode:
+            backfill:
+              - source_event_date_col: 'data_date'
+              - source_event_date_dttype: 'yyyyMMdd'
+            daily:
+              - source_event_date_col: 'data_date'
+              - source_event_date_dttype: 'yyyyMMdd'
+      - name: t24_lc_enrichment
+        meta:
+          run_mode:
+            backfill:
+              - source_event_date_col: 'data_date'
+              - source_event_date_dttype: 'yyyyMMdd'
+            daily:
+              - source_event_date_col: 'data_date'
+              - source_event_date_dttype: 'yyyyMMdd'
+      - name: t24_group_capitalisation
+        meta:
+          run_mode:
+            backfill:
+              - source_event_date_col: 'data_date'
+              - source_event_date_dttype: 'yyyyMMdd'
+            daily:
+              - source_event_date_col: 'data_date'
+              - source_event_date_dttype: 'yyyyMMdd'
+      - name: t24_acct_gen_condition
+        meta:
+          run_mode:
+            backfill:
+              - source_event_date_col: 'data_date'
+              - source_event_date_dttype: 'yyyyMMdd'
+            daily:
+              - source_event_date_col: 'data_date'
+              - source_event_date_dttype: 'yyyyMMdd'
+      - name: t24_ocbh_scm_extra_info
+        meta:
+          run_mode:
+            backfill:
+              - source_event_date_col: 'data_date'
+              - source_event_date_dttype: 'yyyyMMdd'
+            daily:
+              - source_event_date_col: 'data_date'
+              - source_event_date_dttype: 'yyyyMMdd'
+      - name: t24_stmt_acct_cr
+        meta:
+          run_mode:
+            backfill:
+              - source_event_date_col: 'data_date'
+              - source_event_date_dttype: 'yyyyMMdd'
+            daily:
+              - source_event_date_col: 'data_date'
+              - source_event_date_dttype: 'yyyyMMdd'
+      - name: t24_stmt_acct_dr
+        meta:
+          run_mode:
+            backfill:
+              - source_event_date_col: 'data_date'
+              - source_event_date_dttype: 'yyyyMMdd'
+            daily:
+              - source_event_date_col: 'data_date'
+              - source_event_date_dttype: 'yyyyMMdd'
+      - name: t24_diary
+        meta:
+          run_mode:
+            backfill:
+              - source_event_date_col: 'data_date'
+              - source_event_date_dttype: 'yyyyMMdd'
+            daily:
+              - source_event_date_col: 'data_date'
+              - source_event_date_dttype: 'yyyyMMdd'
+      - name: t24_entitlement
+        meta:
+          run_mode:
+            backfill:
+              - source_event_date_col: 'data_date'
+              - source_event_date_dttype: 'yyyyMMdd'
+            daily:
+              - source_event_date_col: 'data_date'
+              - source_event_date_dttype: 'yyyyMMdd'
+      - name: t24_apportion_acct_categ
+        meta:
+          run_mode:
+            backfill:
+              - source_event_date_col: 'data_date'
+              - source_event_date_dttype: 'yyyyMMdd'
+            daily:
+              - source_event_date_col: 'data_date'
+              - source_event_date_dttype: 'yyyyMMdd'
+      - name: t24_ocbh_coll_bpm_store
+        meta:
+          run_mode:
+            backfill:
+              - source_event_date_col: 'data_date'
+              - source_event_date_dttype: 'yyyyMMdd'
+            daily:
+              - source_event_date_col: 'data_date'
+              - source_event_date_dttype: 'yyyyMMdd'
+      - name: t24_bank_assure_inp
+        meta:
+          run_mode:
+            backfill:
+              - source_event_date_col: 'data_date'
+              - source_event_date_dttype: 'yyyyMMdd'
+            daily:
+              - source_event_date_col: 'data_date'
+              - source_event_date_dttype: 'yyyyMMdd'
+      - name: t24_sc_block_sec_pos
+        meta:
+          run_mode:
+            backfill:
+              - source_event_date_col: 'data_date'
+              - source_event_date_dttype: 'yyyyMMdd'
+            daily:
+              - source_event_date_col: 'data_date'
+              - source_event_date_dttype: 'yyyyMMdd'
+      - name: t24_sc_trans_pos_history
+        meta:
+          run_mode:
+            backfill:
+              - source_event_date_col: 'data_date'
+              - source_event_date_dttype: 'yyyyMMdd'
+            daily:
+              - source_event_date_col: 'data_date'
+              - source_event_date_dttype: 'yyyyMMdd'
+      - name: t24_security_position
+        meta:
+          run_mode:
+            backfill:
+              - source_event_date_col: 'data_date'
+              - source_event_date_dttype: 'yyyyMMdd'
+            daily:
+              - source_event_date_col: 'data_date'
+              - source_event_date_dttype: 'yyyyMMdd'
+      - name: t24_vmbl_fx_fwsw_work
+        meta:
+          run_mode:
+            backfill:
+              - source_event_date_col: 'data_date'
+              - source_event_date_dttype: 'yyyyMMdd'
+            daily:
+              - source_event_date_col: 'data_date'
+              - source_event_date_dttype: 'yyyyMMdd'
+      - name: t24_bosc_comp_reg
+        meta:
+          run_mode:
+            backfill:
+              - source_event_date_col: 'data_date'
+              - source_event_date_dttype: 'yyyyMMdd'
+            daily:
+              - source_event_date_col: 'data_date'
+              - source_event_date_dttype: 'yyyyMMdd'
+      - name: t24_transfer_deposit
+        meta:
+          run_mode:
+            backfill:
+              - source_event_date_col: 'data_date'
+              - source_event_date_dttype: 'yyyyMMdd'
+            daily:
+              - source_event_date_col: 'data_date'
+              - source_event_date_dttype: 'yyyyMMdd'      
+      - name: t24_vmbh_rpt_pl_vat
+        meta:
+          run_mode:
+            backfill:
+              - source_event_date_col: 'data_date'
+              - source_event_date_dttype: 'yyyyMMdd'
+            daily:
+              - source_event_date_col: 'data_date'
+              - source_event_date_dttype: 'yyyyMMdd'
+  - name: crm
+    database: "{{ var('bronze_database') }}"
+    schema: "{{ var('crm_schema') }}"
+    tables:
+      - name: crm_contact_hist
+        meta:
+          run_mode:
+            backfill: null
+            daily: null
+        columns:
+          - name: cif
+            data_type: int
+      - name: crm_contact_notes
+        meta:
+          run_mode:
+            backfill: null
+            daily: null
+      - name: crm_contact_result
+        meta:
+          run_mode:
+            backfill: null
+            daily: null
+      - name: crm_contact_status
+        meta:
+          run_mode:
+            backfill: null
+            daily: null
+      - name: crm_contact_type
+        meta:
+          run_mode:
+            backfill: null
+            daily: null
+      - name: crm_naming_custgroup
+        meta:
+          run_mode:
+            backfill: null
+            daily: null
+      - name: crm_users
+        meta:
+          run_mode:
+            backfill: null
+            daily: null
+
+      - name: crm_user_structure
+        meta:
+          run_mode:
+            backfill: null
+            daily: null
+        columns:
+          - name: custgroup
+            data_type: bigint
+          - name: division_id
+            data_type: int
+          - name: datetime_created
+            data_type: date
+          - name: datetime_updated
+            data_type: date
+
+  - name: callcenter
+    database: "{{ var('bronze_database') }}"
+    schema: "{{ var('callcenter_schema') }}"
+    tables:
+      - name: callcenter
+        meta:
+          run_mode:
+            backfill:
+              - source_event_date_col: 'calldatetime'
+              - source_event_date_dttype: 'str+date'
+            daily:
+              - source_event_date_col: 'calldatetime'
+              - source_event_date_dttype: 'str+date'
+        
+        columns:
+          - name: customer_id
+            data_type: int
+      
+
+  - name: newfo
+    database: "{{ var('bronze_database') }}"
+    schema: "{{ var('newfo_schema') }}"
+
+    tables:
+      - name: passbook
+        meta:
+          run_mode:
+            backfill:
+              - source_event_date_col: 'datadate'
+              - source_event_date_dttype: 'yyyyMMdd'
+            daily: null
+      - name: users_logon
+        meta:
+          run_mode:
+            backfill:
+              - source_event_date_col: 'datadate'
+              - source_event_date_dttype: 'yyyyMMdd'
+            daily: null
+
+  - name: qldt
+    database: "{{ var('bronze_database') }}"
+    schema: "{{ var('qldt_schema') }}"
+
+    tables:
+      - name: ldm_partner
+        meta:
+          run_mode:
+            backfill:
+              - source_event_date_col: 'datadate'
+              - source_event_date_dttype: 'yyyyMMdd'
+            daily: null
+      - name: ldm_partner_type
+        meta:
+          run_mode:
+            backfill:
+              - source_event_date_col: 'datadate'
+              - source_event_date_dttype: 'yyyyMMdd'
+            daily: null
+
+  - name: comb
+    database: "{{ var('bronze_database') }}"
+    schema: "{{ var('comb_schema') }}"
+
+    tables:
+      - name: app_product
+        meta:
+          run_mode:
+            backfill:
+              - source_event_date_col: 'datadate'
+              - source_event_date_dttype: 'yyyyMMdd'
+            daily: null
+      - name: consumer_loan_wo
+        meta:
+          run_mode:
+            backfill:
+              - source_event_date_col: 'datadate'
+              - source_event_date_dttype: 'yyyyMMdd'
+            daily: null
+      - name: consumer_loan
+        meta:
+          run_mode:
+            backfill:
+              - source_event_date_col: 'datadate'
+              - source_event_date_dttype: 'yyyyMMdd'
+            daily: null
+      - name: fact_collection_comb
+        meta:
+          run_mode:
+            backfill:
+              - source_event_date_col: 'datadate'
+              - source_event_date_dttype: 'yyyyMMdd'
+            daily: null
+      - name: next_payment_amount
+        meta:
+          run_mode:
+            backfill:
+              - source_event_date_col: 'datadate'
+              - source_event_date_dttype: 'yyyyMMdd'
+            daily: null
+
+  - name: bpm
+    database: "{{ var('bronze_database') }}"
+    schema: "{{ var('bpm_schema') }}"
+
+    tables:
+      - name: kt_hach_toan
+        meta:
+          run_mode:
+            backfill:
+              - source_event_date_col: 'datadate'
+              - source_event_date_dttype: 'yyyyMMdd'
+            daily: null
+      - name: tdcn_st_van_kien
+        meta:
+          run_mode:
+            backfill:
+              - source_event_date_col: 'datadate'
+              - source_event_date_dttype: 'yyyyMMdd'
+            daily: null
+      - name: giao_dich_thoi_gian_xu_ly_by_nhom
+        meta:
+          run_mode:
+            backfill:
+              - source_event_date_col: 'datadate'
+              - source_event_date_dttype: 'yyyyMMdd'
+            daily: null
+      - name: xl_bc_thoi_gian_xu_ly_by_nhom
+        meta:
+          run_mode:
+            backfill:
+              - source_event_date_col: 'datadate'
+              - source_event_date_dttype: 'yyyyMMdd'
+            daily: null
+      - name: xl_ct_tsbd
+        meta:
+          run_mode:
+            backfill:
+              - source_event_date_col: 'datadate'
+              - source_event_date_dttype: 'str+date'
+            daily: null
+      - name: danh_muc_chi_tiet
+        meta:
+          run_mode:
+            backfill:
+              - source_event_date_col: 'datadate'
+              - source_event_date_dttype: 'yyyyMMdd'
+            daily: null
+      - name: auth_to_chuc_dvi_link
+        meta:
+          run_mode:
+            backfill:
+              - source_event_date_col: 'datadate'
+              - source_event_date_dttype: 'yyyyMMdd'
+            daily: null
+      - name: giao_dich_chi_tiet
+        meta:
+          run_mode:
+            backfill:
+              - source_event_date_col: 'datadate'
+              - source_event_date_dttype: 'yyyyMMdd'
+            daily: null
+      - name: tsbd_bao_cao_thoigian_xuly
+        meta:
+          run_mode:
+            backfill:
+              - source_event_date_col: 'datadate'
+              - source_event_date_dttype: 'yyyyMMdd'
+            daily: null
+      - name: y_kien_ycbs
+        meta:
+          run_mode:
+            backfill:
+              - source_event_date_col: 'datadate'
+              - source_event_date_dttype: 'yyyyMMdd'
+            daily: null
+      - name: md_3544_san_pham_t24
+        meta:
+          run_mode:
+            backfill:
+              - source_event_date_col: 'datadate'
+              - source_event_date_dttype: 'yyyyMMdd'
+            daily: null
+      - name: external_transaction
+        meta:
+          run_mode:
+            backfill:
+              - source_event_date_col: 'datadate'
+              - source_event_date_dttype: 'yyyyMMdd'
+            daily: null
+      - name: tsbd_bc_thoi_gian_xu_ly_by_nhom
+        meta:
+          run_mode:
+            backfill:
+              - source_event_date_col: 'datadate'
+              - source_event_date_dttype: 'yyyyMMdd'
+            daily: null
+      - name: xl_bao_cao_tong_hop
+        meta:
+          run_mode:
+            backfill:
+              - source_event_date_col: 'datadate'
+              - source_event_date_dttype: 'yyyyMMdd'
+            daily: null
+      - name: xl_hstd_ht_cap
+        meta:
+          run_mode:
+            backfill:
+              - source_event_date_col: 'datadate'
+              - source_event_date_dttype: 'str+date'
+            daily: null
+      - name: bc_auth_to_chuc_don_vi_khu_vuc
+        meta:
+          run_mode:
+            backfill:
+              - source_event_date_col: 'datadate'
+              - source_event_date_dttype: 'yyyyMMdd'
+            daily: null
+      - name: auth_nhom
+        meta:
+          run_mode:
+            backfill: null
+            daily: null
+      - name: auth_nhan_vien
+        meta:
+          run_mode:
+            backfill: null
+            daily: null
+      - name: auth_to_chuc_don_vi
+        meta:
+          run_mode:
+            backfill: null
+            daily: null
+      - name: c_danh_muc
+        meta:
+          run_mode:
+            backfill: null
+            daily: null
+      - name: danh_muc
+        meta:
+          run_mode:
+            backfill: null
+            daily: null
+      - name: giao_dich
+        meta:
+          run_mode:
+            backfill:
+              - source_event_date_col: 'DATADATE'
+              - source_event_date_dttype: 'str+date'
+            daily:
+              - source_event_date_col: 'DATADATE'
+              - source_event_date_dttype: 'str+date'
+      - name: giao_dich_link
+        meta:
+          run_mode:
+            backfill: null
+            daily: null
+      - name: giao_dich_sla
+        meta:
+          run_mode:
+            backfill: null
+            daily: null
+      - name: giao_dich_tsbd
+        meta:
+          run_mode:
+            backfill:
+              - source_event_date_col: 'least(NGAY_CAP_NHAT, NGAY_TAO)'
+              - source_event_date_dttype: 'str+date'
+            daily:
+              - source_event_date_col: 'least(NGAY_CAP_NHAT, NGAY_TAO)'
+              - source_event_date_dttype: 'str+date'
+      - name: khach_hang
+        meta:
+          run_mode:
+            backfill:
+              - source_event_date_col: 'NGAY_TAO'
+              - source_event_date_dttype: 'str+date'
+            daily: null
+      - name: pdtd_nhom_giao_dich
+        meta:
+          run_mode:
+            backfill:
+              - source_event_date_col: 'datadate'
+              - source_event_date_dttype: 'yyyyMMdd'
+            daily:
+              - source_event_date_col: 'datadate'
+              - source_event_date_dttype: 'yyyyMMdd'
+      - name: pdtd_comment
+        meta:
+          run_mode:
+            backfill:
+              - source_event_date_col: 'datadate'
+              - source_event_date_dttype: 'str+date'
+            daily: null
+      - name: pdtd_san_pham
+        meta:
+          run_mode:
+            backfill:
+              - source_event_date_col: 'NGAY_TAO'
+              - source_event_date_dttype: 'str+date'
+            daily: null
+      - name: sk10_san_pham
+        meta:
+          run_mode:
+            backfill: null
+            daily: null
+      - name: qlns_nguoi_lao_dong_info
+        meta:
+          run_mode:
+            backfill: null
+            daily: null
+      - name: tdcn_tai_san_bao_dam
+        meta:
+          run_mode:
+            backfill:
+              - source_event_date_col: 'NGAY_TAO'
+              - source_event_date_dttype: 'str+date'
+            daily: null
+      - name: tdcn_thong_tin_chung
+        meta:
+          run_mode:
+            backfill:
+              - source_event_date_col: 'NGAY_TAO'
+              - source_event_date_dttype: 'str+date'
+            daily: null
+      - name: tdcn_xl_gdtd
+        meta:
+          run_mode:
+            backfill:
+              - source_event_date_col: 'NGAY_TAO'
+              - source_event_date_dttype: 'str+date'
+            daily: null
+      - name: tdtc_nghiep_vu_xl_gdtd
+        meta:
+          run_mode:
+            backfill:
+              - source_event_date_col: 'NGAY_TAO'
+              - source_event_date_dttype: 'str+date'
+            daily: null
+      - name: tdtc_thong_tin_chung
+        meta:
+          run_mode:
+            backfill:
+              - source_event_date_col: 'NGAY_TAO'
+              - source_event_date_dttype: 'str+date'
+            daily: null
+      - name: tdtc_thong_tin_to_trinh
+        meta:
+          run_mode:
+            backfill:
+              - source_event_date_col: 'NGAY_TAO'
+              - source_event_date_dttype: 'str+date'
+            daily: null
+      - name: tht_nhom_chinh_sach_the
+        meta:
+          run_mode:
+            backfill: null
+            daily: null
+      - name: tsbd_giaodich_chinh
+        meta:
+          run_mode:
+            backfill:
+              - source_event_date_col: 'least(NGAY_CAP_NHAT, NGAY_TAO)'
+              - source_event_date_dttype: 'str+date'
+            daily:
+              - source_event_date_col: 'datadate'
+              - source_event_date_dttype: 'yyyyMMdd'
+      - name: tsbd_giaodich_chitiet
+        meta:
+          run_mode:
+            backfill:
+              - source_event_date_col: 'NGAY_TAO'
+              - source_event_date_dttype: 'str+date'
+            daily: null
+      - name: tsbd_giaodich_lich_su_v2
+        meta:
+          run_mode:
+            backfill:
+              - source_event_date_col: 'NGAY_TAO'
+              - source_event_date_dttype: 'str+date'
+            daily: null
+      - name: tsbd_giaodich_taisan_chusohuu
+        meta:
+          run_mode:
+            backfill:
+              - source_event_date_col: 'datadate'
+              - source_event_date_dttype: 'yyyyMMdd'
+            daily:
+              - source_event_date_col: 'datadate'
+              - source_event_date_dttype: 'yyyyMMdd'
+      - name: tsbd_tai_san
+        meta:
+          run_mode:
+            backfill:
+              - source_event_date_col: 'least(NGAY_CAP_NHAT, NGAY_TAO)'
+              - source_event_date_dttype: 'str+date'
+            daily:
+              - source_event_date_col: 'least(NGAY_CAP_NHAT, NGAY_TAO)'
+              - source_event_date_dttype: 'str+date'
+      - name: xl_ct_han_muc
+        meta:
+          run_mode:
+            backfill:
+              - source_event_date_col: 'NGAY_TAO'
+              - source_event_date_dttype: 'str+date'
+            daily: null
+      - name: xl_ct_lich_su
+        meta:
+          run_mode:
+            backfill:
+              - source_event_date_col: 'NGAY_TAO'
+              - source_event_date_dttype: 'str+date'
+            daily: null
+      - name: xl_ksgn_chung
+        meta:
+          run_mode:
+            backfill:
+              - source_event_date_col: 'NGAY_TAO'
+              - source_event_date_dttype: 'str+date'
+            daily: null
+      - name: xl_ksgn_ct
+        meta:
+          run_mode:
+            backfill:
+              - source_event_date_col: 'NGAY_TAO'
+              - source_event_date_dttype: 'str+date'
+            daily: null
+      - name: xl_pdtd_link
+        meta:
+          run_mode:
+            backfill:
+              - source_event_date_col: 'NGAY_TAO'
+              - source_event_date_dttype: 'str+date'
+            daily:
+              - source_event_date_col: 'datadate'
+              - source_event_date_dttype: 'yyyyMMdd'
+      - name: pdtd_tsbd_link
+        meta:
+          run_mode:
+            backfill: null
+            daily: null
+      - name: khach_hang_ca_nhan
+        meta:
+          run_mode:
+            backfill: null
+            daily: null
+      - name: khach_hang_doanh_nghiep
+        meta:
+          run_mode:
+            backfill:
+              - source_event_date_col: 'NGAY_TAO'
+              - source_event_date_dttype: 'str+date'
+            daily: null
+      - name: pdtd_giao_dich_tin_dung
+        meta:
+          run_mode:
+            backfill:
+              - source_event_date_col: 'datadate'
+              - source_event_date_dttype: 'yyyyMMdd'
+            daily:
+              - source_event_date_col: 'datadate'
+              - source_event_date_dttype: 'yyyyMMdd'
+      - name: h_pdtd_gdich_lsu_pduyet
+        meta:
+          run_mode:
+            backfill:
+              - source_event_date_col: 'datadate'
+              - source_event_date_dttype: 'yyyyMMdd'
+            daily:
+              - source_event_date_col: 'datadate'
+              - source_event_date_dttype: 'yyyyMMdd'
+      - name: h_pdtd_gdich_ctiet_pduyet
+        meta:
+          run_mode:
+            backfill:
+              - source_event_date_col: 'datadate'
+              - source_event_date_dttype: 'yyyyMMdd'
+            daily:
+              - source_event_date_col: 'datadate'
+              - source_event_date_dttype: 'yyyyMMdd'
+      - name: tdcn_sp_nhu_cau_td
+        meta:
+          run_mode:
+            backfill:
+              - source_event_date_col: 'NGAY_TAO'
+              - source_event_date_dttype: 'str+date'
+            daily: null
+      - name: tdcn_chi_tiet_san_pham
+        meta:
+          run_mode:
+            backfill: null
+            daily: null
+      - name: tdcn_khoan_cap_td_the
+        meta:
+          run_mode:
+            backfill:
+              - source_event_date_col: 'NGAY_TAO'
+              - source_event_date_dttype: 'str+date'
+            daily: null
+      - name: tdcn_thu_nhap_tra_no
+        meta:
+          run_mode:
+            backfill:
+              - source_event_date_col: 'NGAY_TAO'
+              - source_event_date_dttype: 'str+date'
+            daily: null
+      - name: tdcn_nguoi_dong_vay
+        meta:
+          run_mode:
+            backfill:
+              - source_event_date_col: 'NGAY_TAO'
+              - source_event_date_dttype: 'str+date'
+            daily: null
+      - name: lich_su_giao_dich
+        meta:
+          run_mode:
+            backfill:
+              - source_event_date_col: 'DATADATE'
+              - source_event_date_dttype: 'yyyyMMdd'
+            daily:
+              - source_event_date_col: 'DATADATE'
+              - source_event_date_dttype: 'yyyyMMdd'
+      - name: tc_stk_lich_su
+        meta:
+          run_mode:
+            backfill:
+              - source_event_date_col: 'NGAY_TAO'
+              - source_event_date_dttype: 'str+date'
+            daily: null
+      - name: tc_stk_thong_tin_tong_hop
+        meta:
+          run_mode:
+            backfill:
+              - source_event_date_col: 'NGAY_TAO'
+              - source_event_date_dttype: 'str+date'
+            daily: null
+      - name: tcstk_thong_tin_chung
+        meta:
+          run_mode:
+            backfill:
+              - source_event_date_col: 'NGAY_TAO'
+              - source_event_date_dttype: 'str+date'
+            daily: null
+      - name: tcstk_thong_tin_bao_dam
+        meta:
+          run_mode:
+            backfill:
+              - source_event_date_col: 'NGAY_TAO'
+              - source_event_date_dttype: 'str+date'
+            daily: null
+      - name: tcstk_thong_tin_giao_dich
+        meta:
+          run_mode:
+            backfill:
+              - source_event_date_col: 'NGAY_TAO'
+              - source_event_date_dttype: 'str+date'
+            daily: null
+      - name: giao_dich_the
+        meta:
+          run_mode:
+            backfill: null
+            daily: null
+      - name: ttd_giao_dich_igen
+        meta:
+          run_mode:
+            backfill:
+              - source_event_date_col: 'NGAY_TAO'
+              - source_event_date_dttype: 'str+date'
+            daily: null
+      - name: tsbd_chu_so_huu
+        meta:
+          run_mode:
+            backfill:
+              - source_event_date_col: 'NGAY_TAO'
+              - source_event_date_dttype: 'str+date'
+            daily: null
+  - name: omni
+    database: "{{ var('bronze_database') }}"
+    schema: "{{ var('omni_schema') }}"
+    tables:
+      - name: en_user
+        meta:
+          run_mode:
+            backfill: null
+            daily: null
+      - name: customers
+        meta:
+          run_mode:
+            backfill:
+              - source_event_date_col: 'data_date'
+              - source_event_date_dttype: 'yyyyMMdd'
+            daily:
+              - source_event_date_col: 'data_date'
+              - source_event_date_dttype: 'yyyyMMdd'
+      - name: omni_service
+        meta:
+          run_mode:
+            backfill:
+              - source_event_date_col: 'least(UPDATED_AT, CREATED_AT)'
+              - source_event_date_dttype: 'str+date'
+            daily:
+              - source_event_date_col: 'data_date'
+              - source_event_date_dttype: 'yyyyMMdd'
+      - name: transfer_bill_history
+        meta:
+          run_mode:
+            backfill:
+              - source_event_date_col: 'data_date'
+              - source_event_date_dttype: 'yyyyMMdd'
+            daily:
+              - source_event_date_col: 'data_date'
+              - source_event_date_dttype: 'yyyyMMdd'
+      - name: user_notification
+        meta:
+          run_mode:
+            backfill:
+              - source_event_date_col: 'data_date'
+              - source_event_date_dttype: 'yyyyMMdd'
+            daily:
+              - source_event_date_col: 'data_date'
+              - source_event_date_dttype: 'yyyyMMdd'
+      - name: acknowledgement
+        meta:
+          run_mode:
+            backfill:
+              - source_event_date_col: 'effective_date'
+              - source_event_date_dttype: 'str+date'
+            daily: null
+      - name: payment_order
+        meta:
+          run_mode:
+            backfill:
+              - source_event_date_col: 'data_date'
+              - source_event_date_dttype: 'yyyyMMdd'
+            daily:
+              - source_event_date_col: 'data_date'
+              - source_event_date_dttype: 'yyyyMMdd'
+      - name: payment_history
+        meta:
+          run_mode:
+            backfill:
+              - source_event_date_col: 'data_date'
+              - source_event_date_dttype: 'yyyyMMdd'
+            daily:
+              - source_event_date_col: 'data_date'
+              - source_event_date_dttype: 'yyyyMMdd'
+      - name: party
+        meta:
+          run_mode:
+            backfill:
+              - source_event_date_col: 'data_date'
+              - source_event_date_dttype: 'yyyyMMdd'
+            daily:
+              - source_event_date_col: 'data_date'
+              - source_event_date_dttype: 'yyyyMMdd'
+      - name: customer_data_sharing_consent
+        meta:
+          run_mode:
+            backfill:
+              - source_event_date_col: 'data_date'
+              - source_event_date_dttype: 'yyyyMMdd'
+            daily:
+              - source_event_date_col: 'data_date'
+              - source_event_date_dttype: 'yyyyMMdd'
+      - name: onboarding_report
+        meta:
+          run_mode:
+            backfill:
+              - source_event_date_col: 'MODIFIED_AT'
+              - source_event_date_dttype: 'str+date'
+            daily:
+              - source_event_date_col: 'data_date'
+              - source_event_date_dttype: 'yyyyMMdd'
+      - name: account_information
+        meta:
+          run_mode:
+            backfill:
+              - source_event_date_col: 'data_date'
+              - source_event_date_dttype: 'yyyyMMdd'
+            daily:
+              - source_event_date_col: 'data_date'
+              - source_event_date_dttype: 'yyyyMMdd'
+      - name: device
+        meta:
+          run_mode:
+            backfill:
+              - source_event_date_col: 'least(UPDATED_DATE_TIME, CREATED_DATE_TIME)'
+              - source_event_date_dttype: 'bigint'
+            daily: null
+      - name: device_detail
+        meta:
+          run_mode:
+            backfill: null
+            daily: null
+      - name: od_registration
+        meta:
+          run_mode:
+            backfill:
+              - source_event_date_col: 'least(UPDATED_AT, CREATED_AT)'
+              - source_event_date_dttype: 'str+date'
+            daily: null
+      - name: od_linked_deposit
+        meta:
+          run_mode:
+            backfill:
+              - source_event_date_col: 'least(UPDATED_AT, CREATED_AT)'
+              - source_event_date_dttype: 'str+date'
+            daily: null
+      - name: voucher
+        meta:
+          run_mode:
+            backfill:
+              - source_event_date_col: 'least(UPDATED_AT, CREATED_AT)'
+              - source_event_date_dttype: 'str+date'
+            daily: null
+      - name: voucher_campaign
+        meta:
+          run_mode:
+            backfill:
+              - source_event_date_col: 'least(UPDATED_AT, CREATED_AT)'
+              - source_event_date_dttype: 'str+date'
+            daily: null
+      - name: voucher_generate
+        meta:
+          run_mode:
+            backfill:
+              - source_event_date_col: 'least(UPDATED_AT, CREATED_AT)'
+              - source_event_date_dttype: 'str+date'
+            daily: null
+      - name: clevertap_tracking
+        meta:
+          run_mode:
+            backfill:
+              - source_event_date_col: 'data_date'
+              - source_event_date_dttype: 'yyyyMMdd'
+            daily:
+              - source_event_date_col: 'data_date'
+              - source_event_date_dttype: 'yyyyMMdd'
+      - name: message
+        meta:
+          run_mode:
+            backfill:
+              - source_event_date_col: 'data_date'
+              - source_event_date_dttype: 'yyyyMMdd'
+            daily:
+              - source_event_date_col: 'data_date'
+              - source_event_date_dttype: 'yyyyMMdd'
+      - name: credit_card_registration
+        meta:
+          run_mode:
+            backfill:
+              - source_event_date_col: 'least(UPDATED_DATE, CREATED_DATE)'
+              - source_event_date_dttype: 'str+date'
+            daily:
+              - source_event_date_col: 'data_date'
+              - source_event_date_dttype: 'yyyyMMdd'
+      - name: package
+        meta:
+          run_mode:
+            backfill:
+              - source_event_date_col: 'least(UPDATED_AT, CREATED_AT)'
+              - source_event_date_dttype: 'str+date'
+            daily: null
+      - name: master_data
+        meta:
+          run_mode:
+            backfill:
+              - source_event_date_col: 'least(UPDATED_AT, CREATED_AT)'
+              - source_event_date_dttype: 'str+date'
+            daily: null
+      - name: services
+        meta:
+          run_mode:
+            backfill:
+              - source_event_date_col: 'least(MODIFIED_AT, CREATED_AT)'
+              - source_event_date_dttype: 'str+date'
+            daily: null
+      - name: service_provider
+        meta:
+          run_mode:
+            backfill:
+              - source_event_date_col: 'least(MODIFIED_AT, CREATED_AT)'
+              - source_event_date_dttype: 'str+date'
+            daily: null
+      - name: service_type
+        meta:
+          run_mode:
+            backfill:
+              - source_event_date_col: null
+              - source_event_date_dttype: null
+            daily: null
+      - name: fee_discount
+        meta:
+          run_mode:
+            backfill: 
+              - source_event_date_col: 'least(UPDATED_AT, CREATED_AT)'
+              - source_event_date_dttype: 'str+date'
+            daily: null
+      - name: oversea_ft_request
+        meta:
+          run_mode:
+            backfill:
+              - source_event_date_col: 'least(UPDATED_AT, CREATED_AT)'
+              - source_event_date_dttype: 'str+date'
+            daily: null
+      - name: auto_debit
+        meta:
+          run_mode:
+            backfill:
+              - source_event_date_col: 'least(MODIFIED_AT, CREATED_AT)'
+              - source_event_date_dttype: 'str+date'
+            daily: null
+        columns:
+          - name: prop3
+            data_type: decimal(38,18)
+          - name: prop4
+            data_type: bigint
+      - name: audit_message
+        meta:
+          run_mode:
+            backfill:
+              - source_event_date_col: 'data_date'
+              - source_event_date_dttype: 'yyyyMMdd'
+            daily:
+              - source_event_date_col: 'data_date'
+              - source_event_date_dttype: 'yyyyMMdd'
+      
+  - name: way4
+    database: "{{ var('bronze_database') }}"
+    schema: "{{ var('way4_schema') }}"
+    tables:
+      - name: ows_client
+        meta:
+          run_mode:
+            backfill:
+              - source_event_date_col: 'data_date'
+              - source_event_date_dttype: 'yyyyMMdd'
+            daily:
+              - source_event_date_col: 'data_date'
+              - source_event_date_dttype: 'yyyyMMdd'
+      - name: ows_client_address
+        meta:
+          run_mode:
+            backfill:
+              - source_event_date_col: 'data_date'
+              - source_event_date_dttype: 'yyyyMMdd'
+            daily:
+              - source_event_date_col: 'data_date'
+              - source_event_date_dttype: 'yyyyMMdd'
+      - name: ows_device_rec
+        meta:
+          run_mode:
+            backfill: null
+            daily: null
+        columns:
+          - name: hardware__id
+            data_type: bigint
+      - name: ows_acnt_contract
+        meta:
+          run_mode:
+            backfill:
+              - source_event_date_col: 'data_date'
+              - source_event_date_dttype: 'yyyyMMdd'
+            daily:
+              - source_event_date_col: 'data_date'
+              - source_event_date_dttype: 'yyyyMMdd'
+      - name: ows_doc
+        meta:
+          run_mode:
+            backfill:
+              - source_event_date_col: 'data_date'
+              - source_event_date_dttype: 'yyyyMMdd'
+            daily:
+              - source_event_date_col: 'data_date'
+              - source_event_date_dttype: 'yyyyMMdd'
+      - name: ows_m_transaction
+        meta:
+          run_mode:
+            backfill:
+              - source_event_date_col: 'data_date'
+              - source_event_date_dttype: 'yyyyMMdd'
+            daily:
+              - source_event_date_col: 'data_date'
+              - source_event_date_dttype: 'yyyyMMdd'
+      - name: ows_cs_status_log
+        meta:
+          run_mode:
+            backfill:
+              - source_event_date_col: 'data_date'
+              - source_event_date_dttype: 'yyyyMMdd'
+            daily:
+              - source_event_date_col: 'data_date'
+              - source_event_date_dttype: 'yyyyMMdd'
+      - name: ows_appl_product
+        meta:
+          run_mode:
+            backfill: null
+            daily: null
+      - name: ows_trans_cond
+        meta:
+          run_mode:
+            backfill: null
+            daily: null
+      - name: ows_trans_type
+        meta:
+          run_mode:
+            backfill: null
+            daily: null
+      - name: ows_mess_channel
+        meta:
+          run_mode:
+            backfill: null
+            daily: null
+      - name: ows_resp_code
+        meta:
+          run_mode:
+            backfill: null
+            daily: null
+      - name: ows_sic
+        meta:
+          run_mode:
+            backfill: null
+            daily: null
+      - name: ows_contr_status
+        meta:
+          run_mode:
+            backfill: null
+            daily: null
+      - name: ows_account_type
+        meta:
+          run_mode:
+            backfill: null
+            daily: null
+      - name: ows_cs_status_type
+        meta:
+          run_mode:
+            backfill: null
+            daily: null
+      - name: ows_cs_status_value
+        meta:
+          run_mode:
+            backfill: null
+            daily: null
+      - name: ows_entry
+        meta:
+          run_mode:
+            backfill:
+              - source_event_date_col: 'data_date'
+              - source_event_date_dttype: 'yyyyMMdd'
+            daily:
+              - source_event_date_col: 'data_date'
+              - source_event_date_dttype: 'yyyyMMdd'
+      - name: ows_templ_approved
+        meta:
+          run_mode:
+            backfill: null
+            daily: null
+      - name: ows_billing_log
+        meta:
+          run_mode:
+            backfill:
+              - source_event_date_col: 'data_date'
+              - source_event_date_dttype: 'yyyyMMdd'
+            daily:
+              - source_event_date_col: 'data_date'
+              - source_event_date_dttype: 'yyyyMMdd'
+      - name: oms_balance
+        meta:
+          run_mode:
+            backfill:
+              - source_event_date_col: 'data_date'
+              - source_event_date_dttype: 'yyyyMMdd'
+            daily:
+              - source_event_date_col: 'data_date'
+              - source_event_date_dttype: 'yyyyMMdd'
+      - name: ows_acq_dev_cycle
+        meta:
+          run_mode:
+            backfill: null
+            daily: null
+      - name: oms_payment
+        meta:
+          run_mode:
+            backfill:
+              - source_event_date_col: 'data_date'
+              - source_event_date_dttype: 'yyyyMMdd'
+            daily:
+              - source_event_date_col: 'data_date'
+              - source_event_date_dttype: 'yyyyMMdd'
+      - name: oms_billing
+        meta:
+          run_mode:
+            backfill: null
+            daily: null
+      - name: ows_usage_action
+        meta:
+          run_mode:
+            backfill:
+              - source_event_date_col: 'data_date'
+              - source_event_date_dttype: 'yyyyMMdd'
+            daily:
+              - source_event_date_col: 'data_date'
+              - source_event_date_dttype: 'yyyyMMdd'
+      - name: ows_td_auth_sch
+        meta:
+          run_mode:
+            backfill:
+                - source_event_date_col: 'data_date'
+                - source_event_date_dttype: 'yyyyMMdd'
+            daily:
+                - source_event_date_col: 'data_date'
+                - source_event_date_dttype: 'yyyyMMdd'
+      - name: ows_account
+        meta:
+          run_mode:
+            backfill:
+              - source_event_date_col: 'data_date'
+              - source_event_date_dttype: 'yyyyMMdd'
+            daily:
+              - source_event_date_col: 'data_date'
+              - source_event_date_dttype: 'yyyyMMdd'
+      - name: ows_item
+        meta:
+          run_mode:
+            backfill:
+              - source_event_date_col: 'data_date'
+              - source_event_date_dttype: 'yyyyMMdd'
+            daily:
+              - source_event_date_col: 'data_date'
+              - source_event_date_dttype: 'yyyyMMdd'
+      - name: ows_gl_trace
+        meta:
+          run_mode:
+            backfill:
+              - source_event_date_col: 'data_date'
+              - source_event_date_dttype: 'yyyyMMdd'
+            daily:
+              - source_event_date_col: 'data_date'
+              - source_event_date_dttype: 'yyyyMMdd'
+      - name: ows_card_info
+        meta:
+          run_mode:
+            backfill: null
+            daily: null
+      - name: ows_invoice_log
+        meta:
+          run_mode:
+            backfill:
+              - source_event_date_col: 'data_date'
+              - source_event_date_dttype: 'yyyyMMdd'
+            daily:
+              - source_event_date_col: 'data_date'
+              - source_event_date_dttype: 'yyyyMMdd'
+      - name: ows_acc_templ
+        meta:
+          run_mode:
+            backfill: null
+            daily: null
+      - name: ows_add_data
+        meta:
+          run_mode:
+            backfill:
+              - source_event_date_col: 'data_date'
+              - source_event_date_dttype: 'yyyyMMdd'
+            daily:
+              - source_event_date_col: 'data_date'
+              - source_event_date_dttype: 'yyyyMMdd'
+      - name: ows_event_type
+        meta:
+          run_mode:
+            backfill: null
+            daily: null
+      - name: ows_td_auth_type
+        meta:
+          run_mode:
+            backfill: null
+            daily: null
+      - name: ows_bin_table
+        meta:
+          run_mode:
+            backfill:
+              - source_event_date_col: 'data_date'
+              - source_event_date_dttype: 'yyyyMMdd'
+            daily:
+              - source_event_date_col: 'data_date'
+              - source_event_date_dttype: 'yyyyMMdd'
+      - name: ows_bank_unit
+        meta:
+          run_mode:
+            backfill: null
+            daily: null
+      - name: ows_evnt_action
+        meta:
+          run_mode:
+            backfill: null
+            daily: null
+      - name: ows_branch
+        meta:
+          run_mode:
+            backfill: null
+            daily: null
+      - name: ows_country
+        meta:
+          run_mode:
+            backfill: null
+            daily: null
+      - name: ows_currency
+        meta:
+          run_mode:
+            backfill: null
+            daily: null
+
+  - name: clevertap
+    database: "{{ var('bronze_database') }}"
+    schema: "{{ var('clevertap_schema') }}"
+    tables:
+      - name: campaigns
+        meta:
+          run_mode:
+            backfill:
+              - source_event_date_col: 'run_date'
+              - source_event_date_dttype: 'str+date'
+            daily:
+              - source_event_date_col: 'data_date'
+              - source_event_date_dttype: 'yyyyMMdd'
+      - name: events
+        meta:
+          run_mode:
+            backfill:
+              - source_event_date_col: 'ts'
+              - source_event_date_dttype: 'str+date'
+            daily:
+              - source_event_date_col: 'ts'
+              - source_event_date_dttype: 'str+date'
+      - name: profiles
+        meta:
+          run_mode:
+            backfill:
+              - source_event_date_col: 'data_date'
+              - source_event_date_dttype: 'yyyyMMdd'
+            daily:
+              - source_event_date_col: 'data_date'
+              - source_event_date_dttype: 'yyyyMMdd'
+
+  - name: appsflyer
+    database: "{{ var('bronze_database') }}"
+    schema: "{{ var('appsflyer_schema') }}"
+    tables:
+      - name: in_app_events_report
+        meta:
+          run_mode:
+            backfill:
+              - source_event_date_col: 'data_date'
+              - source_event_date_dttype: 'yyyyMMdd'
+            daily:
+              - source_event_date_col: 'data_date'
+              - source_event_date_dttype: 'yyyyMMdd'
+      - name: installs_report
+        meta:
+          run_mode:
+            backfill:
+              - source_event_date_col: 'data_date'
+              - source_event_date_dttype: 'yyyyMMdd'
+            daily:
+              - source_event_date_col: 'data_date'
+              - source_event_date_dttype: 'yyyyMMdd'
+      - name: organic_in_app_events_report
+        meta:
+          run_mode:
+            backfill:
+              - source_event_date_col: 'event_time'
+              - source_event_date_dttype: 'event_date'
+            daily:
+              - source_event_date_col: 'event_time'
+              - source_event_date_dttype: 'event_date'
+      - name: organic_installs_report
+        meta:
+          run_mode:
+            backfill:
+              - source_event_date_col: 'event_time'
+              - source_event_date_dttype: 'event_date'
+            daily:
+              - source_event_date_col: 'event_time'
+              - source_event_date_dttype: 'event_date'
+      - name: organic_uninstall_events_report
+        meta:
+          run_mode:
+            backfill:
+              - source_event_date_col: 'event_time'
+              - source_event_date_dttype: 'event_date'
+            daily:
+              - source_event_date_col: 'event_time'
+              - source_event_date_dttype: 'event_date'
+      - name: reinstalls
+        meta:
+          run_mode:
+            backfill:
+              - source_event_date_col: 'data_date'
+              - source_event_date_dttype: 'yyyyMMdd'
+            daily:
+              - source_event_date_col: 'data_date'
+              - source_event_date_dttype: 'yyyyMMdd'
+      - name: reinstalls_organic
+        meta:
+          run_mode:
+            backfill:
+              - source_event_date_col: 'event_time'
+              - source_event_date_dttype: 'event_date'
+            daily:
+              - source_event_date_col: 'event_time'
+              - source_event_date_dttype: 'event_date'
+      - name: uninstall_events_report
+        meta:
+          run_mode:
+            backfill:
+              - source_event_date_col: 'event_time'
+              - source_event_date_dttype: 'event_date'
+            daily:
+              - source_event_date_col: 'event_time'
+              - source_event_date_dttype: 'event_date'
+
+  - name: ocbchannel
+    database: "{{ var('bronze_database') }}"
+    schema: "{{ var('ocbchannel_schema') }}"
+
+    tables:
+      - name: admin_command_queue
+        meta:
+          run_mode:
+            backfill:
+              - source_event_date_col: 'data_date'
+              - source_event_date_dttype: 'yyyyMMdd'
+            daily:
+              - source_event_date_col: 'data_date'
+              - source_event_date_dttype: 'yyyyMMdd'
+      - name: apportion_trans_batch_details
+        meta:
+          run_mode:
+            backfill:
+              - source_event_date_col: 'data_date'
+              - source_event_date_dttype: 'yyyyMMdd'
+            daily:
+              - source_event_date_col: 'data_date'
+              - source_event_date_dttype: 'yyyyMMdd'
+      - name: authen_type
+        meta:
+          run_mode:
+            backfill:
+              - source_event_date_col: 'data_date'
+              - source_event_date_dttype: 'yyyyMMdd'
+            daily:
+              - source_event_date_col: 'data_date'
+              - source_event_date_dttype: 'yyyyMMdd'
+      - name: branch_mapping
+        meta:
+          run_mode:
+            backfill:
+              - source_event_date_col: 'data_date'
+              - source_event_date_dttype: 'yyyyMMdd'
+            daily:
+              - source_event_date_col: 'data_date'
+              - source_event_date_dttype: 'yyyyMMdd'
+      - name: customer_file
+        meta:
+          run_mode:
+            backfill:
+              - source_event_date_col: 'data_date'
+              - source_event_date_dttype: 'yyyyMMdd'
+            daily:
+              - source_event_date_col: 'data_date'
+              - source_event_date_dttype: 'yyyyMMdd'
+      - name: eb_package_type
+        meta:
+          run_mode:
+            backfill:
+              - source_event_date_col: 'data_date'
+              - source_event_date_dttype: 'yyyyMMdd'
+            daily:
+              - source_event_date_col: 'data_date'
+              - source_event_date_dttype: 'yyyyMMdd'
+      - name: eb_user_channel
+        meta:
+          run_mode:
+            backfill:
+              - source_event_date_col: 'data_date'
+              - source_event_date_dttype: 'yyyyMMdd'
+            daily:
+              - source_event_date_col: 'data_date'
+              - source_event_date_dttype: 'yyyyMMdd'
+      - name: eb_user_session
+        meta:
+          run_mode:
+            backfill:
+              - source_event_date_col: 'data_date'
+              - source_event_date_dttype: 'yyyyMMdd'
+            daily:
+              - source_event_date_col: 'data_date'
+              - source_event_date_dttype: 'yyyyMMdd'
+      - name: eb_users
+        meta:
+          run_mode:
+            backfill:
+              - source_event_date_col: 'data_date'
+              - source_event_date_dttype: 'yyyyMMdd'
+            daily:
+              - source_event_date_col: 'data_date'
+              - source_event_date_dttype: 'yyyyMMdd'
+      - name: ocb_bill_providers
+        meta:
+          run_mode:
+            backfill:
+              - source_event_date_col: 'data_date'
+              - source_event_date_dttype: 'yyyyMMdd'
+            daily:
+              - source_event_date_col: 'data_date'
+              - source_event_date_dttype: 'yyyyMMdd'
+      - name: ocb_bill_service_provider
+        meta:
+          run_mode:
+            backfill:
+              - source_event_date_col: 'data_date'
+              - source_event_date_dttype: 'yyyyMMdd'
+            daily:
+              - source_event_date_col: 'data_date'
+              - source_event_date_dttype: 'yyyyMMdd'
+      - name: ocb_bill_services
+        meta:
+          run_mode:
+            backfill:
+              - source_event_date_col: 'data_date'
+              - source_event_date_dttype: 'yyyyMMdd'
+            daily:
+              - source_event_date_col: 'data_date'
+              - source_event_date_dttype: 'yyyyMMdd'
+      - name: soa_apportion_detail
+        meta:
+          run_mode:
+            backfill:
+              - source_event_date_col: 'data_date'
+              - source_event_date_dttype: 'yyyyMMdd'
+            daily:
+              - source_event_date_col: 'data_date'
+              - source_event_date_dttype: 'yyyyMMdd'
+      - name: soa_cust_account
+        meta:
+          run_mode:
+            backfill:
+              - source_event_date_col: 'data_date'
+              - source_event_date_dttype: 'yyyyMMdd'
+            daily:
+              - source_event_date_col: 'data_date'
+              - source_event_date_dttype: 'yyyyMMdd'
+      - name: soa_cust_ft
+        meta:
+          run_mode:
+            backfill:
+              - source_event_date_col: 'data_date'
+              - source_event_date_dttype: 'yyyyMMdd'
+            daily:
+              - source_event_date_col: 'data_date'
+              - source_event_date_dttype: 'yyyyMMdd'
+      - name: soa_cust_package
+        meta:
+          run_mode:
+            backfill:
+              - source_event_date_col: 'data_date'
+              - source_event_date_dttype: 'yyyyMMdd'
+            daily:
+              - source_event_date_col: 'data_date'
+              - source_event_date_dttype: 'yyyyMMdd'
+      - name: soa_cust_termdeposit
+        meta:
+          run_mode:
+            backfill:
+              - source_event_date_col: 'data_date'
+              - source_event_date_dttype: 'yyyyMMdd'
+            daily:
+              - source_event_date_col: 'data_date'
+              - source_event_date_dttype: 'yyyyMMdd'
+      - name: soa_ft_batch_details
+        meta:
+          run_mode:
+            backfill:
+              - source_event_date_col: 'data_date'
+              - source_event_date_dttype: 'yyyyMMdd'
+            daily:
+              - source_event_date_col: 'data_date'
+              - source_event_date_dttype: 'yyyyMMdd'
+      - name: soa_hdtg_da_nang
+        meta:
+          run_mode:
+            backfill:
+              - source_event_date_col: 'data_date'
+              - source_event_date_dttype: 'yyyyMMdd'
+            daily:
+              - source_event_date_col: 'data_date'
+              - source_event_date_dttype: 'yyyyMMdd'
+      - name: soa_multi_crdr_trans
+        meta:
+          run_mode:
+            backfill:
+              - source_event_date_col: 'data_date'
+              - source_event_date_dttype: 'yyyyMMdd'
+            daily:
+              - source_event_date_col: 'data_date'
+              - source_event_date_dttype: 'yyyyMMdd'
+      - name: soa_ntdt_register
+        meta:
+          run_mode:
+            backfill:
+              - source_event_date_col: 'data_date'
+              - source_event_date_dttype: 'yyyyMMdd'
+            daily:
+              - source_event_date_col: 'data_date'
+              - source_event_date_dttype: 'yyyyMMdd'
+      - name: soa_ntdt_register_detail
+        meta:
+          run_mode:
+            backfill:
+              - source_event_date_col: 'data_date'
+              - source_event_date_dttype: 'yyyyMMdd'
+            daily:
+              - source_event_date_col: 'data_date'
+              - source_event_date_dttype: 'yyyyMMdd'
+      - name: soa_thq_register
+        meta:
+          run_mode:
+            backfill:
+              - source_event_date_col: 'data_date'
+              - source_event_date_dttype: 'yyyyMMdd'
+            daily:
+              - source_event_date_col: 'data_date'
+              - source_event_date_dttype: 'yyyyMMdd'
+      - name: trans_type_mapping
+        meta:
+          run_mode:
+            backfill:
+              - source_event_date_col: 'data_date'
+              - source_event_date_dttype: 'yyyyMMdd'
+            daily:
+              - source_event_date_col: 'data_date'
+              - source_event_date_dttype: 'yyyyMMdd'
+      - name: user_login_log
+        meta:
+          run_mode:
+            backfill:
+              - source_event_date_col: 'data_date'
+              - source_event_date_dttype: 'yyyyMMdd'
+            daily:
+              - source_event_date_col: 'data_date'
+              - source_event_date_dttype: 'yyyyMMdd'
+
+  - name: omnima
+    database: "{{ var('bronze_database') }}"
+    schema: "{{ var('omnima_schema') }}"
+
+    tables:
+      - name: onboarding_cus
+        meta:
+          run_mode:
+            backfill:
+              - source_event_date_col: 'data_date'
+              - source_event_date_dttype: 'yyyyMMdd'
+            daily:
+              - source_event_date_col: 'data_date'
+              - source_event_date_dttype: 'yyyyMMdd'
+
+  - name: esb
+    database: "{{ var('bronze_database') }}"
+    schema: "{{ var('esb_schema') }}"
+
+    tables:
+      - name: omni_transaction_hist
+        meta:
+          run_mode:
+            backfill:
+              - source_event_date_col: 'data_date'
+              - source_event_date_dttype: 'yyyyMMdd'
+            daily:
+              - source_event_date_col: 'data_date'
+              - source_event_date_dttype: 'yyyyMMdd'
+      - name: transactions
+        meta:
+          run_mode:
+            backfill:
+              - source_event_date_col: 'data_date'
+              - source_event_date_dttype: 'yyyyMMdd'
+            daily:
+              - source_event_date_col: 'data_date'
+              - source_event_date_dttype: 'yyyyMMdd'
+      - name: batch_trans_details
+        meta:
+          run_mode:
+            backfill:
+              - source_event_date_col: 'data_date'
+              - source_event_date_dttype: 'yyyyMMdd'
+            daily:
+              - source_event_date_col: 'data_date'
+              - source_event_date_dttype: 'yyyyMMdd'

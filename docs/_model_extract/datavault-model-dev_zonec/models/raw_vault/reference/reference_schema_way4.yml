@@ -1,0 +1,1068 @@
+version: 2
+
+models:
+  - name: ref_way4_account_type
+    config:
+      contract:
+        enforced: true
+    columns:
+      - name: ref_hashkey
+        data_type: string
+        tests:
+          - unique:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+          - not_null:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+      - name: ref_type
+        data_type: string
+      - name: ref_code
+        data_type: string
+      - name: ref_description
+        data_type: string
+      - name: id
+        data_type: bigint
+      - name: code
+        data_type: string
+      - name: amnd_state
+        data_type: string
+      - name: amnd_date
+        data_type: string
+      - name: amnd_officer
+        data_type: bigint
+      - name: amnd_prev
+        data_type: bigint
+      - name: group_name
+        data_type: string
+      - name: pcat
+        data_type: string
+      - name: acat
+        data_type: string
+      - name: is_am_available
+        data_type: string
+      - name: due_type
+        data_type: string
+      - name: charge_for_open
+        data_type: bigint
+      - name: send_credit_to
+        data_type: bigint
+      - name: send_debit_to
+        data_type: bigint
+      - name: payment_priority
+        data_type: bigint
+      - name: account_status
+        data_type: string
+      - name: hashdiff
+        data_type: string
+      - name: source_event_date
+        data_type: date
+      - name: record_source
+        data_type: string
+      - name: load_timestamp
+        data_type: timestamp
+
+  - name: ref_way4_ows_add_data
+    config:
+      contract:
+        enforced: true
+    columns:
+      - name: ref_hashkey
+        data_type: string
+        tests:
+          - unique:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+          - not_null:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+      - name: ref_type
+        data_type: string
+      - name: ref_code
+        data_type: string
+      - name: ref_description
+        data_type: string
+      - name: amnd_state
+        data_type: string
+      - name: amnd_date
+        data_type: string
+      - name: amnd_officer
+        data_type: bigint
+      - name: amnd_prev
+        data_type: bigint
+      - name: add_data_col__id
+        data_type: bigint
+      - name: for_id
+        data_type: bigint
+      - name: add_data_tab
+        data_type: bigint
+      - name: partition_key
+        data_type: string
+      - name: data_date
+        data_type: string
+      - name: hashdiff
+        data_type: string
+      - name: source_event_date
+        data_type: date
+      - name: record_source
+        data_type: string
+      - name: load_timestamp
+        data_type: timestamp
+
+  - name: ref_way4_ows_bank_unit
+    config:
+      contract:
+        enforced: true
+    columns:
+      - name: ref_hashkey
+        data_type: string
+        tests:
+          - unique:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+          - not_null:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+      - name: ref_type
+        data_type: string
+      - name: ref_code
+        data_type: string
+      - name: ref_description
+        data_type: string
+      - name: id
+        data_type: bigint
+      - name: code
+        data_type: string
+      - name: amnd_state
+        data_type: string
+      - name: amnd_date
+        data_type: string
+      - name: amnd_officer
+        data_type: bigint
+      - name: amnd_prev
+        data_type: bigint
+      - name: unit_type
+        data_type: string
+      - name: bank_unit__oid
+        data_type: bigint
+      - name: f_i
+        data_type: bigint
+      - name: liab_contract
+        data_type: bigint
+      - name: bank_client
+        data_type: bigint
+      - name: is_ready
+        data_type: string
+      - name: hashdiff
+        data_type: string
+      - name: source_event_date
+        data_type: date
+      - name: record_source
+        data_type: string
+      - name: load_timestamp
+        data_type: timestamp
+
+  - name: ref_way4_ows_bin_table
+    config:
+      contract:
+        enforced: true
+    columns:
+      - name: ref_hashkey
+        data_type: string
+        tests:
+          - unique:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+          - not_null:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+      - name: ref_type
+        data_type: string
+      - name: ref_code
+        data_type: string
+      - name: ref_description
+        data_type: string
+      - name: amnd_state
+        data_type: string
+      - name: amnd_date
+        data_type: string
+      - name: amnd_officer
+        data_type: bigint
+      - name: amnd_prev
+        data_type: bigint
+      - name: bin_group__oid
+        data_type: bigint
+      - name: member_id
+        data_type: string
+      - name: start_bin
+        data_type: string
+      - name: end_bin
+        data_type: string
+      - name: start_bin_4
+        data_type: string
+      - name: pan_length
+        data_type: bigint
+      - name: bin_condition
+        data_type: string
+      - name: bin_details
+        data_type: string
+      - name: card_brand
+        data_type: string
+      - name: card_org
+        data_type: string
+      - name: card_technology
+        data_type: string
+      - name: cdv_algorithm
+        data_type: string
+      - name: channel
+        data_type: string
+      - name: country
+        data_type: string
+      - name: data_source
+        data_type: string
+      - name: ec_atm_type
+        data_type: string
+      - name: forwarding_id
+        data_type: string
+      - name: ica_number
+        data_type: string
+      - name: processing_class
+        data_type: string
+      - name: product_id
+        data_type: string
+      - name: licensed_product_id
+        data_type: string
+      - name: product_category
+        data_type: string
+      - name: region_for_issuer
+        data_type: string
+      - name: service_indicator
+        data_type: string
+      - name: terminal_category
+        data_type: string
+      - name: usage
+        data_type: string
+      - name: usage_domain
+        data_type: string
+      - name: bin_status
+        data_type: string
+      - name: data_date
+        data_type: string
+      - name: hashdiff
+        data_type: string
+      - name: source_event_date
+        data_type: date
+      - name: record_source
+        data_type: string
+      - name: load_timestamp
+        data_type: timestamp
+
+  - name: ref_way4_contr_status
+    config:
+      contract:
+        enforced: true
+    columns:
+      - name: ref_hashkey
+        data_type: string
+        tests:
+          - unique:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+          - not_null:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+      - name: ref_type
+        data_type: string
+      - name: ref_code
+        data_type: string
+      - name: ref_description
+        data_type: string
+      - name: id
+        data_type: bigint
+      - name: code
+        data_type: string
+      - name: amnd_state
+        data_type: string
+      - name: amnd_date
+        data_type: string
+      - name: amnd_officer
+        data_type: bigint
+      - name: amnd_prev
+        data_type: bigint
+      - name: con_cat
+        data_type: string
+      - name: external_code
+        data_type: string
+      - name: is_valid
+        data_type: string
+      - name: action_type
+        data_type: string
+      - name: restriction_code
+        data_type: string
+      - name: priority_code
+        data_type: string
+      - name: fraud_type
+        data_type: string
+      - name: auth_rc
+        data_type: bigint
+      - name: code_parms
+        data_type: string
+      - name: hashdiff
+        data_type: string
+      - name: source_event_date
+        data_type: date
+      - name: record_source
+        data_type: string
+      - name: load_timestamp
+        data_type: timestamp
+
+  - name: ref_way4_cs_status_type
+    config:
+      contract:
+        enforced: true
+    columns:
+      - name: ref_hashkey
+        data_type: string
+        tests:
+          - unique:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+          - not_null:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+      - name: ref_type
+        data_type: string
+      - name: ref_code
+        data_type: string
+      - name: ref_description
+        data_type: string
+      - name: amnd_date
+        data_type: string
+      - name: amnd_officer
+        data_type: bigint
+      - name: amnd_state
+        data_type: string
+      - name: amnd_prev
+        data_type: bigint
+      - name: code
+        data_type: string
+      - name: group_code
+        data_type: string
+      - name: default_value
+        data_type: bigint
+      - name: applies_to
+        data_type: string
+      - name: pcat
+        data_type: string
+      - name: con_cat
+        data_type: string
+      - name: ccat
+        data_type: string
+      - name: status_category
+        data_type: string
+      - name: log_flag
+        data_type: string
+      - name: is_primary
+        data_type: string
+      - name: on_off_mode
+        data_type: string
+      - name: domain_code
+        data_type: string
+      - name: domain_type__id
+        data_type: bigint
+      - name: add_info
+        data_type: string
+      - name: is_ready
+        data_type: string
+      - name: hashdiff
+        data_type: string
+      - name: source_event_date
+        data_type: date
+      - name: record_source
+        data_type: string
+      - name: load_timestamp
+        data_type: timestamp
+
+  - name: ref_way4_cs_status_value
+    config:
+      contract:
+        enforced: true
+    columns:
+      - name: ref_hashkey
+        data_type: string
+        tests:
+          - unique:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+          - not_null:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+      - name: ref_type
+        data_type: string
+      - name: ref_code
+        data_type: string
+      - name: ref_description
+        data_type: string
+      - name: amnd_date
+        data_type: string
+      - name: amnd_officer
+        data_type: bigint
+      - name: amnd_state
+        data_type: string
+      - name: amnd_prev
+        data_type: bigint
+      - name: cs_status_type__oid
+        data_type: bigint
+      - name: status_type_code
+        data_type: string
+      - name: is_ok
+        data_type: string
+      - name: result_event_code
+        data_type: string
+      - name: severity_level
+        data_type: bigint
+      - name: to_rules
+        data_type: string
+      - name: from_rules
+        data_type: string
+      - name: add_info
+        data_type: string
+      - name: is_active
+        data_type: string
+      - name: date_from
+        data_type: string
+      - name: date_to
+        data_type: string
+      - name: hashdiff
+        data_type: string
+      - name: source_event_date
+        data_type: date
+      - name: record_source
+        data_type: string
+      - name: load_timestamp
+        data_type: timestamp
+
+  - name: ref_way4_ows_event_type
+    config:
+      contract:
+        enforced: true
+    columns:
+      - name: ref_hashkey
+        data_type: string
+        tests:
+          - unique:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+          - not_null:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+      - name: ref_type
+        data_type: string
+      - name: ref_code
+        data_type: string
+      - name: ref_description
+        data_type: string
+      - name: id
+        data_type: bigint
+      - name: code
+        data_type: string
+      - name: amnd_state
+        data_type: string
+      - name: amnd_date
+        data_type: string
+      - name: amnd_officer
+        data_type: bigint
+      - name: amnd_prev
+        data_type: bigint
+      - name: group_code
+        data_type: string
+      - name: f_i
+        data_type: bigint
+      - name: pcat
+        data_type: string
+      - name: con_cat
+        data_type: string
+      - name: event_renew_type
+        data_type: string
+      - name: event_period
+        data_type: bigint
+      - name: due_to_work_day
+        data_type: string
+      - name: post_immediate
+        data_type: string
+      - name: fee_type
+        data_type: bigint
+      - name: new_status
+        data_type: bigint
+      - name: next_event
+        data_type: bigint
+      - name: start_job
+        data_type: bigint
+      - name: client_stop_list
+        data_type: string
+      - name: cr_limit_action
+        data_type: string
+      - name: used_in_history
+        data_type: string
+      - name: suppl_formula
+        data_type: string
+      - name: custom_event_code
+        data_type: string
+      - name: special_parms
+        data_type: string
+      - name: hashdiff
+        data_type: string
+      - name: source_event_date
+        data_type: date
+      - name: record_source
+        data_type: string
+      - name: load_timestamp
+        data_type: timestamp
+
+  - name: ref_way4_ows_evnt_action
+    config:
+      contract:
+        enforced: true
+    columns:
+      - name: ref_hashkey
+        data_type: string
+        tests:
+          - unique:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+          - not_null:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+      - name: ref_type
+        data_type: string
+      - name: ref_code
+        data_type: string
+      - name: ref_description
+        data_type: string
+      - name: id
+        data_type: bigint
+      - name: action_code
+        data_type: string
+      - name: usage_action__oid
+        data_type: bigint
+      - name: new_id
+        data_type: bigint
+      - name: old_id
+        data_type: bigint
+      - name: status
+        data_type: string
+      - name: data_date
+        data_type: string
+      - name: hashdiff
+        data_type: string
+      - name: source_event_date
+        data_type: date
+      - name: record_source
+        data_type: string
+      - name: load_timestamp
+        data_type: timestamp
+
+  - name: ref_way4_mess_channel
+    config:
+      contract:
+        enforced: true
+    columns:
+      - name: ref_hashkey
+        data_type: string
+        tests:
+          - unique:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+          - not_null:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+      - name: ref_type
+        data_type: string
+      - name: ref_code
+        data_type: string
+      - name: ref_description
+        data_type: string
+      - name: id
+        data_type: bigint
+      - name: code
+        data_type: string
+      - name: amnd_state
+        data_type: string
+      - name: amnd_date
+        data_type: string
+      - name: amnd_officer
+        data_type: bigint
+      - name: amnd_prev
+        data_type: bigint
+      - name: contra_channel
+        data_type: string
+      - name: data_source
+        data_type: string
+      - name: is_on_us
+        data_type: string
+      - name: settl_date
+        data_type: string
+      - name: hashdiff
+        data_type: string
+      - name: source_event_date
+        data_type: date
+      - name: record_source
+        data_type: string
+      - name: load_timestamp
+        data_type: timestamp
+
+  - name: ref_way4_resp_code
+    config:
+      contract:
+        enforced: true
+    columns:
+      - name: ref_hashkey
+        data_type: string
+        tests:
+          - unique:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+          - not_null:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+      - name: ref_type
+        data_type: string
+      - name: ref_code
+        data_type: string
+      - name: ref_description
+        data_type: string
+      - name: id
+        data_type: bigint
+      - name: resp_code
+        data_type: bigint
+      - name: amnd_state
+        data_type: string
+      - name: amnd_date
+        data_type: string
+      - name: amnd_officer
+        data_type: bigint
+      - name: amnd_prev
+        data_type: bigint
+      - name: resp_level
+        data_type: bigint
+      - name: message_code
+        data_type: string
+      - name: is_status
+        data_type: string
+      - name: hashdiff
+        data_type: string
+      - name: source_event_date
+        data_type: date
+      - name: record_source
+        data_type: string
+      - name: load_timestamp
+        data_type: timestamp
+
+  - name: ref_way4_sic
+    config:
+      contract:
+        enforced: true
+    columns:
+      - name: ref_hashkey
+        data_type: string
+        tests:
+          - unique:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+          - not_null:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+      - name: ref_type
+        data_type: string
+      - name: ref_code
+        data_type: string
+      - name: ref_description
+        data_type: string
+      - name: id
+        data_type: bigint
+      - name: code
+        data_type: string
+      - name: amnd_state
+        data_type: string
+      - name: amnd_date
+        data_type: string
+      - name: amnd_officer
+        data_type: bigint
+      - name: amnd_prev
+        data_type: bigint
+      - name: group_code
+        data_type: string
+      - name: custom_code
+        data_type: string
+      - name: limit_code
+        data_type: string
+      - name: sic_group_dflt
+        data_type: bigint
+      - name: use_in_bank
+        data_type: string
+      - name: hashdiff
+        data_type: string
+      - name: source_event_date
+        data_type: date
+      - name: record_source
+        data_type: string
+      - name: load_timestamp
+        data_type: timestamp
+
+  - name: ref_way4_ows_td_auth_type
+    config:
+      contract:
+        enforced: true
+    columns:
+      - name: ref_hashkey
+        data_type: string
+        tests:
+          - unique:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+          - not_null:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+      - name: ref_type
+        data_type: string
+      - name: ref_code
+        data_type: string
+      - name: ref_description
+        data_type: string
+      - name: id
+        data_type: bigint
+      - name: code
+        data_type: string
+      - name: amnd_date
+        data_type: string
+      - name: amnd_officer
+        data_type: bigint
+      - name: amnd_state
+        data_type: string
+      - name: amnd_prev
+        data_type: bigint
+      - name: auth_type_cat
+        data_type: string
+      - name: idt_required
+        data_type: string
+      - name: version_idt
+        data_type: string
+      - name: base_type
+        data_type: bigint
+      - name: is_ready
+        data_type: string
+      - name: hashdiff
+        data_type: string
+      - name: source_event_date
+        data_type: date
+      - name: record_source
+        data_type: string
+      - name: load_timestamp
+        data_type: timestamp
+
+  - name: ref_way4_trans_cond
+    config:
+      contract:
+        enforced: true
+    columns:
+      - name: ref_hashkey
+        data_type: string
+        tests:
+          - unique:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+          - not_null:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+      - name: ref_type
+        data_type: string
+      - name: ref_code
+        data_type: string
+      - name: ref_description
+        data_type: string
+      - name: id
+        data_type: bigint
+      - name: code
+        data_type: string
+      - name: name
+        data_type: string
+      - name: condition_details
+        data_type: string
+      - name: amnd_state
+        data_type: string
+      - name: amnd_date
+        data_type: string
+      - name: amnd_officer
+        data_type: bigint
+      - name: amnd_prev
+        data_type: bigint
+      - name: term_cat
+        data_type: string
+      - name: category_code
+        data_type: string
+      - name: default_condition
+        data_type: bigint
+      - name: late_condition
+        data_type: bigint
+      - name: security_code
+        data_type: string
+      - name: addendum
+        data_type: string
+      - name: hashdiff
+        data_type: string
+      - name: source_event_date
+        data_type: date
+      - name: record_source
+        data_type: string
+      - name: load_timestamp
+        data_type: timestamp
+
+  - name: ref_way4_trans_type
+    config:
+      contract:
+        enforced: true
+    columns:
+      - name: ref_hashkey
+        data_type: string
+        tests:
+          - unique:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+          - not_null:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+      - name: ref_type
+        data_type: string
+      - name: ref_code
+        data_type: string
+      - name: ref_description
+        data_type: string
+      - name: amnd_state
+        data_type: string
+      - name: amnd_date
+        data_type: string
+      - name: amnd_officer
+        data_type: bigint
+      - name: amnd_prev
+        data_type: bigint
+      - name: service_class
+        data_type: string
+      - name: s_cat
+        data_type: string
+      - name: t_cat
+        data_type: string
+      - name: dr_cr
+        data_type: bigint
+      - name: is_impersonal
+        data_type: string
+      - name: is_authorized
+        data_type: string
+      - name: is_required
+        data_type: string
+      - name: enable_adjustment
+        data_type: string
+      - name: enable_reversal
+        data_type: string
+      - name: enable_request
+        data_type: string
+      - name: prev_trans_type
+        data_type: bigint
+      - name: chain_type
+        data_type: string
+      - name: charge_event
+        data_type: string
+      - name: dispute_trn_class
+        data_type: string
+      - name: terminal_category
+        data_type: string
+      - name: production_type
+        data_type: string
+      - name: production_event
+        data_type: string
+      - name: trans_code
+        data_type: string
+      - name: reversal_code
+        data_type: string
+      - name: trans_type_idt
+        data_type: string
+      - name: priority
+        data_type: bigint
+      - name: hashdiff
+        data_type: string
+      - name: source_event_date
+        data_type: date
+      - name: record_source
+        data_type: string
+      - name: load_timestamp
+        data_type: timestamp
+
+  - name: ref_way4_ows_branch
+    config:
+      contract:
+        enforced: true
+    columns:
+      - name: ref_hashkey
+        data_type: string
+        tests:
+          - unique:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+          - not_null:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+      - name: ref_type
+        data_type: string
+      - name: ref_code
+        data_type: string
+      - name: ref_description
+        data_type: string
+      - name: ID
+        data_type: bigint
+      - name: CODE
+        data_type: string
+      - name: AMND_STATE
+        data_type: string
+      - name: AMND_DATE
+        data_type: string
+      - name: AMND_OFFICER
+        data_type: bigint
+      - name: AMND_PREV
+        data_type: bigint
+      - name: F_I
+        data_type: bigint
+      - name: BRANCH__OID
+        data_type: bigint
+      - name: LIAB_CONTRACT
+        data_type: bigint
+      - name: UNIT
+        data_type: bigint
+      - name: BANK_CLIENT
+        data_type: bigint
+      - name: TIME_ZONE
+        data_type: bigint
+      - name: UNIT_TYPE
+        data_type: string
+      - name: hashdiff
+        data_type: string
+      - name: source_event_date
+        data_type: date
+      - name: record_source
+        data_type: string
+      - name: load_timestamp
+        data_type: timestamp
+
+  - name: ref_way4_ows_country
+    config:
+      contract:
+        enforced: true
+    columns:
+      - name: ref_hashkey
+        data_type: string
+        tests:
+          - unique:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+          - not_null:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+      - name: ref_type
+        data_type: string
+      - name: ref_code
+        data_type: string
+      - name: ref_description
+        data_type: string
+      - name: ID
+        data_type: bigint
+      - name: CODE
+        data_type: string
+      - name: AMND_DATE
+        data_type: string
+      - name: AMND_STATE
+        data_type: string
+      - name: AMND_OFFICER
+        data_type: bigint
+      - name: AMND_PREV
+        data_type: bigint
+      - name: AREA_DFLT
+        data_type: bigint
+      - name: CODE_2
+        data_type: string
+      - name: CURR_CODE
+        data_type: string
+      - name: CURR_NAME
+        data_type: string
+      - name: CUSTOM_CODE
+        data_type: string
+      - name: DEFAULT_LANGUAGE
+        data_type: bigint
+      - name: LIMIT_CODE
+        data_type: string
+      - name: N_CODE
+        data_type: string
+      - name: N_CURR_CODE
+        data_type: string
+      - name: POSTAL_CODE
+        data_type: string
+      - name: USE_IN_BANK
+        data_type: string
+      - name: COUNTRY_OBJECT__ID
+        data_type: bigint
+      - name: CALENDAR_TYPE
+        data_type: bigint
+      - name: hashdiff
+        data_type: string
+      - name: source_event_date
+        data_type: date
+      - name: record_source
+        data_type: string
+      - name: load_timestamp
+        data_type: timestamp
+
+  - name: ref_way4_ows_currency
+    config:
+      contract:
+        enforced: true
+    columns:
+      - name: ref_hashkey
+        data_type: string
+        tests:
+          - unique:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+          - not_null:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+      - name: ref_type
+        data_type: string
+      - name: ref_code
+        data_type: string
+      - name: ref_description
+        data_type: string
+      - name: ID
+        data_type: bigint
+      - name: CODE
+        data_type: string
+      - name: AMND_STATE
+        data_type: string
+      - name: AMND_DATE
+        data_type: string
+      - name: AMND_OFFICER
+        data_type: bigint
+      - name: AMND_PREV
+        data_type: bigint
+      - name: FULL_NAME
+        data_type: string
+      - name: EXPONENT
+        data_type: string
+      - name: FX_RANGE
+        data_type: string
+      - name: USE_IN_BANK
+        data_type: string
+      - name: hashdiff
+        data_type: string
+      - name: source_event_date
+        data_type: date
+      - name: record_source
+        data_type: string
+      - name: load_timestamp
+        data_type: timestamp

@@ -1,0 +1,1016 @@
+# models/raw_vault/raw_vault_schema_clevertap.yml
+version: 2
+
+models:
+  # ====================== HUBS ======================
+
+  - name: hub_campaigns
+    config:
+      contract:
+        enforced: true
+    columns:
+      - name: campaigns_hashkey
+        data_type: string
+        tests:
+          - unique:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+          - not_null:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+      - name: business_key
+        data_type: string
+        tests:
+          - unique:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+          - not_null:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+      - name: source_event_date
+        data_type: date
+      - name: record_source
+        data_type: string
+      - name: load_timestamp
+        data_type: timestamp
+
+  - name: hub_profiles
+    config:
+      contract:
+        enforced: true
+    columns:
+      - name: profiles_hashkey
+        data_type: string
+        tests:
+          - unique:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+          - not_null:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+      - name: business_key
+        data_type: string
+        tests:
+          - unique:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+          - not_null:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+      - name: source_event_date
+        data_type: date
+      - name: record_source
+        data_type: string
+      - name: load_timestamp
+        data_type: timestamp
+
+  - name: hub_events
+    config:
+      contract:
+        enforced: true
+    columns:
+      - name: events_hashkey
+        data_type: string
+        tests:
+          - unique:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+          - not_null:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+      
+      - name: source_event_date
+        data_type: date
+      - name: record_source
+        data_type: string
+      - name: load_timestamp
+        data_type: timestamp
+      - name: ts
+        data_type: string
+      - name: identity
+        data_type: string
+      - name: eventName
+        data_type: string
+      - name: eventProps
+        data_type: string
+
+  # ====================== STS HUBS ======================
+
+  - name: sts_hub_campaigns
+    config:
+      contract:
+        enforced: true
+    columns:
+      - name: campaigns_hashkey
+        data_type: string
+        tests:
+          - relationships:
+              arguments:
+                to: ref('hub_campaigns')
+                field: campaigns_hashkey
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+          - not_null:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+      - name: source_event_date
+        data_type: date
+      - name: cdc_status
+        data_type: string
+        tests:
+          - not_null:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+
+    data_tests:
+      - unique_combination_of_columns:
+          arguments:
+            combination_of_columns:
+              - campaigns_hashkey
+              - source_event_date
+              - cdc_status
+
+  - name: sts_hub_events
+    config:
+      contract:
+        enforced: true
+    columns:
+      - name: events_hashkey
+        data_type: string
+        tests:
+          - relationships:
+              arguments:
+                to: ref('hub_events')
+                field: events_hashkey
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+          - not_null:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+      - name: source_event_date
+        data_type: date
+      - name: cdc_status
+        data_type: string
+        tests:
+          - not_null:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+
+    data_tests:
+      - unique_combination_of_columns:
+          arguments:
+            combination_of_columns:
+              - events_hashkey
+              - source_event_date
+              - cdc_status
+
+  # ====================== SATELLITES ======================
+
+  # --- profiles ---
+  - name: non_his_sat_profiles_overview
+    config:
+      contract:
+        enforced: true
+    columns:
+      - name: profiles_hashkey
+        data_type: string
+        tests:
+          - relationships:
+              arguments:
+                to: ref('hub_profiles')
+                field: profiles_hashkey
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+          - not_null:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+      - name: source_event_date
+        data_type: date
+      - name: load_timestamp
+        data_type: timestamp
+      - name: record_source
+        data_type: string
+      - name: subscriptiongroups
+        data_type: string
+      - name: msg_webpush
+        data_type: string
+      - name: msg_push
+        data_type: string
+      - name: msg_email
+        data_type: string
+      - name: msg_sms
+        data_type: string
+      - name: msg_whatsapp
+        data_type: string
+      - name: email
+        data_type: string
+      - name: phone
+        data_type: string
+      - name: name
+        data_type: string
+      - name: gender
+        data_type: string
+      - name: dob
+        data_type: string
+      - name: photo
+        data_type: string
+      - name: ct_is_test_user
+        data_type: string
+      - name: country
+        data_type: string
+      - name: type
+        data_type: string
+      - name: cif
+        data_type: string
+      - name: language1
+        data_type: string
+      - name: fullname
+        data_type: string
+      - name: group
+        data_type: string
+      - name: partner
+        data_type: string
+      - name: useragreement
+        data_type: string
+      - name: omni_status
+        data_type: string
+      - name: source_campaign
+        data_type: string
+      - name: source_id
+        data_type: string
+      - name: user_agreement
+        data_type: string
+      - name: birth_date
+        data_type: string
+      - name: group_sale
+        data_type: string
+      - name: accept_promotion
+        data_type: string
+      - name: mystuff
+        data_type: string
+      - name: marital_status
+        data_type: string
+      - name: segment
+        data_type: string
+      - name: accountcategory
+        data_type: string
+      - name: accounttype
+        data_type: string
+      - name: ebankingpackage
+        data_type: string
+      - name: account_type
+        data_type: string
+      - name: nice_acc_source
+        data_type: string
+      - name: nice_acc_type
+        data_type: string
+      - name: acc_category
+        data_type: string
+      - name: ebanking
+        data_type: string
+      - name: account
+        data_type: string
+      - name: cardinfo
+        data_type: string
+      - name: casadeposit
+        data_type: string
+      - name: loyalty
+        data_type: string
+      - name: transactions
+        data_type: string
+      - name: userprofile
+        data_type: string
+      - name: network
+        data_type: string
+      - name: omnistatus
+        data_type: string
+      - name: prioritystatus
+        data_type: string
+      - name: source
+        data_type: string
+      - name: sourcecampaign
+        data_type: string
+      - name: sourceid
+        data_type: string
+      - name: serialversionuid
+        data_type: string
+      - name: orderquantity
+        data_type: string
+      - name: order_quantity
+        data_type: string
+
+  - name: non_his_sat_profiles_detail
+    config:
+      contract:
+        enforced: true
+    columns:
+      - name: profiles_hashkey
+        data_type: string
+        tests:
+          - relationships:
+              arguments:
+                to: ref('hub_profiles')
+                field: profiles_hashkey
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+          - not_null:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+      - name: source_event_date
+        data_type: date
+      - name: load_timestamp
+        data_type: timestamp
+      - name: record_source
+        data_type: string
+      - name: averagecasarecent1month
+        data_type: string
+      - name: averagecasarecent3month
+        data_type: string
+      - name: averagecasarecent6month
+        data_type: string
+      - name: totalaccountbalancevnd
+        data_type: string
+      - name: groupavgcasarecent1month
+        data_type: string
+      - name: groupavgcasarecent3month
+        data_type: string
+      - name: groupavgcasarecent6month
+        data_type: string
+      - name: grouptotalaccbalancevnd
+        data_type: string
+      - name: group_avg_casa_recent_1_mth
+        data_type: string
+      - name: group_avg_casa_recent_3_mth
+        data_type: string
+      - name: group_avg_casa_recent_6_mth
+        data_type: string
+      - name: group_total_acc_balance_vnd
+        data_type: string
+      - name: aum
+        data_type: string
+      - name: depositnearestaccountdate
+        data_type: string
+      - name: haveonlinesavingbook
+        data_type: string
+      - name: lastonlinesavingdate
+        data_type: string
+      - name: lastsavingdate
+        data_type: string
+      - name: grouptotalesavingbalancevnd
+        data_type: string
+      - name: deposit_nearest_account_date
+        data_type: string
+      - name: group_total_esaving_balance_vnd
+        data_type: string
+      - name: last_online_savings_date
+        data_type: string
+      - name: last_savings_bank
+        data_type: string
+      - name: avgnumbertranstopupinmonth
+        data_type: string
+      - name: firsttransaction
+        data_type: string
+      - name: havebillpayment
+        data_type: string
+      - name: latesttopup
+        data_type: string
+      - name: latesttransaction
+        data_type: string
+      - name: numbertransin12month
+        data_type: string
+      - name: numbertransin1month
+        data_type: string
+      - name: numbertransin3month
+        data_type: string
+      - name: numbertransferin12month
+        data_type: string
+      - name: numbertransferin1month
+        data_type: string
+      - name: numbertransferin3month
+        data_type: string
+      - name: avg_num_trans_topup_mth
+        data_type: string
+      - name: first_omni_tnx
+        data_type: string
+      - name: latest_omni_tnx
+        data_type: string
+      - name: latest_topup
+        data_type: string
+      - name: num_transfer_12_mth
+        data_type: string
+      - name: num_transfer_1_mth
+        data_type: string
+      - name: num_transfer_3_mth
+        data_type: string
+      - name: num_trans_12_mth
+        data_type: string
+      - name: num_trans_1_mth
+        data_type: string
+      - name: num_trans_3_mth
+        data_type: string
+      - name: have_auto_bill
+        data_type: string
+      - name: avgcreditcardtransday
+        data_type: string
+      - name: avgcreditcardtransmth
+        data_type: string
+      - name: billduedate
+        data_type: string
+      - name: duedateviacard
+        data_type: string
+      - name: havecreditcard
+        data_type: string
+      - name: havedebitcard
+        data_type: string
+      - name: latestcardpay
+        data_type: string
+      - name: totalcardcreditamount
+        data_type: string
+      - name: latepaymentstatus
+        data_type: string
+      - name: avg_creditcard_trans_day
+        data_type: string
+      - name: avg_creditcard_trans_mth
+        data_type: string
+      - name: bill_due_date
+        data_type: string
+      - name: due_date_via_card
+        data_type: string
+      - name: late_payment_status
+        data_type: string
+      - name: latest_card_pay
+        data_type: string
+      - name: mastercard_card_linked_to_applepay
+        data_type: string
+      - name: napas_card_linked_to_applepay
+        data_type: string
+      - name: visa_card_linked_to_applepay
+        data_type: string
+      - name: currentcoins
+        data_type: string
+      - name: loyaltystatus
+        data_type: string
+      - name: current_coins
+        data_type: string
+      - name: campaign_codes
+        data_type: string
+      - name: number_of_voucher_series
+        data_type: string
+
+  - name: non_his_sat_profiles_custom
+    config:
+      contract:
+        enforced: true
+    columns:
+      - name: profiles_hashkey
+        data_type: string
+        tests:
+          - relationships:
+              arguments:
+                to: ref('hub_profiles')
+                field: profiles_hashkey
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+          - not_null:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+      - name: source_event_date
+        data_type: date
+      - name: load_timestamp
+        data_type: timestamp
+      - name: record_source
+        data_type: string
+      - name: c001
+        data_type: string
+      - name: c002
+        data_type: string
+      - name: c003
+        data_type: string
+      - name: c004
+        data_type: string
+      - name: c005
+        data_type: string
+      - name: c006
+        data_type: string
+      - name: c007
+        data_type: string
+      - name: c008
+        data_type: string
+      - name: c009
+        data_type: string
+      - name: c010
+        data_type: string
+      - name: c011
+        data_type: string
+      - name: c012
+        data_type: string
+      - name: c013
+        data_type: string
+      - name: c014
+        data_type: string
+      - name: c015
+        data_type: string
+      - name: c016
+        data_type: string
+      - name: c017
+        data_type: string
+      - name: c018
+        data_type: string
+      - name: c019
+        data_type: string
+      - name: c020
+        data_type: string
+      - name: c021
+        data_type: string
+      - name: c022
+        data_type: string
+      - name: c023
+        data_type: string
+      - name: c024
+        data_type: string
+      - name: c025
+        data_type: string
+      - name: c026
+        data_type: string
+      - name: c027
+        data_type: string
+      - name: c028
+        data_type: string
+      - name: c029
+        data_type: string
+      - name: c030
+        data_type: string
+      - name: c031
+        data_type: string
+      - name: c032
+        data_type: string
+      - name: c033
+        data_type: string
+      - name: c034
+        data_type: string
+      - name: c035
+        data_type: string
+      - name: c036
+        data_type: string
+      - name: c037
+        data_type: string
+      - name: c038
+        data_type: string
+      - name: c039
+        data_type: string
+      - name: c040
+        data_type: string
+      - name: c041
+        data_type: string
+      - name: c042
+        data_type: string
+      - name: c043
+        data_type: string
+      - name: c044
+        data_type: string
+      - name: c045
+        data_type: string
+      - name: c046
+        data_type: string
+      - name: c047
+        data_type: string
+      - name: c048
+        data_type: string
+      - name: c049
+        data_type: string
+      - name: c050
+        data_type: string
+      - name: c051
+        data_type: string
+      - name: c052
+        data_type: string
+      - name: c053
+        data_type: string
+      - name: c054
+        data_type: string
+      - name: c055
+        data_type: string
+      - name: c056
+        data_type: string
+      - name: c057
+        data_type: string
+      - name: c058
+        data_type: string
+      - name: c059
+        data_type: string
+      - name: c060
+        data_type: string
+      - name: c061
+        data_type: string
+      - name: c062
+        data_type: string
+      - name: c063
+        data_type: string
+      - name: c064
+        data_type: string
+      - name: c065
+        data_type: string
+      - name: c066
+        data_type: string
+      - name: c067
+        data_type: string
+      - name: c068
+        data_type: string
+      - name: c069
+        data_type: string
+      - name: c070
+        data_type: string
+      - name: c071
+        data_type: string
+      - name: c072
+        data_type: string
+      - name: c073
+        data_type: string
+      - name: c074
+        data_type: string
+      - name: c075
+        data_type: string
+      - name: c076
+        data_type: string
+      - name: c077
+        data_type: string
+      - name: c078
+        data_type: string
+      - name: c079
+        data_type: string
+      - name: c080
+        data_type: string
+      - name: c081
+        data_type: string
+      - name: c082
+        data_type: string
+      - name: c083
+        data_type: string
+      - name: c084
+        data_type: string
+      - name: c085
+        data_type: string
+      - name: c086
+        data_type: string
+      - name: c087
+        data_type: string
+      - name: c088
+        data_type: string
+      - name: c089
+        data_type: string
+      - name: c090
+        data_type: string
+      - name: c091
+        data_type: string
+      - name: c092
+        data_type: string
+      - name: c093
+        data_type: string
+      - name: c094
+        data_type: string
+      - name: c095
+        data_type: string
+      - name: c096
+        data_type: string
+      - name: c097
+        data_type: string
+      - name: c098
+        data_type: string
+      - name: c099
+        data_type: string
+      - name: c100
+        data_type: string
+
+  - name: sat_campaigns_information
+    config:
+      contract:
+        enforced: true
+    columns:
+      - name: campaigns_hashkey
+        data_type: string
+        tests:
+          - relationships:
+              arguments:
+                to: ref('hub_campaigns')
+                field: campaigns_hashkey
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+          - not_null:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+      - name: hashdiff
+        data_type: string
+      - name: source_event_date
+        data_type: date
+      - name: load_timestamp
+        data_type: timestamp
+      - name: record_source
+        data_type: string
+      - name: total_sent_events
+        data_type: string
+      - name: total_clicked_users
+        data_type: string
+      - name: total_viewed_users
+        data_type: string
+      - name: total_viewed_events
+        data_type: string
+      - name: total_clicked_events
+        data_type: string
+      - name: unique_sent_users
+        data_type: string
+      - name: unique_viewed_within_conversion_time
+        data_type: string
+      - name: unique_clicked_within_conversion_time
+        data_type: string
+      - name: error_user_not_reachable
+        data_type: string
+      - name: error_push_unregistered_android
+        data_type: string
+      - name: influenced_conversions_pct
+        data_type: string
+      - name: influenced_conversions
+        data_type: string
+      - name: error_user_dnd
+        data_type: string
+      - name: click_through_conversions_pct
+        data_type: string
+      - name: total_sent_users
+        data_type: string
+      - name: error_apns_bad_device_token
+        data_type: string
+      - name: estimated_reach
+        data_type: string
+      - name: click_through_conversions
+        data_type: string
+      - name: unique_converted_within_conversion_time
+        data_type: string
+      - name: errors
+        data_type: string
+      - name: status
+        data_type: string
+      - name: error_inbox_ttl_expired
+        data_type: string
+
+    data_tests:
+      - unique_combination_of_columns:
+          arguments:
+            combination_of_columns:
+              - campaigns_hashkey
+              - hashdiff
+              - source_event_date
+
+  - name: sat_campaigns_classification
+    config:
+      contract:
+        enforced: true
+    columns:
+      - name: campaigns_hashkey
+        data_type: string
+        tests:
+          - relationships:
+              arguments:
+                to: ref('hub_campaigns')
+                field: campaigns_hashkey
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+          - not_null:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+      - name: hashdiff
+        data_type: string
+      - name: source_event_date
+        data_type: date
+      - name: load_timestamp
+        data_type: timestamp
+      - name: record_source
+        data_type: string
+      - name: sent_influenced_conversions_pct
+        data_type: string
+      - name: title
+        data_type: string
+      - name: message
+        data_type: string
+      - name: start_date
+        data_type: string
+      - name: start_time
+        data_type: string
+      - name: device
+        data_type: string
+      - name: who_query
+        data_type: string
+      - name: constant_property
+        data_type: string
+      - name: safety_check_limit
+        data_type: string
+      - name: campaign_per_day_limit
+        data_type: string
+      - name: reach
+        data_type: string
+      - name: created_by
+        data_type: string
+      - name: created_time
+        data_type: string
+      - name: labels
+        data_type: string
+      - name: total_delivered_users
+        data_type: string
+      - name: total_unsubscribes100
+        data_type: string
+      - name: ios_badge_count
+        data_type: string
+      - name: ios_deep_link
+        data_type: string
+      - name: ios_mutable_content
+        data_type: string
+      - name: android_summary
+        data_type: string
+      - name: android_large_icon_url
+        data_type: string
+      - name: android_small_app_icon_colour
+        data_type: string
+      - name: android_sound_file
+        data_type: string
+      - name: android_notification_tray_priority
+        data_type: string
+      - name: android_notification_delivery_priority
+        data_type: string
+      - name: notification_channels
+        data_type: string
+      - name: badge_icon
+        data_type: string
+      - name: send_to_app_inbox_as_well
+        data_type: string
+      - name: service_provider
+        data_type: string
+      - name: conversion_event
+        data_type: string
+      - name: conversion_time_in_minutes
+        data_type: string
+      - name: campaign_url
+        data_type: string
+      - name: push_amplification_applied
+        data_type: string
+      - name: web_priority
+        data_type: string
+      - name: time_to_live_type
+        data_type: string
+      - name: time_to_live_value
+        data_type: string
+      - name: template_name
+        data_type: string
+      - name: provider_name
+        data_type: string
+      - name: waba_number
+        data_type: string
+      - name: total_control_group_count
+        data_type: string
+      - name: total_control_group_conversions_pct
+        data_type: string
+      - name: revenue_within_conversion_time
+        data_type: string
+      - name: system_control_group_conversions_pct
+        data_type: string
+      - name: system_control_group_revenue
+        data_type: string
+      - name: campaign_control_group_count
+        data_type: string
+      - name: campaign_control_group_conversions_pct
+        data_type: string
+      - name: campaign_control_group_revenue
+        data_type: string
+      - name: custom_control_group_count
+        data_type: string
+      - name: custom_control_group_conversions_pct
+        data_type: string
+      - name: custom_control_group_revenue
+        data_type: string
+      - name: custom_control_group_name
+        data_type: string
+      - name: sent_influenced_revenue
+        data_type: string
+      - name: total_html_viewed_events
+        data_type: string
+      - name: total_amp_viewed_events
+        data_type: string
+      - name: total_html_clicked_events
+        data_type: string
+      - name: total_amp_clicked_events
+        data_type: string
+      - name: campaign_name
+        data_type: string
+      - name: channel
+        data_type: string
+      - name: delivery
+        data_type: string
+      - name: type
+        data_type: string
+      - name: variant
+        data_type: string
+      - name: os
+        data_type: string
+      - name: dnd
+        data_type: string
+      - name: timezone
+        data_type: string
+      - name: cutoff
+        data_type: string
+      - name: fcap
+        data_type: string
+      - name: throttle
+        data_type: string
+      - name: campaign_overall_limit
+        data_type: string
+      - name: end_date
+        data_type: string
+      - name: total_delivered_events
+        data_type: string
+      - name: total_unsubscribes78
+        data_type: string
+      - name: ios_rich_media_type
+        data_type: string
+      - name: ios_rich_media_url
+        data_type: string
+      - name: ios_sound_file
+        data_type: string
+      - name: ios_category
+        data_type: string
+      - name: android_subtitle
+        data_type: string
+      - name: android_image_url
+        data_type: string
+      - name: android_deep_link
+        data_type: string
+      - name: collapse_notification
+        data_type: string
+      - name: badge_id
+        data_type: string
+      - name: rendermax_enabled
+        data_type: string
+      - name: click_through_conversion_revenue
+        data_type: string
+      - name: total_control_group_conversions
+        data_type: string
+      - name: total_control_group_revenue
+        data_type: string
+      - name: influenced_revenue
+        data_type: string
+      - name: system_control_group_count
+        data_type: string
+      - name: system_control_group_conversions
+        data_type: string
+      - name: campaign_control_group_conversions
+        data_type: string
+      - name: custom_control_group_conversions
+        data_type: string
+      - name: sent_influenced_conversions
+        data_type: string
+      - name: total_html_unsubscribes
+        data_type: string
+      - name: total_amp_unsubscribes
+        data_type: string
+
+    data_tests:
+      - unique_combination_of_columns:
+          arguments:
+            combination_of_columns:
+              - campaigns_hashkey
+              - hashdiff
+              - source_event_date
+
+  - name: sat_events_information
+    config:
+      contract:
+        enforced: true
+    columns:
+      - name: events_hashkey
+        data_type: string
+        tests:
+          - relationships:
+              arguments:
+                to: ref('hub_events')
+                field: events_hashkey
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+          - not_null:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+      - name: hashdiff
+        data_type: string
+      - name: source_event_date
+        data_type: date
+      - name: load_timestamp
+        data_type: timestamp
+      - name: record_source
+        data_type: string
+      - name: profile
+        data_type: string
+      - name: deviceInfo
+        data_type: string
+
+    data_tests:
+      - unique_combination_of_columns:
+          arguments:
+            combination_of_columns:
+              - events_hashkey
+              - hashdiff
+              - source_event_date

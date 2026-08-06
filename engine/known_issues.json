@@ -1,0 +1,14 @@
+{
+  "_nguon": "ZoneC Mapping - Iss log.xlsx, sheet 'Issue' - cac loi DA Data Vault ghi nhan o batch 1. Moi lan OCB tra loi moi thi them 1 regex vao day.",
+
+  "Issue#2 loc cdc_status = 'D' (giu ban ghi da xoa) thay vi loai": "cdc_status\\s*(=|IN)\\s*\\(?\\s*'D'\\s*(?!\\))",
+  "Issue#2 lay trang thai moi nhat bang ROW_NUMBER tren sts_hub_* (bat nhat voi max_by)": "ROW_NUMBER\\s*\\([^)]*\\)\\s*OVER\\s*\\([^)]*PARTITION\\s+BY[^)]*ORDER\\s+BY\\s+source_event_date",
+  "Issue#3 dieu kien rn=1 / cdc_status long trong subquery cua JOIN, chua chuyen ra after join": "\\bWHERE\\b[^\\n]*\\b(rn|rnk|row_num)\\s*=\\s*1\\s*AND[^\\n]*cdc_status",
+  "Issue#3 dieu kien rn=1 dat trong JOIN ... ON": "\\bON\\b[^\\n]*\\b(rn|rnk|row_num)\\s*=\\s*1",
+  "Issue#3 anti-join lay IS NULL tren tap cdc_status='D' (dao nguoc y nghia, thanh lay ban ghi da xoa)": "cdc_status\\s*=\\s*'D'[\\s\\S]{0,400}?\\bIS\\s+NULL",
+  "Issue#4 surrogate key DIM sinh bang MAX(<DIM_ID>) + ROW_NUMBER (trung khi chay song song)": "MAX\\s*\\(\\s*[\\w.]*ID\\s*\\)\\s*(?:AS\\s+\\w+\\s*)?[\\s\\S]{0,200}?\\+\\s*ROW_NUMBER",
+  "Issue#4 COALESCE(MAX(<DIM_ID>),0) lam moc tang dan cho surrogate key": "COALESCE\\s*\\(\\s*MAX\\s*\\(\\s*[\\w.]*ID\\s*\\)\\s*,\\s*0\\s*\\)",
+  "Issue#5 ROW_NUMBER()+WHERE rn=1 thay vi MAX_BY (cham hon)": "\\bWHERE\\b[^\\n]*\\brn\\s*=\\s*1",
+
+  "Tai lieu III.4.2: can duoi source_event_date >= lam bo sot ban ghi moi nhat": "source_event_date\\s*>=?"
+}

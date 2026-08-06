@@ -1,0 +1,139 @@
+# datavault_model/dbt_project.yml
+name: datavaultmodel2
+version: "1.0"
+config-version: 2
+
+profile: datavault-model   # trung voi ten profile trong profiles.yml
+
+# ==============================================================================
+# MODELS: Cau hinh mac dinh cho model theo tung layer
+# ==============================================================================
+models:
+  datavaultmodel2:
+    # Tam thoi tat contract vi schema yml cua model chua khai bao data_type cho columns.
+
+
+    # Layer staging doc du lieu tu cac he thong nguon va chuan hoa duoi dang view.
+    staging:
+      +materialized: view
+      +enabled: true
+      +schema: staging
+
+    # Layer raw vault luu cac cau truc hub, link va satellite cot loi.
+    raw_vault:
+      +enabled: true
+      +contract:
+          enforced: true
+      +schema: raw_vault
+      +auto_liquid_cluster: true
+      +on_schema_change: fail
+
+    # Layer business vault chua cac cau truc suy dien va logic nghiep vu.
+    business_vault:
+      +enabled: true
+      +contract:
+          enforced: true
+      +schema: business_vault
+      +auto_liquid_cluster: true
+      +on_schema_change: fail
+
+
+    # Project của OCB
+    # Layer data mart cong bo dau ra da duoc curate sang catalog phuc vu tieu thu.
+    data_mart:
+      +enabled: true
+      # +catalog: "{{ 'ocb_datavault_' ~ dev ~ '_curated' }}"
+      +schema: edw_mart
+
+# ==============================================================================
+# VARS: Bien dung cho source, job va cac luot chay backfill
+# ==============================================================================
+# Ten database duoc xac dinh theo env de tranh hardcode theo moi truong.
+vars:
+  # Cau hinh chung cho tung luot chay dbt.
+  # Var bắt truyền giá trị tĩnh cho database. Dynamic trong resources.
+  target_date: '20250101'
+  run_mode: "daily"
+  checkpoint_hooks_enabled: false
+  bronze_database: 'ocb_datavault_dev_sourcing'
+  raw_vault_database: 'ocb_datavault_dev_cleaned'
+  curated_catalog: 'ocb_datavault_dev_curated'
+  # Nguon T24.
+  t24_schema: 't24'
+
+  # Nguon WAY4.
+  way4_schema: 'way4'
+
+  # Nguon Omni.
+  omni_schema: 'omni'
+
+  # Nguon BPM.
+  bpm_schema:  'bpm'
+
+  # Nguon Comb.
+  comb_schema: 'comb'
+  
+  # Nguon BPA.
+  bpa_db_schema:  'bpa_db'
+  newfo_schema: 'newfo'
+  qldt_schema: 'qldt'
+
+  # Nguon CRM.
+  crm_schema: 'crm'
+
+  # Nguon Call Center.
+  callcenter_schema: 'callcenter'
+
+  # Nguon AppsFlyer.
+  appsflyer_schema:  'appsflyer'
+
+  # Nguon CleverTap.
+  clevertap_schema: 'clevertap'
+
+  # Nguon OCB Channel.
+  ocbchannel_schema: 'ocbchannel'
+
+  # Nguon Omnima.
+  omnima_schema: 'omnima'
+
+  # Nguon ESB.
+  esb_schema: 'esb'
+
+  # Nguon bang thu cong (catalog curated).
+  tckh_schema: 'tckh'
+
+  # Dich luu tru cac model raw vault sau khi lam sach va bien doi.
+  raw_vault_schema: 'raw_vault'
+
+  # Schema chua cac utility functions.
+  function_schema: 'audit_log'
+
+# ==============================================================================
+# HOOKS: Checkpoint va logging
+# ==============================================================================
+on-run-start:
+  - "{% if var('checkpoint_hooks_enabled', false) %}{{ init_checkpoint_table() }}{% endif %}"
+  - "{% if var('checkpoint_hooks_enabled', false) %}{{ log_run_start_to_console() }}{% endif %}"
+
+on-run-end:
+  - "{% if var('checkpoint_hooks_enabled', false) %}{{ log_run_results_to_db(results) }}{% endif %}"
+  - "{% if var('checkpoint_hooks_enabled', false) %}{{ log_run_end_to_console(results) }}{% endif %}"
+  - "{{ log_test_results_to_db(results) }}"   # test results     → etl_quality_check
+
+# ==============================================================================
+# FLAGS: Cac co dbt ap dung cho toan bo project
+# ==============================================================================
+flags:
+  # Chi chon cac node/test lien quan mot cach than trong, tranh run lan rong ngoai y muon.
+  indirect_selection: cautious
+
+  # Su dung co che materialization phien ban moi cua dbt.
+  use_materialization_v2: True
+
+  # Cau hinh cac warning duoc phep bo qua trong qua trinh parse/compile/run.
+  warn_error_options:
+    silence:
+      # Bo qua warning khi trong file yml co key khong map duoc toi node tuong ung.
+      - NoNodeForYamlKey
+      # Bo qua warning khi node duoc tham chieu khong ton tai hoac dang bi disable.
+      - NodeNotFoundOrDisabled

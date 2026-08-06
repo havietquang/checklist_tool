@@ -1,0 +1,368 @@
+version: 2
+
+models:
+  - name: ref_omni_fee_discount
+    config:
+      contract:
+        enforced: true
+    columns:
+      - name: ref_hashkey
+        data_type: string
+        tests:
+          - unique:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+          - not_null:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+      - name: ref_type
+        data_type: string
+      - name: ref_code
+        data_type: string
+      - name: ref_description
+        data_type: string
+      - name: id
+        data_type: string
+      - name: code
+        data_type: string
+      - name: created_at
+        data_type: string
+      - name: created_by
+        data_type: string
+      - name: updated_at
+        data_type: string
+      - name: updated_by
+        data_type: string
+      - name: discount_rate
+        data_type: decimal(19,2)
+      - name: end_at
+        data_type: string
+      - name: name
+        data_type: string
+      - name: start_at
+        data_type: string
+      - name: status
+        data_type: string
+      - name: fee_discount_type
+        data_type: string
+      - name: fee_reduction_time
+        data_type: int
+      - name: approved_by
+        data_type: string
+      - name: hashdiff
+        data_type: string
+      - name: source_event_date
+        data_type: date
+      - name: record_source
+        data_type: string
+      - name: load_timestamp
+        data_type: timestamp
+
+  - name: ref_omni_master_data
+    config:
+      contract:
+        enforced: true
+    columns:
+      - name: ref_hashkey
+        data_type: string
+        tests:
+          - unique:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+          - not_null:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+      - name: ref_type
+        data_type: string
+      - name: ref_code
+        data_type: string
+      - name: ref_description
+        data_type: string
+      - name: id
+        data_type: string
+      - name: code
+        data_type: string
+      - name: created_at
+        data_type: string
+      - name: created_by
+        data_type: string
+      - name: updated_at
+        data_type: string
+      - name: updated_by
+        data_type: string
+      - name: name
+        data_type: string
+      - name: status
+        data_type: string
+      - name: type
+        data_type: string
+      - name: hashdiff
+        data_type: string
+      - name: source_event_date
+        data_type: date
+      - name: record_source
+        data_type: string
+      - name: load_timestamp
+        data_type: timestamp
+
+  - name: ref_omni_package
+    config:
+      contract:
+        enforced: true
+    columns:
+      - name: ref_hashkey
+        data_type: string
+        tests:
+          - unique:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+          - not_null:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+      - name: ref_type
+        data_type: string
+      - name: ref_code
+        data_type: string
+      - name: ref_description
+        data_type: string
+      - name: id
+        data_type: string
+      - name: code
+        data_type: string
+      - name: created_at
+        data_type: string
+      - name: created_by
+        data_type: string
+      - name: updated_at
+        data_type: string
+      - name: updated_by
+        data_type: string
+      - name: description
+        data_type: string
+      - name: status
+        data_type: string
+      - name: can_register_ep_portal
+        data_type: tinyint
+      - name: effective_date
+        data_type: date
+      - name: package_discontinuation_date
+        data_type: date
+      - name: hashdiff
+        data_type: string
+      - name: source_event_date
+        data_type: date
+      - name: record_source
+        data_type: string
+      - name: load_timestamp
+        data_type: timestamp
+
+  - name: ref_omni_services
+    config:
+      contract:
+        enforced: true
+    columns:
+      - name: ref_hashkey
+        data_type: string
+        tests:
+          - unique:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+          - not_null:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+      - name: ref_type
+        data_type: string
+      - name: ref_code
+        data_type: string
+      - name: ref_description
+        data_type: string
+      - name: id
+        data_type: bigint
+      - name: service_code
+        data_type: string
+      - name: service_icon
+        data_type: string
+      - name: created_at
+        data_type: string
+      - name: modified_at
+        data_type: string
+      - name: created_by
+        data_type: string
+      - name: modified_by
+        data_type: string
+      - name: prop1
+        data_type: string
+      - name: prop2
+        data_type: string
+      - name: prop3
+        data_type: decimal(19,2)
+      - name: prop4
+        data_type: bigint
+      - name: prop5
+        data_type: string
+      - name: service_order
+        data_type: int
+      - name: service_code_new
+        data_type: string
+      - name: visible
+        data_type: int
+      - name: group_service
+        data_type: string
+      - name: hashdiff
+        data_type: string
+      - name: source_event_date
+        data_type: date
+      - name: record_source
+        data_type: string
+      - name: load_timestamp
+        data_type: timestamp
+
+  - name: ref_omni_service_provider
+    config:
+      contract:
+        enforced: true
+    columns:
+      - name: ref_hashkey
+        data_type: string
+        tests:
+          - unique:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+          - not_null:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+      - name: ref_type
+        data_type: string
+      - name: ref_code
+        data_type: string
+      - name: ref_description
+        data_type: string
+      - name: id
+        data_type: bigint
+      - name: provider_code
+        data_type: string
+      - name: provider_icon
+        data_type: string
+      - name: services_id
+        data_type: bigint
+      - name: service_code
+        data_type: string
+      - name: provider_group_code
+        data_type: string
+      - name: provider_group_name
+        data_type: string
+      - name: auto_bill
+        data_type: string
+      - name: title
+        data_type: string
+      - name: image
+        data_type: string
+      - name: created_at
+        data_type: string
+      - name: modified_at
+        data_type: string
+      - name: created_by
+        data_type: string
+      - name: modified_by
+        data_type: string
+      - name: provider_group_service_id
+        data_type: bigint
+      - name: prop1
+        data_type: string
+      - name: prop2
+        data_type: string
+      - name: prop3
+        data_type: decimal(19,2)
+      - name: prop4
+        data_type: bigint
+      - name: prop5
+        data_type: string
+      - name: gateway_id
+        data_type: string
+      - name: visible
+        data_type: int
+      - name: allow_credit_card
+        data_type: int
+      - name: content_en
+        data_type: string
+      - name: content_vi
+        data_type: string
+      - name: content_reason
+        data_type: string
+      - name: provider_order
+        data_type: bigint
+      - name: save_my_bill
+        data_type: string
+      - name: module
+        data_type: string
+      - name: group_service
+        data_type: string
+      - name: has_fee
+        data_type: int
+      - name: allow_in_group
+        data_type: int
+      - name: allow_fav_trans
+        data_type: int
+      - name: alt_provider_code
+        data_type: string
+      - name: alt_gateway_id
+        data_type: string
+      - name: content_ko
+        data_type: string
+      - name: content_ja
+        data_type: string
+      - name: auto_bill_permission
+        data_type: tinyint
+      - name: manual_bill_permission
+        data_type: tinyint
+      - name: hashdiff
+        data_type: string
+      - name: source_event_date
+        data_type: date
+      - name: record_source
+        data_type: string
+      - name: load_timestamp
+        data_type: timestamp
+
+  - name: ref_omni_service_type
+    config:
+      contract:
+        enforced: true
+    columns:
+      - name: ref_hashkey
+        data_type: string
+        tests:
+          - unique:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+          - not_null:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+      - name: ref_type
+        data_type: string
+      - name: ref_code
+        data_type: string
+      - name: ref_description
+        data_type: string
+      - name: id
+        data_type: string
+      - name: service_code
+        data_type: string
+      - name: business_function_id
+        data_type: string
+      - name: maximum_default_transaction_bound
+        data_type: decimal(19,2)
+      - name: minimum_default_transaction_bound
+        data_type: decimal(19,2)
+      - name: support_limit
+        data_type: tinyint
+      - name: payment_type
+        data_type: string
+      - name: hashdiff
+        data_type: string
+      - name: source_event_date
+        data_type: date
+      - name: record_source
+        data_type: string
+      - name: load_timestamp
+        data_type: timestamp

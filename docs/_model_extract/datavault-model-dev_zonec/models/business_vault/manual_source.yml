@@ -1,0 +1,7 @@
+sources:
+  - name: tckh
+    database: "{{ var('curated_catalog') }}"
+    schema: "{{ var('tckh_schema') }}"
+    
+    tables:
+      - name: gl_param

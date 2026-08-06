@@ -1,0 +1,4 @@
+# Thu vien can cho tools/gold_review/run_check.py
+# Cai:  python -m pip install -r tools/gold_review/requirements.txt
+sqlglot>=25.0
+openpyxl>=3.1

@@ -1,0 +1,73 @@
+version: 2
+
+models:
+  - name: v_stg_appsflyer_in_app_events_report
+    columns:
+      - name: hashkey
+        tests:
+          - not_null:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+  
+  - name: v_stg_appsflyer_installs_report
+    columns:
+      - name: hashkey
+        tests:
+          - unique:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+          - not_null:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+  
+  - name: v_stg_appsflyer_organic_in_app_events_report
+    columns:
+      - name: hashkey
+        tests:
+          - not_null:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+  
+  - name: v_stg_appsflyer_organic_uninstall_events_report
+    columns:
+      - name: hashkey
+        tests:
+          - unique:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+          - not_null:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+  
+  - name: v_stg_appsflyer_reinstalls_organic
+    columns:
+      - name: hashkey
+        tests:
+          - unique:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+          - not_null:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+  
+  - name: v_stg_appsflyer_reinstalls
+    columns:
+      - name: hashkey
+        tests:
+          - unique:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+          - not_null:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+  
+  - name: v_stg_appsflyer_uninstall_events_report
+    columns:
+      - name: hashkey
+        tests:
+          - unique:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+          - not_null:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"

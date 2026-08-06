@@ -1,0 +1,95 @@
+resources:
+  jobs:
+    job_run_dbt_loop_dates:
+      name: job_run_dbt_loop_dates
+      max_concurrent_runs: 1
+
+      parameters:
+        - name: start_date
+          default: "20240401"
+        - name: end_date
+          default: "20240402"
+        - name: environment
+          default: "${var.env}"
+        - name: threads
+          default: "20"
+        - name: run_mode
+          default: "backfill"
+        - name: dbt_run_args
+          default: "-s hub_client"
+
+      tasks:
+        - task_key: generate_run_dates
+          spark_python_task:
+            python_file: ../sourcing/generate_backfill_dates.py
+            source: WORKSPACE
+            parameters:
+              - --start-date
+              - "{{job.parameters.start_date}}"
+              - --end-date
+              - "{{job.parameters.end_date}}"
+              - --task-value-key
+              - run_dates
+          job_cluster_key: dbt_job_cluster
+
+        - task_key: run_dbt_by_date
+          depends_on:
+            - task_key: generate_run_dates
+          for_each_task:
+            concurrency: 1
+            inputs: "{{tasks.generate_run_dates.values.run_dates}}"
+            task:
+              task_key: run_dbt_for_target_date
+              dbt_task:
+                project_directory: ${workspace.file_path}
+                commands:
+                  - >-
+                    dbt run {{job.parameters.dbt_run_args}} --target
+                    {{job.parameters.environment}} --threads
+                    {{job.parameters.threads}} --vars
+                    '{"target_date": "{{input}}", "run_mode": "{{job.parameters.run_mode}}",
+                    "bronze_database": "ocb_datavault_{{job.parameters.environment}}_sourcing",
+                    "raw_vault_database": "ocb_datavault_{{job.parameters.environment}}_cleaned"}'
+                source: WORKSPACE
+              job_cluster_key: dbt_job_cluster
+
+      job_clusters:
+        - job_cluster_key: dbt_job_cluster
+          new_cluster:
+            spark_version: 15.4.x-scala2.12
+            spark_conf:
+              spark.sql.redaction.string.regex: \"(password|user)\"[\s]*[^\"]*\"[^\"]*\"
+              spark.hadoop.datanucleus.fixedDatastore: "false"
+              spark.hadoop.javax.jdo.option.ConnectionDriverName: org.apache.derby.jdbc.EmbeddedDriver
+              spark.hadoop.javax.jdo.option.ConnectionURL: jdbc:derby:memory:myInMemDB;create=true
+              spark.hadoop.javax.jdo.option.ConnectionUserName: hiveuser
+              spark.hadoop.javax.jdo.option.ConnectionPassword: hivepass
+              spark.hadoop.datanucleus.autoCreateSchema: "true"
+              spark.hadoop.datanucleus.autoCreateTables: "true"
+              spark.sql.catalogImplementation: hive
+            node_type_id: m5d.xlarge
+            custom_tags:
+              costproject: datavault-model
+              zone: silver
+              map-migrated: migV58YOK697G
+            spark_env_vars:
+              PYSPARK_PYTHON: /databricks/python3/bin/python3
+              DATABRICKS_HOST: "${var.host}"
+              DATABRICKS_SQL_WAREHOUSE_HTTP_PATH: "${var.sql_warehouse_http_path}"
+              DATABRICKS_DESTINATION_CATALOG: "${var.destination_catalog}"
+              DATABRICKS_DESTINATION_SCHEMA: "${var.destination_schema}"
+              DATABRICKS_CLIENT_ID: "{{secrets/ocb-cdp-datavault/datavault_dbt_job_client_id}}"
+              DATABRICKS_CLIENT_SECRET: "{{secrets/ocb-cdp-datavault/datavault_dbt_job_client_secret}}"
+            init_scripts:
+              - volumes:
+                  destination: /Volumes/ocb_cdp_python_library_jdbc/default/init_script/ocb_datavault_dbt_shared_cluster.sh
+            data_security_mode: DATA_SECURITY_MODE_DEDICATED
+            runtime_engine: STANDARD
+            kind: CLASSIC_PREVIEW
+            is_single_node: true
+
+      tags:
+        map-migrated: migV58YOK697G
+
+      queue:
+        enabled: true

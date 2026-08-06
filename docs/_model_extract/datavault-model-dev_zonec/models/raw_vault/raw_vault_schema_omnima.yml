@@ -1,0 +1,326 @@
+
+
+version: 2
+
+models:
+  # ====================== HUBS ======================
+
+  - name: hub_onbroading_cus
+    columns:
+      - name: onbroading_cus_hashkey
+        data_type: string
+        tests:
+          - unique:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+          - not_null:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+      - name: business_key
+        data_type: bigint
+      - name: source_event_date
+        data_type: date
+      - name: record_source
+        data_type: string
+      - name: load_timestamp
+        data_type: timestamp
+
+  # ====================== LINKS ======================
+
+  - name: link_onbroading_cus_customer
+    columns:
+      - name: link_onbroading_cus_customer_hashkey
+        data_type: string
+      - name: onbroading_cus_hashkey
+        data_type: string
+      - name: customer_hashkey
+        data_type: string
+      - name: source_event_date
+        data_type: date
+      - name: record_source
+        data_type: string
+      - name: load_timestamp
+        data_type: timestamp
+
+  # ====================== SATELLITES ======================
+
+  - name: sat_onbroading_cus_information
+    columns:
+      - name: onbroading_cus_hashkey
+        data_type: string
+      - name: hashdiff
+        data_type: string
+      - name: source_event_date
+        data_type: date
+      - name: load_timestamp
+        data_type: timestamp
+      - name: record_source
+        data_type: string
+      - name: creat_by
+        data_type: string
+      - name: creat_dt
+        data_type: string
+      - name: updt_by
+        data_type: string
+      - name: updt_dt
+        data_type: string
+      - name: birthday
+        data_type: string
+      - name: crefnum
+        data_type: string
+      - name: contact_address
+        data_type: string
+      - name: contact_address_district
+        data_type: string
+      - name: contact_address_province
+        data_type: string
+      - name: contact_address_ward
+        data_type: string
+      - name: custgroup_type
+        data_type: string
+      - name: email
+        data_type: string
+      - name: fullname
+        data_type: string
+      - name: gender
+        data_type: string
+      - name: is_exist_bankaccount
+        data_type: bigint
+      - name: is_exist_debitcard
+        data_type: bigint
+      - name: is_exist_ebuser
+        data_type: bigint
+      - name: is_open_atm
+        data_type: bigint
+      - name: is_receive_physicalcard
+        data_type: bigint
+      - name: is_receive_virtualcard
+        data_type: bigint
+      - name: legalidnum
+        data_type: string
+      - name: legalidtype
+        data_type: string
+      - name: legaliid_expired_date
+        data_type: string
+      - name: legaliid_issued_date
+        data_type: string
+      - name: legaliid_issued_location
+        data_type: string
+      - name: marital_status
+        data_type: string
+      - name: mobilenumber
+        data_type: string
+      - name: nationality
+        data_type: string
+      - name: prefnum
+        data_type: string
+      - name: permanent_address
+        data_type: string
+      - name: permanent_address_district
+        data_type: string
+      - name: permanent_address_province
+        data_type: string
+      - name: permanent_address_ward
+        data_type: string
+      - name: professional_name
+        data_type: string
+      - name: register_fail_date
+        data_type: string
+      - name: register_status
+        data_type: string
+      - name: trans_method
+        data_type: string
+      - name: transaction_return
+        data_type: string
+      - name: transaction_return_msg
+        data_type: string
+      - name: input_date
+        data_type: string
+      - name: cif
+        data_type: string
+      - name: appsflyer_id
+        data_type: string
+      - name: address_street_line
+        data_type: string
+      - name: check_nfc_result
+        data_type: string
+      - name: chip_photo_path
+        data_type: string
+      - name: first_name
+        data_type: string
+      - name: is_nfc
+        data_type: bigint
+      - name: last_name
+        data_type: string
+      - name: province_name
+        data_type: string
+      - name: verify_id_chip_status
+        data_type: string
+
+  - name: sat_onbroading_cus_onbroading
+    columns:
+      - name: onbroading_cus_hashkey
+        data_type: string
+      - name: hashdiff
+        data_type: string
+      - name: source_event_date
+        data_type: date
+      - name: load_timestamp
+        data_type: timestamp
+      - name: record_source
+        data_type: string
+      - name: step_authorize_status
+        data_type: string
+      - name: step_check_aml
+        data_type: string
+      - name: executed_register
+        data_type: string
+      - name: facematching_status
+        data_type: string
+      - name: full_go_step
+        data_type: string
+      - name: image_id_facematching
+        data_type: string
+      - name: image_id_legalid
+        data_type: string
+      - name: image_id_selfie
+        data_type: string
+      - name: image_id_ocr
+        data_type: string
+      - name: legalid_status
+        data_type: string
+      - name: liveness_selfie_score
+        data_type: string
+      - name: liveness_selfie_status
+        data_type: string
+      - name: meeting_address
+        data_type: string
+      - name: meeting_address_district
+        data_type: string
+      - name: meeting_address_province
+        data_type: string
+      - name: meeting_address_ward
+        data_type: string
+      - name: meeting_bank_brank_code
+        data_type: string
+      - name: meeting_date
+        data_type: string
+      - name: meeting_time_from
+        data_type: string
+      - name: meeting_time_to
+        data_type: string
+      - name: meeting_type
+        data_type: string
+      - name: number_failed_verify_legalid_sanity
+        data_type: string
+      - name: number_failed_verify_legalid_tampering
+        data_type: string
+      - name: number_failed_verify_selfie_sanity_liveness
+        data_type: string
+      - name: meeting_note
+        data_type: string
+      - name: ocrmatching_status
+        data_type: string
+      - name: step_verify_ocr
+        data_type: string
+      - name: sanity_legalid_score
+        data_type: string
+      - name: sanity_legalid_status
+        data_type: string
+      - name: sanity_legalid_verdit
+        data_type: string
+      - name: sanity_selfie_score
+        data_type: string
+      - name: sanity_selfie_status
+        data_type: string
+      - name: sanity_selfie_verdit
+        data_type: string
+      - name: step_verify_selfie
+        data_type: string
+      - name: step_verify_facematching
+        data_type: string
+      - name: step_verify_legalid
+        data_type: string
+      - name: step_register_status
+        data_type: string
+      - name: tampering_legalid_score
+        data_type: string
+      - name: tampering_legalid_status
+        data_type: string
+      - name: tampering_legalid_verdit
+        data_type: string
+
+  - name: sat_onbroading_cus_detail
+    columns:
+      - name: onbroading_cus_hashkey
+        data_type: string
+      - name: hashdiff
+        data_type: string
+      - name: source_event_date
+        data_type: date
+      - name: load_timestamp
+        data_type: timestamp
+      - name: record_source
+        data_type: string
+      - name: legalidlabel1
+        data_type: string
+      - name: legalidlabel2
+        data_type: string
+      - name: number_failed_verify_selfie_liveness
+        data_type: string
+      - name: number_failed_verify_selfie_sanity
+        data_type: string
+      - name: sent_data_to_crm
+        data_type: string
+      - name: lst_fatca
+        data_type: string
+      - name: utm_source
+        data_type: string
+      - name: card_bank_branch_code
+        data_type: string
+      - name: card_holder_name
+        data_type: string
+      - name: card_number
+        data_type: string
+      - name: card_received_address
+        data_type: string
+      - name: card_received_district_code
+        data_type: string
+      - name: card_received_product_code
+        data_type: string
+      - name: card_received_province_code
+        data_type: string
+      - name: card_received_type
+        data_type: string
+      - name: card_received_ward_code
+        data_type: string
+      - name: step_open_debit_card
+        data_type: string
+      - name: token_number
+        data_type: string
+      - name: referral_code
+        data_type: string
+      - name: old_legal_id_exist_status
+        data_type: string
+      - name: verify_response
+        data_type: string
+      - name: hyper_result
+        data_type: string
+      - name: black_list
+        data_type: string
+      - name: lognote
+        data_type: string
+      - name: eb_package_type
+        data_type: string
+      - name: deeplink
+        data_type: string
+      - name: legalid_issued_location_code
+        data_type: string
+      - name: newfo_transferred
+        data_type: string
+      - name: appsflyer_pid
+        data_type: string
+      - name: customer_updated_status_infor
+        data_type: string
+      - name: customer_flow_type
+        data_type: string

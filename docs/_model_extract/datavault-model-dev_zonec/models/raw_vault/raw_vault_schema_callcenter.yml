@@ -1,0 +1,232 @@
+# models/raw_vault/schema.yml
+version: 2
+
+models:
+  # ====================== HUBS  ======================
+
+  - name: hub_callcenter
+    config:
+      contract:
+        enforced: true
+    columns:
+      - name: callcenter_hashkey
+        data_type: string
+        tests:
+          - unique:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+          - not_null:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+      - name: business_key
+        data_type: string
+        tests:
+          - unique:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+          - not_null:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+      - name: source_event_date
+        data_type: date
+      - name: record_source
+        data_type: string
+      - name: load_timestamp
+        data_type: timestamp
+
+  # ====================== SATELLITES  ======================
+
+  - name: sat_callcenter_information
+    config:
+      contract:
+        enforced: true
+    columns:
+      - name: callcenter_hashkey
+        data_type: string
+        tests:
+          - relationships:
+              arguments:
+                to: ref('hub_callcenter')
+                field: callcenter_hashkey
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+          - not_null:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+      - name: hashdiff
+        data_type: string
+      - name: source_event_date
+        data_type: date
+      - name: load_timestamp
+        data_type: timestamp
+      - name: record_source
+        data_type: string
+      - name: uniqueid
+        data_type: string
+      - name: gcalluuid
+        data_type: string
+      - name: accountcode
+        data_type: string
+      - name: dialid
+        data_type: string
+      - name: sipserver
+        data_type: string
+      - name: src
+        data_type: string
+      - name: dst
+        data_type: string
+      - name: channel
+        data_type: string
+      - name: dstchannel
+        data_type: string
+      - name: queue
+        data_type: string
+      - name: in_out
+        data_type: string
+      - name: did_number
+        data_type: string
+      - name: prefix_detail
+        data_type: string
+      - name: carrier
+        data_type: string
+      - name: callername
+        data_type: string
+      - name: customer_id
+        data_type: int
+      - name: customer_code
+        data_type: string
+      - name: customername
+        data_type: string
+      - name: customercif
+        data_type: string
+
+    data_tests:
+      - unique_combination_of_columns:
+          arguments:
+            combination_of_columns:
+              - callcenter_hashkey
+              - hashdiff
+              - source_event_date
+
+  - name: sat_callcenter_outcome   
+    config:
+      contract:
+        enforced: true
+    columns:
+      - name: callcenter_hashkey
+        data_type: string
+        tests:
+          - relationships:
+              arguments:
+                to: ref('hub_callcenter')
+                field: callcenter_hashkey
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+          - not_null:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+      - name: hashdiff
+        data_type: string
+      - name: source_event_date
+        data_type: date
+      - name: load_timestamp
+        data_type: timestamp
+      - name: record_source
+        data_type: string
+      - name: calldate
+        data_type: bigint
+      - name: calldatetime
+        data_type: string
+      - name: createtime
+        data_type: bigint
+      - name: duration
+        data_type: int
+      - name: billsec
+        data_type: int
+      - name: billtime
+        data_type: int
+      - name: holdtime
+        data_type: int
+      - name: talktime
+        data_type: int
+      - name: waitingtime
+        data_type: int
+      - name: moh_time
+        data_type: int
+      - name: disposition
+        data_type: string
+      - name: system_disposition
+        data_type: string
+      - name: extension_disposition
+        data_type: string
+      - name: calltype
+        data_type: string
+      - name: hangup_by
+        data_type: string
+      - name: connected
+        data_type: string
+      - name: not_connected
+        data_type: string
+      - name: processed
+        data_type: int
+      - name: filename
+        data_type: string
+      - name: moh_log
+        data_type: string
+      - name: moh_log_process
+        data_type: string
+
+    data_tests:
+      - unique_combination_of_columns:
+          arguments:
+            combination_of_columns:
+              - callcenter_hashkey
+              - hashdiff
+              - source_event_date
+
+  # ====================== LINKS  ======================
+
+  - name: link_callcenter_customer
+    config:
+      contract:
+        enforced: true
+    columns:
+      - name: link_callcenter_customer_hashkey
+        data_type: string
+        tests:
+          - unique:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+          - not_null:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+      - name: callcenter_hashkey
+        data_type: string
+        tests:
+          - relationships:
+              arguments:
+                to: ref('hub_callcenter')
+                field: callcenter_hashkey
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+          - not_null:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+      - name: customer_hashkey
+        data_type: string
+        tests:
+          - relationships:
+              arguments:
+                to: ref('hub_customer')
+                field: customer_hashkey
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+          - not_null:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+      - name: source_event_date
+        data_type: date
+      - name: record_source
+        data_type: string
+      - name: load_timestamp
+        data_type: timestamp

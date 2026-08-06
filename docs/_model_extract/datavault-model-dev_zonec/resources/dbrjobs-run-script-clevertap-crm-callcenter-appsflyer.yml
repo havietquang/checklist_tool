@@ -1,0 +1,169 @@
+resources:
+  jobs:
+    dbrjobs_run_script_clevertap_crm_callcenter_appsflyer:
+      name: dbrjobs-run-script-clevertap-crm-callcenter-appsflyer
+      email_notifications:
+        on_failure:
+          - anhptv6@ocb.com.vn
+      max_concurrent_runs: 1
+
+      parameters:
+        - name: start_date
+          default: "20250101"
+        - name: end_date
+          default: "20250110"
+        - name: environment
+          default: "${var.env}"
+        - name: catalog_sourcing
+          default: "ocb_datavault_${var.env}_sourcing"
+        - name: catalog_cleaned
+          default: "ocb_datavault_${var.env}_cleaned"
+
+      tasks:
+
+        - task_key: callcenter__callcenter
+          run_if: ALL_SUCCESS
+          sql_task:
+            file: {path: ../analyses/phase2/callcenter/callcenter.sql, source: WORKSPACE}
+            warehouse_id: "${var.sql_warehouse_id}"
+            parameters: {start_date: "{{job.parameters.start_date}}", end_date: "{{job.parameters.end_date}}", catalog_sourcing: "{{job.parameters.catalog_sourcing}}", catalog_cleaned: "{{job.parameters.catalog_cleaned}}"}
+
+        # ================================================================
+        # CLEVERTAP (2 tasks)
+        # ================================================================
+        - task_key: clevertap__campaigns
+          run_if: ALL_SUCCESS
+          sql_task:
+            file: {path: ../analyses/phase2/clevertap/campaigns.sql, source: WORKSPACE}
+            warehouse_id: "${var.sql_warehouse_id}"
+            parameters: {start_date: "{{job.parameters.start_date}}", end_date: "{{job.parameters.end_date}}", catalog_sourcing: "{{job.parameters.catalog_sourcing}}", catalog_cleaned: "{{job.parameters.catalog_cleaned}}"}
+
+        - task_key: clevertap__events
+          run_if: ALL_SUCCESS
+          sql_task:
+            file: {path: ../analyses/phase2/clevertap/events.sql, source: WORKSPACE}
+            warehouse_id: "${var.sql_warehouse_id}"
+            parameters: {start_date: "{{job.parameters.start_date}}", end_date: "{{job.parameters.end_date}}", catalog_sourcing: "{{job.parameters.catalog_sourcing}}", catalog_cleaned: "{{job.parameters.catalog_cleaned}}"}
+
+        # ================================================================
+        # APPSFLYER (8 tasks)
+        # ================================================================
+        - task_key: appsflyer__installs_report
+          run_if: ALL_SUCCESS
+          sql_task:
+            file: {path: ../analyses/phase2/appsflyer/installs_report.sql, source: WORKSPACE}
+            warehouse_id: "${var.sql_warehouse_id}"
+            parameters: {start_date: "{{job.parameters.start_date}}", end_date: "{{job.parameters.end_date}}", catalog_sourcing: "{{job.parameters.catalog_sourcing}}", catalog_cleaned: "{{job.parameters.catalog_cleaned}}"}
+
+        - task_key: appsflyer__in_app_events_report
+          run_if: ALL_SUCCESS
+          sql_task:
+            file: {path: ../analyses/phase2/appsflyer/in_app_events_report.sql, source: WORKSPACE}
+            warehouse_id: "${var.sql_warehouse_id}"
+            parameters: {start_date: "{{job.parameters.start_date}}", end_date: "{{job.parameters.end_date}}", catalog_sourcing: "{{job.parameters.catalog_sourcing}}", catalog_cleaned: "{{job.parameters.catalog_cleaned}}"}
+
+        - task_key: appsflyer__organic_installs_report
+          run_if: ALL_SUCCESS
+          sql_task:
+            file: {path: ../analyses/phase2/appsflyer/organic_installs_report.sql, source: WORKSPACE}
+            warehouse_id: "${var.sql_warehouse_id}"
+            parameters: {start_date: "{{job.parameters.start_date}}", end_date: "{{job.parameters.end_date}}", catalog_sourcing: "{{job.parameters.catalog_sourcing}}", catalog_cleaned: "{{job.parameters.catalog_cleaned}}"}
+
+        - task_key: appsflyer__organic_in_app_events_report
+          run_if: ALL_SUCCESS
+          sql_task:
+            file: {path: ../analyses/phase2/appsflyer/organic_in_app_events_report.sql, source: WORKSPACE}
+            warehouse_id: "${var.sql_warehouse_id}"
+            parameters: {start_date: "{{job.parameters.start_date}}", end_date: "{{job.parameters.end_date}}", catalog_sourcing: "{{job.parameters.catalog_sourcing}}", catalog_cleaned: "{{job.parameters.catalog_cleaned}}"}
+
+        - task_key: appsflyer__organic_uninstall_events_report
+          run_if: ALL_SUCCESS
+          sql_task:
+            file: {path: ../analyses/phase2/appsflyer/organic_uninstall_events_report.sql, source: WORKSPACE}
+            warehouse_id: "${var.sql_warehouse_id}"
+            parameters: {start_date: "{{job.parameters.start_date}}", end_date: "{{job.parameters.end_date}}", catalog_sourcing: "{{job.parameters.catalog_sourcing}}", catalog_cleaned: "{{job.parameters.catalog_cleaned}}"}
+
+        - task_key: appsflyer__reinstalls
+          run_if: ALL_SUCCESS
+          sql_task:
+            file: {path: ../analyses/phase2/appsflyer/reinstalls.sql, source: WORKSPACE}
+            warehouse_id: "${var.sql_warehouse_id}"
+            parameters: {start_date: "{{job.parameters.start_date}}", end_date: "{{job.parameters.end_date}}", catalog_sourcing: "{{job.parameters.catalog_sourcing}}", catalog_cleaned: "{{job.parameters.catalog_cleaned}}"}
+
+        - task_key: appsflyer__reinstalls_organic
+          run_if: ALL_SUCCESS
+          sql_task:
+            file: {path: ../analyses/phase2/appsflyer/reinstalls_organic.sql, source: WORKSPACE}
+            warehouse_id: "${var.sql_warehouse_id}"
+            parameters: {start_date: "{{job.parameters.start_date}}", end_date: "{{job.parameters.end_date}}", catalog_sourcing: "{{job.parameters.catalog_sourcing}}", catalog_cleaned: "{{job.parameters.catalog_cleaned}}"}
+
+        - task_key: appsflyer__uninstall_events_report
+          run_if: ALL_SUCCESS
+          sql_task:
+            file: {path: ../analyses/phase2/appsflyer/uninstall_events_report.sql, source: WORKSPACE}
+            warehouse_id: "${var.sql_warehouse_id}"
+            parameters: {start_date: "{{job.parameters.start_date}}", end_date: "{{job.parameters.end_date}}", catalog_sourcing: "{{job.parameters.catalog_sourcing}}", catalog_cleaned: "{{job.parameters.catalog_cleaned}}"}
+
+        # ================================================================
+        # CRM (7 tasks)
+        # crm_contact_hist phụ thuộc callcenter (cross-source link)
+        # ================================================================
+        - task_key: crm__crm_contact_hist
+          depends_on:
+            - task_key: callcenter__callcenter
+          run_if: ALL_SUCCESS
+          sql_task:
+            file: {path: ../analyses/phase2/crm/crm_contact_hist.sql, source: WORKSPACE}
+            warehouse_id: "${var.sql_warehouse_id}"
+            parameters: {start_date: "{{job.parameters.start_date}}", end_date: "{{job.parameters.end_date}}", catalog_sourcing: "{{job.parameters.catalog_sourcing}}", catalog_cleaned: "{{job.parameters.catalog_cleaned}}"}
+
+        - task_key: crm__crm_contact_notes
+          run_if: ALL_SUCCESS
+          sql_task:
+            file: {path: ../analyses/phase2/crm/crm_contact_notes.sql, source: WORKSPACE}
+            warehouse_id: "${var.sql_warehouse_id}"
+            parameters: {start_date: "{{job.parameters.start_date}}", end_date: "{{job.parameters.end_date}}", catalog_sourcing: "{{job.parameters.catalog_sourcing}}", catalog_cleaned: "{{job.parameters.catalog_cleaned}}"}
+
+        - task_key: crm__crm_contact_result
+          run_if: ALL_SUCCESS
+          sql_task:
+            file: {path: ../analyses/phase2/crm/crm_contact_result.sql, source: WORKSPACE}
+            warehouse_id: "${var.sql_warehouse_id}"
+            parameters: {start_date: "{{job.parameters.start_date}}", end_date: "{{job.parameters.end_date}}", catalog_sourcing: "{{job.parameters.catalog_sourcing}}", catalog_cleaned: "{{job.parameters.catalog_cleaned}}"}
+
+        - task_key: crm__crm_contact_status
+          run_if: ALL_SUCCESS
+          sql_task:
+            file: {path: ../analyses/phase2/crm/crm_contact_status.sql, source: WORKSPACE}
+            warehouse_id: "${var.sql_warehouse_id}"
+            parameters: {start_date: "{{job.parameters.start_date}}", end_date: "{{job.parameters.end_date}}", catalog_sourcing: "{{job.parameters.catalog_sourcing}}", catalog_cleaned: "{{job.parameters.catalog_cleaned}}"}
+
+        - task_key: crm__crm_contact_type
+          run_if: ALL_SUCCESS
+          sql_task:
+            file: {path: ../analyses/phase2/crm/crm_contact_type.sql, source: WORKSPACE}
+            warehouse_id: "${var.sql_warehouse_id}"
+            parameters: {start_date: "{{job.parameters.start_date}}", end_date: "{{job.parameters.end_date}}", catalog_sourcing: "{{job.parameters.catalog_sourcing}}", catalog_cleaned: "{{job.parameters.catalog_cleaned}}"}
+
+        - task_key: crm__crm_naming_custgroup
+          run_if: ALL_SUCCESS
+          sql_task:
+            file: {path: ../analyses/phase2/crm/crm_naming_custgroup.sql, source: WORKSPACE}
+            warehouse_id: "${var.sql_warehouse_id}"
+            parameters: {start_date: "{{job.parameters.start_date}}", end_date: "{{job.parameters.end_date}}", catalog_sourcing: "{{job.parameters.catalog_sourcing}}", catalog_cleaned: "{{job.parameters.catalog_cleaned}}"}
+
+        - task_key: crm__crm_users
+          run_if: ALL_SUCCESS
+          sql_task:
+            file: {path: ../analyses/phase2/crm/crm_users.sql, source: WORKSPACE}
+            warehouse_id: "${var.sql_warehouse_id}"
+            parameters: {start_date: "{{job.parameters.start_date}}", end_date: "{{job.parameters.end_date}}", catalog_sourcing: "{{job.parameters.catalog_sourcing}}", catalog_cleaned: "{{job.parameters.catalog_cleaned}}"}
+
+      tags:
+        project: datavault-model
+        zone: silver
+        phase: phase2
+
+        map-migrated: migV58YOK697G
+      queue:
+        enabled: true

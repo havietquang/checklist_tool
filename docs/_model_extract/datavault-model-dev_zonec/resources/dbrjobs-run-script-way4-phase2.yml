@@ -1,0 +1,149 @@
+resources:
+  jobs:
+    dbrjobs_run_script_way4_phase2:
+      name: dbrjobs-run-script-way4-phase2
+      email_notifications:
+        on_failure:
+          - anhptv6@ocb.com.vn
+      max_concurrent_runs: 1
+
+      parameters:
+        - name: start_date
+          default: "20250101"
+        - name: end_date
+          default: "20250110"
+        - name: environment
+          default: "${var.env}"
+        - name: catalog_sourcing
+          default: "ocb_datavault_${var.env}_sourcing"
+        - name: catalog_cleaned
+          default: "ocb_datavault_${var.env}_cleaned"
+
+      tasks:
+
+        - task_key: way4__ows_acc_templ
+          run_if: ALL_SUCCESS
+          sql_task:
+            file: {path: ../analyses/phase2/way4/ows_acc_templ.sql, source: WORKSPACE}
+            warehouse_id: "${var.sql_warehouse_id}"
+            parameters: {start_date: "{{job.parameters.start_date}}", end_date: "{{job.parameters.end_date}}", catalog_sourcing: "{{job.parameters.catalog_sourcing}}", catalog_cleaned: "{{job.parameters.catalog_cleaned}}"}
+
+        - task_key: way4__ows_account
+          run_if: ALL_SUCCESS
+          sql_task:
+            file: {path: ../analyses/phase2/way4/ows_account.sql, source: WORKSPACE}
+            warehouse_id: "${var.sql_warehouse_id}"
+            parameters: {start_date: "{{job.parameters.start_date}}", end_date: "{{job.parameters.end_date}}", catalog_sourcing: "{{job.parameters.catalog_sourcing}}", catalog_cleaned: "{{job.parameters.catalog_cleaned}}"}
+
+        - task_key: way4__ows_acnt_contract
+          run_if: ALL_SUCCESS
+          sql_task:
+            file: {path: ../analyses/phase2/way4/ows_acnt_contract.sql, source: WORKSPACE}
+            warehouse_id: "${var.sql_warehouse_id}"
+            parameters: {start_date: "{{job.parameters.start_date}}", end_date: "{{job.parameters.end_date}}", catalog_sourcing: "{{job.parameters.catalog_sourcing}}", catalog_cleaned: "{{job.parameters.catalog_cleaned}}"}
+
+        - task_key: way4__ows_add_data
+          run_if: ALL_SUCCESS
+          sql_task:
+            file: {path: ../analyses/phase2/way4/ows_add_data.sql, source: WORKSPACE}
+            warehouse_id: "${var.sql_warehouse_id}"
+            parameters: {start_date: "{{job.parameters.start_date}}", end_date: "{{job.parameters.end_date}}", catalog_sourcing: "{{job.parameters.catalog_sourcing}}", catalog_cleaned: "{{job.parameters.catalog_cleaned}}"}
+
+        - task_key: way4__ows_bank_unit
+          run_if: ALL_SUCCESS
+          sql_task:
+            file: {path: ../analyses/phase2/way4/ows_bank_unit.sql, source: WORKSPACE}
+            warehouse_id: "${var.sql_warehouse_id}"
+            parameters: {start_date: "{{job.parameters.start_date}}", end_date: "{{job.parameters.end_date}}", catalog_sourcing: "{{job.parameters.catalog_sourcing}}", catalog_cleaned: "{{job.parameters.catalog_cleaned}}"}
+
+        - task_key: way4__ows_bin_table
+          run_if: ALL_SUCCESS
+          sql_task:
+            file: {path: ../analyses/phase2/way4/ows_bin_table.sql, source: WORKSPACE}
+            warehouse_id: "${var.sql_warehouse_id}"
+            parameters: {start_date: "{{job.parameters.start_date}}", end_date: "{{job.parameters.end_date}}", catalog_sourcing: "{{job.parameters.catalog_sourcing}}", catalog_cleaned: "{{job.parameters.catalog_cleaned}}"}
+
+        - task_key: way4__ows_card_info
+          run_if: ALL_SUCCESS
+          sql_task:
+            file: {path: ../analyses/phase2/way4/ows_card_info.sql, source: WORKSPACE}
+            warehouse_id: "${var.sql_warehouse_id}"
+            parameters: {start_date: "{{job.parameters.start_date}}", end_date: "{{job.parameters.end_date}}", catalog_sourcing: "{{job.parameters.catalog_sourcing}}", catalog_cleaned: "{{job.parameters.catalog_cleaned}}"}
+
+        - task_key: way4__ows_entry
+          run_if: ALL_SUCCESS
+          sql_task:
+            file: {path: ../analyses/phase2/way4/ows_entry.sql, source: WORKSPACE}
+            warehouse_id: "${var.sql_warehouse_id}"
+            parameters: {start_date: "{{job.parameters.start_date}}", end_date: "{{job.parameters.end_date}}", catalog_sourcing: "{{job.parameters.catalog_sourcing}}", catalog_cleaned: "{{job.parameters.catalog_cleaned}}"}
+
+        - task_key: way4__ows_event_type
+          run_if: ALL_SUCCESS
+          sql_task:
+            file: {path: ../analyses/phase2/way4/ows_event_type.sql, source: WORKSPACE}
+            warehouse_id: "${var.sql_warehouse_id}"
+            parameters: {start_date: "{{job.parameters.start_date}}", end_date: "{{job.parameters.end_date}}", catalog_sourcing: "{{job.parameters.catalog_sourcing}}", catalog_cleaned: "{{job.parameters.catalog_cleaned}}"}
+
+        - task_key: way4__ows_evnt_action
+          run_if: ALL_SUCCESS
+          sql_task:
+            file: {path: ../analyses/phase2/way4/ows_evnt_action.sql, source: WORKSPACE}
+            warehouse_id: "${var.sql_warehouse_id}"
+            parameters: {start_date: "{{job.parameters.start_date}}", end_date: "{{job.parameters.end_date}}", catalog_sourcing: "{{job.parameters.catalog_sourcing}}", catalog_cleaned: "{{job.parameters.catalog_cleaned}}"}
+
+        - task_key: way4__ows_gl_trace
+          run_if: ALL_SUCCESS
+          sql_task:
+            file: {path: ../analyses/phase2/way4/ows_gl_trace.sql, source: WORKSPACE}
+            warehouse_id: "${var.sql_warehouse_id}"
+            parameters: {start_date: "{{job.parameters.start_date}}", end_date: "{{job.parameters.end_date}}", catalog_sourcing: "{{job.parameters.catalog_sourcing}}", catalog_cleaned: "{{job.parameters.catalog_cleaned}}"}
+
+        - task_key: way4__ows_invoice_log
+          run_if: ALL_SUCCESS
+          sql_task:
+            file: {path: ../analyses/phase2/way4/ows_invoice_log.sql, source: WORKSPACE}
+            warehouse_id: "${var.sql_warehouse_id}"
+            parameters: {start_date: "{{job.parameters.start_date}}", end_date: "{{job.parameters.end_date}}", catalog_sourcing: "{{job.parameters.catalog_sourcing}}", catalog_cleaned: "{{job.parameters.catalog_cleaned}}"}
+
+        - task_key: way4__ows_item
+          run_if: ALL_SUCCESS
+          sql_task:
+            file: {path: ../analyses/phase2/way4/ows_item.sql, source: WORKSPACE}
+            warehouse_id: "${var.sql_warehouse_id}"
+            parameters: {start_date: "{{job.parameters.start_date}}", end_date: "{{job.parameters.end_date}}", catalog_sourcing: "{{job.parameters.catalog_sourcing}}", catalog_cleaned: "{{job.parameters.catalog_cleaned}}"}
+
+        - task_key: way4__ows_td_auth_sch
+          run_if: ALL_SUCCESS
+          sql_task:
+            file: {path: ../analyses/phase2/way4/ows_td_auth_sch.sql, source: WORKSPACE}
+            warehouse_id: "${var.sql_warehouse_id}"
+            parameters: {start_date: "{{job.parameters.start_date}}", end_date: "{{job.parameters.end_date}}", catalog_sourcing: "{{job.parameters.catalog_sourcing}}", catalog_cleaned: "{{job.parameters.catalog_cleaned}}"}
+
+        - task_key: way4__ows_td_auth_type
+          run_if: ALL_SUCCESS
+          sql_task:
+            file: {path: ../analyses/phase2/way4/ows_td_auth_type.sql, source: WORKSPACE}
+            warehouse_id: "${var.sql_warehouse_id}"
+            parameters: {start_date: "{{job.parameters.start_date}}", end_date: "{{job.parameters.end_date}}", catalog_sourcing: "{{job.parameters.catalog_sourcing}}", catalog_cleaned: "{{job.parameters.catalog_cleaned}}"}
+
+        - task_key: way4__ows_templ_approved
+          run_if: ALL_SUCCESS
+          sql_task:
+            file: {path: ../analyses/phase2/way4/ows_templ_approved.sql, source: WORKSPACE}
+            warehouse_id: "${var.sql_warehouse_id}"
+            parameters: {start_date: "{{job.parameters.start_date}}", end_date: "{{job.parameters.end_date}}", catalog_sourcing: "{{job.parameters.catalog_sourcing}}", catalog_cleaned: "{{job.parameters.catalog_cleaned}}"}
+
+        - task_key: way4__ows_usage_action
+          run_if: ALL_SUCCESS
+          sql_task:
+            file: {path: ../analyses/phase2/way4/ows_usage_action.sql, source: WORKSPACE}
+            warehouse_id: "${var.sql_warehouse_id}"
+            parameters: {start_date: "{{job.parameters.start_date}}", end_date: "{{job.parameters.end_date}}", catalog_sourcing: "{{job.parameters.catalog_sourcing}}", catalog_cleaned: "{{job.parameters.catalog_cleaned}}"}
+
+      tags:
+        project: datavault-model
+        zone: silver
+        phase: phase2
+        map-migrated: migV58YOK697G
+      queue:
+        enabled: true

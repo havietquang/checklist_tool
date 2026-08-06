@@ -1,0 +1,242 @@
+version: 2
+
+models:
+
+  # ---- HUBS ----
+  - name: hub_passbook
+    config:
+      contract:
+        enforced: true
+    columns:
+      - name: passbook_hashkey
+        data_type: string
+        tests:
+          - unique:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+          - not_null:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+      - name: business_key
+        data_type: decimal(20,0)
+      - name: source_event_date
+        data_type: date
+      - name: record_source
+        data_type: string
+      - name: load_timestamp
+        data_type: timestamp
+
+  - name: hub_users_logon
+    config:
+      contract:
+        enforced: true
+    columns:
+      - name: users_logon_hashkey
+        data_type: string
+        tests:
+          - unique:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+          - not_null:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+      - name: business_key
+        data_type: string
+      - name: source_event_date
+        data_type: date
+      - name: record_source
+        data_type: string
+      - name: load_timestamp
+        data_type: timestamp
+
+  # ---- LINKS ----
+  - name: link_passbook_customer
+    config:
+      contract:
+        enforced: true
+    columns:
+      - name: link_passbook_customer_hashkey
+        data_type: string
+        tests:
+          - unique:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+          - not_null:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+      - name: passbook_hashkey
+        data_type: string
+      - name: customer_hashkey
+        data_type: string
+      - name: source_event_date
+        data_type: date
+      - name: record_source
+        data_type: string
+      - name: load_timestamp
+        data_type: timestamp
+
+  - name: link_passbook_branch
+    config:
+      contract:
+        enforced: true
+    columns:
+      - name: link_passbook_branch_hashkey
+        data_type: string
+        tests:
+          - unique:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+          - not_null:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+      - name: passbook_hashkey
+        data_type: string
+      - name: branch_hashkey
+        data_type: string
+      - name: source_event_date
+        data_type: date
+      - name: record_source
+        data_type: string
+      - name: load_timestamp
+        data_type: timestamp
+
+  - name: link_users_logon_branch
+    config:
+      contract:
+        enforced: true
+    columns:
+      - name: link_users_logon_branch_hashkey
+        data_type: string
+        tests:
+          - unique:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+          - not_null:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+      - name: users_logon_hashkey
+        data_type: string
+      - name: branch_hashkey
+        data_type: string
+      - name: source_event_date
+        data_type: date
+      - name: record_source
+        data_type: string
+      - name: load_timestamp
+        data_type: timestamp
+
+  # ---- SATELLITES ----
+  - name: sat_passbook
+    config:
+      contract:
+        enforced: true
+    columns:
+      - name: passbook_hashkey
+        data_type: string
+        tests:
+          - relationships:
+              arguments:
+                to: ref('hub_passbook')
+                field: passbook_hashkey
+              config:
+                severity: warn
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+          - not_null:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+      - name: hashdiff
+        data_type: string
+      - name: source_event_date
+        data_type: date
+      - name: load_timestamp
+        data_type: timestamp
+      - name: record_source
+        data_type: string
+      - name: serialno
+        data_type: string
+      - name: branchcode
+        data_type: string
+      - name: status
+        data_type: string
+      - name: price
+        data_type: decimal(20,4)
+      - name: passbooktype
+        data_type: decimal(20,0)
+      - name: useddate
+        data_type: string
+      - name: accountno
+        data_type: string
+      - name: damageddate
+        data_type: string
+      - name: canceleddate
+        data_type: string
+      - name: lostdate
+        data_type: string
+      - name: lastdate
+        data_type: string
+      - name: prevbranch
+        data_type: string
+      - name: importdate
+        data_type: string
+      - name: cif
+        data_type: string
+      - name: note
+        data_type: string
+      - name: custname
+        data_type: string
+      - name: amount
+        data_type: decimal(20,4)
+      - name: checkstatus
+        data_type: string
+      - name: checktrandetailid
+        data_type: decimal(20,0)
+      - name: lostreceiptdate
+        data_type: string
+      - name: desposittranid
+        data_type: decimal(20,0)
+
+  - name: sat_users_logon
+    config:
+      contract:
+        enforced: true
+    columns:
+      - name: users_logon_hashkey
+        data_type: string
+        tests:
+          - relationships:
+              arguments:
+                to: ref('hub_users_logon')
+                field: users_logon_hashkey
+              config:
+                severity: warn
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+          - not_null:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+      - name: hashdiff
+        data_type: string
+      - name: source_event_date
+        data_type: date
+      - name: load_timestamp
+        data_type: timestamp
+      - name: record_source
+        data_type: string
+      - name: user_last_name
+        data_type: string
+      - name: user_first_name
+        data_type: string
+      - name: branch_code
+        data_type: string
+      - name: user_status
+        data_type: bigint
+      - name: user_t24
+        data_type: string
+      - name: till_no
+        data_type: string
+      - name: user_created
+        data_type: string
+      - name: date_created
+        data_type: string
+      - name: user_session
+        data_type: string
+

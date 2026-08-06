@@ -1,0 +1,729 @@
+version: 2
+
+models:
+
+  # ---- HUBS ----
+  - name: hub_app_product
+    config:
+      contract:
+        enforced: true
+    columns:
+      - name: app_product_hashkey
+        data_type: string
+        tests:
+          - unique:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+          - not_null:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+      - name: business_key
+        data_type: string
+      - name: source_event_date
+        data_type: date
+      - name: record_source
+        data_type: string
+      - name: load_timestamp
+        data_type: timestamp
+
+  - name: hub_consumer_loan
+    config:
+      contract:
+        enforced: true
+    columns:
+      - name: consumer_loan_hashkey
+        data_type: string
+        tests:
+          - unique:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+          - not_null:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+      - name: business_key
+        data_type: string
+      - name: source_event_date
+        data_type: date
+      - name: record_source
+        data_type: string
+      - name: load_timestamp
+        data_type: timestamp
+
+  # ---- STATUS HUBS (CDC) ----
+  - name: sts_hub_app_product
+    config:
+      contract:
+        enforced: true
+    columns:
+      - name: app_product_hashkey
+        data_type: string
+        tests:
+          - relationships:
+              arguments:
+                to: ref('hub_app_product')
+                field: app_product_hashkey
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+          - not_null:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+      - name: source_event_date
+        data_type: date
+      - name: cdc_status
+        data_type: string
+        tests:
+          - not_null:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+
+  - name: sts_hub_consumer_loan
+    config:
+      contract:
+        enforced: true
+    columns:
+      - name: consumer_loan_hashkey
+        data_type: string
+        tests:
+          - relationships:
+              arguments:
+                to: ref('hub_consumer_loan')
+                field: consumer_loan_hashkey
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+          - not_null:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+      - name: source_event_date
+        data_type: date
+      - name: cdc_status
+        data_type: string
+        tests:
+          - not_null:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+
+  - name: sts_hub_consumer_loan_fact_collection
+    config:
+      contract:
+        enforced: true
+    columns:
+      - name: consumer_loan_hashkey
+        data_type: string
+        tests:
+          - relationships:
+              arguments:
+                to: ref('hub_consumer_loan')
+                field: consumer_loan_hashkey
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+          - not_null:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+      - name: source_event_date
+        data_type: date
+      - name: cdc_status
+        data_type: string
+        tests:
+          - not_null:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+
+  - name: sts_hub_consumer_loan_next_payment_amount
+    config:
+      contract:
+        enforced: true
+    columns:
+      - name: consumer_loan_hashkey
+        data_type: string
+        tests:
+          - relationships:
+              arguments:
+                to: ref('hub_consumer_loan')
+                field: consumer_loan_hashkey
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+          - not_null:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+      - name: source_event_date
+        data_type: date
+      - name: cdc_status
+        data_type: string
+        tests:
+          - not_null:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+
+  # ---- LINKS ----
+  - name: link_consumer_loan_customer
+    config:
+      contract:
+        enforced: true
+    columns:
+      - name: link_consumer_loan_customer_hashkey
+        data_type: string
+        tests:
+          - unique:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+          - not_null:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+      - name: consumer_loan_hashkey
+        data_type: string
+      - name: customer_hashkey
+        data_type: string
+      - name: source_event_date
+        data_type: date
+      - name: record_source
+        data_type: string
+      - name: load_timestamp
+        data_type: timestamp
+
+  - name: link_consumer_loan_branch
+    config:
+      contract:
+        enforced: true
+    columns:
+      - name: link_consumer_loan_branch_hashkey
+        data_type: string
+        tests:
+          - unique:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+          - not_null:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+      - name: consumer_loan_hashkey
+        data_type: string
+      - name: branch_hashkey
+        data_type: string
+      - name: source_event_date
+        data_type: date
+      - name: record_source
+        data_type: string
+      - name: load_timestamp
+        data_type: timestamp
+
+  # ---- SATELLITES ----
+  - name: sat_app_product
+    config:
+      contract:
+        enforced: true
+    columns:
+      - name: app_product_hashkey
+        data_type: string
+        tests:
+          - relationships:
+              arguments:
+                to: ref('hub_app_product')
+                field: app_product_hashkey
+              config:
+                severity: warn
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+          - not_null:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+      - name: hashdiff
+        data_type: string
+      - name: source_event_date
+        data_type: date
+      - name: load_timestamp
+        data_type: timestamp
+      - name: record_source
+        data_type: string
+      - name: producttype
+        data_type: string
+      - name: productname
+        data_type: string
+      - name: status
+        data_type: bigint
+      - name: minloanamount
+        data_type: decimal(19,4)
+      - name: maxloanamount
+        data_type: decimal(19,4)
+      - name: interestrate
+        data_type: double
+      - name: mintenor
+        data_type: bigint
+      - name: maxtenor
+        data_type: bigint
+      - name: validfrom
+        data_type: string
+      - name: validto
+        data_type: string
+      - name: changeddate
+        data_type: string
+
+  - name: sat_app_product_dynamic
+    config:
+      contract:
+        enforced: true
+    columns:
+      - name: app_product_hashkey
+        data_type: string
+        tests:
+          - relationships:
+              arguments:
+                to: ref('hub_app_product')
+                field: app_product_hashkey
+              config:
+                severity: warn
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+          - not_null:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+      - name: hashdiff
+        data_type: string
+      - name: source_event_date
+        data_type: date
+      - name: load_timestamp
+        data_type: timestamp
+      - name: record_source
+        data_type: string
+      - name: id
+        data_type: bigint
+
+  - name: sat_consumer_loan
+    config:
+      contract:
+        enforced: true
+    columns:
+      - name: consumer_loan_hashkey
+        data_type: string
+        tests:
+          - relationships:
+              arguments:
+                to: ref('hub_consumer_loan')
+                field: consumer_loan_hashkey
+              config:
+                severity: warn
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+          - not_null:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+      - name: hashdiff
+        data_type: string
+      - name: source_event_date
+        data_type: date
+      - name: load_timestamp
+        data_type: timestamp
+      - name: record_source
+        data_type: string
+      - name: app_id
+        data_type: bigint
+      - name: customer_id
+        data_type: bigint
+      - name: branch_code
+        data_type: string
+      - name: currency
+        data_type: string
+      - name: mature_date
+        data_type: string
+      - name: open_date
+        data_type: string
+      - name: disbursment_amount
+        data_type: decimal(19,4)
+      - name: oustanding_amount
+        data_type: decimal(19,4)
+      - name: custgroup
+        data_type: bigint
+      - name: loan_classification
+        data_type: bigint
+      - name: begin_repayment_date
+        data_type: string
+      - name: next_repayment_date
+        data_type: string
+      - name: frequency
+        data_type: string
+      - name: interst_amount
+        data_type: decimal(19,4)
+      - name: pd_interest
+        data_type: bigint
+      - name: interest_rate
+        data_type: double
+      - name: interest_type
+        data_type: bigint
+      - name: industry_level_3
+        data_type: string
+      - name: term
+        data_type: bigint
+      - name: purpose_id
+        data_type: string
+      - name: extend_sch
+        data_type: bigint
+      - name: extendsch_date
+        data_type: bigint
+      - name: account_officer_id
+        data_type: string
+      - name: product_id
+        data_type: string
+      - name: provision_amount
+        data_type: decimal(24,8)
+      - name: provision_oustanding
+        data_type: decimal(22,6)
+      - name: link_reference
+        data_type: string
+      - name: full_name
+        data_type: string
+      - name: legal_id
+        data_type: string
+      - name: gl
+        data_type: string
+      - name: pd_amount_eq
+        data_type: bigint
+      - name: pr_day
+        data_type: bigint
+      - name: in_day
+        data_type: bigint
+      - name: interest_rate1
+        data_type: double
+      - name: interest_spread
+        data_type: bigint
+      - name: sbv21_sector_legal
+        data_type: bigint
+      - name: loan_subproduct
+        data_type: string
+      - name: datasource
+        data_type: string
+      - name: loan_subproduct_name
+        data_type: string
+      - name: purpose_name
+        data_type: string
+      - name: on_due_principal
+        data_type: decimal(19,4)
+      - name: acrrual_balance
+        data_type: decimal(19,4)
+
+  - name: sat_consumer_loan_dynamic
+    config:
+      contract:
+        enforced: true
+    columns:
+      - name: consumer_loan_hashkey
+        data_type: string
+        tests:
+          - relationships:
+              arguments:
+                to: ref('hub_consumer_loan')
+                field: consumer_loan_hashkey
+              config:
+                severity: warn
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+          - not_null:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+      - name: hashdiff
+        data_type: string
+      - name: source_event_date
+        data_type: date
+      - name: load_timestamp
+        data_type: timestamp
+      - name: record_source
+        data_type: string
+      - name: id
+        data_type: bigint
+
+  - name: sat_fact_collection
+    config:
+      contract:
+        enforced: true
+    columns:
+      - name: consumer_loan_hashkey
+        data_type: string
+        tests:
+          - relationships:
+              arguments:
+                to: ref('hub_consumer_loan')
+                field: consumer_loan_hashkey
+              config:
+                severity: warn
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+          - not_null:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+      - name: hashdiff
+        data_type: string
+      - name: source_event_date
+        data_type: date
+      - name: load_timestamp
+        data_type: timestamp
+      - name: record_source
+        data_type: string
+      - name: bucket_allocation
+        data_type: string
+      - name: app_id
+        data_type: bigint
+      - name: customer_id
+        data_type: bigint
+      - name: branch_code
+        data_type: string
+      - name: currency
+        data_type: string
+      - name: principal
+        data_type: decimal(19,4)
+      - name: interest
+        data_type: decimal(19,4)
+      - name: penalty
+        data_type: decimal(19,4)
+      - name: date_cob
+        data_type: string
+      - name: created_date
+        data_type: string
+
+  - name: sat_fact_collection_dynamic
+    config:
+      contract:
+        enforced: true
+    columns:
+      - name: consumer_loan_hashkey
+        data_type: string
+        tests:
+          - relationships:
+              arguments:
+                to: ref('hub_consumer_loan')
+                field: consumer_loan_hashkey
+              config:
+                severity: warn
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+          - not_null:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+      - name: hashdiff
+        data_type: string
+      - name: source_event_date
+        data_type: date
+      - name: load_timestamp
+        data_type: timestamp
+      - name: record_source
+        data_type: string
+      - name: id
+        data_type: bigint
+
+  - name: sat_next_payment_amount
+    config:
+      contract:
+        enforced: true
+    columns:
+      - name: consumer_loan_hashkey
+        data_type: string
+        tests:
+          - relationships:
+              arguments:
+                to: ref('hub_consumer_loan')
+                field: consumer_loan_hashkey
+              config:
+                severity: warn
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+          - not_null:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+      - name: hashdiff
+        data_type: string
+      - name: source_event_date
+        data_type: date
+      - name: load_timestamp
+        data_type: timestamp
+      - name: record_source
+        data_type: string
+      - name: ma_key
+        data_type: string
+      - name: valuedate
+        data_type: string
+      - name: appid
+        data_type: bigint
+      - name: tenor
+        data_type: bigint
+      - name: period
+        data_type: bigint
+      - name: frequency
+        data_type: string
+      - name: duedate
+        data_type: string
+      - name: principal
+        data_type: decimal(19,4)
+      - name: interest
+        data_type: decimal(19,4)
+      - name: remainprincipal
+        data_type: decimal(19,4)
+      - name: remaininterest
+        data_type: decimal(19,4)
+      - name: remainppenalty
+        data_type: decimal(19,4)
+      - name: remainipenalty
+        data_type: decimal(19,4)
+      - name: remainpenalty
+        data_type: decimal(19,4)
+      - name: currentdpd
+        data_type: bigint
+      - name: remainperiod
+        data_type: bigint
+      - name: createddate
+        data_type: string
+
+  - name: sts_hub_consumer_loan_wo
+    config:
+      contract:
+        enforced: true
+    columns:
+      - name: consumer_loan_hashkey
+        data_type: string
+        tests:
+          - relationships:
+              arguments:
+                to: ref('hub_consumer_loan')
+                field: consumer_loan_hashkey
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+          - not_null:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+      - name: source_event_date
+        data_type: date
+      - name: cdc_status
+        data_type: string
+        tests:
+          - not_null:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+
+  - name: sat_consumer_loan_wo
+    config:
+      contract:
+        enforced: true
+    columns:
+      - name: consumer_loan_hashkey
+        data_type: string
+        tests:
+          - relationships:
+              arguments:
+                to: ref('hub_consumer_loan')
+                field: consumer_loan_hashkey
+              config:
+                severity: warn
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+          - not_null:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+      - name: hashdiff
+        data_type: string
+      - name: source_event_date
+        data_type: date
+      - name: load_timestamp
+        data_type: timestamp
+      - name: record_source
+        data_type: string
+      - name: app_id
+        data_type: bigint
+      - name: customer_id
+        data_type: bigint
+      - name: branch_code
+        data_type: string
+      - name: currency
+        data_type: string
+      - name: mature_date
+        data_type: string
+      - name: open_date
+        data_type: timestamp
+      - name: disbursment_amount
+        data_type: decimal(19,4)
+      - name: oustanding_amount
+        data_type: decimal(19,4)
+      - name: custgroup
+        data_type: bigint
+      - name: loan_classification
+        data_type: bigint
+      - name: begin_repayment_date
+        data_type: string
+      - name: next_repayment_date
+        data_type: string
+      - name: frequency
+        data_type: string
+      - name: interst_amount
+        data_type: decimal(19,4)
+      - name: pd_interest
+        data_type: bigint
+      - name: interest_rate
+        data_type: double
+      - name: interest_type
+        data_type: bigint
+      - name: industry_level_3
+        data_type: string
+      - name: term
+        data_type: bigint
+      - name: purpose_id
+        data_type: string
+      - name: extend_sch
+        data_type: bigint
+      - name: extendsch_date
+        data_type: bigint
+      - name: account_officer_id
+        data_type: string
+      - name: product_id
+        data_type: string
+      - name: provision_amount
+        data_type: decimal(24,8)
+      - name: provision_oustanding
+        data_type: decimal(22,6)
+      - name: link_reference
+        data_type: string
+      - name: full_name
+        data_type: string
+      - name: legal_id
+        data_type: string
+      - name: gl
+        data_type: string
+      - name: pd_amount_eq
+        data_type: bigint
+      - name: pr_day
+        data_type: bigint
+      - name: in_day
+        data_type: bigint
+      - name: interest_rate1
+        data_type: double
+      - name: interest_spread
+        data_type: bigint
+      - name: sbv21_sector_legal
+        data_type: bigint
+      - name: loan_subproduct
+        data_type: string
+      - name: datasource
+        data_type: string
+      - name: loan_subproduct_name
+        data_type: string
+      - name: purpose_name
+        data_type: string
+      - name: on_due_principal
+        data_type: decimal(19,4)
+      - name: acrrual_balance
+        data_type: decimal(19,4)
+
+  - name: sat_consumer_loan_wo_dynamic
+    config:
+      contract:
+        enforced: true
+    columns:
+      - name: consumer_loan_hashkey
+        data_type: string
+        tests:
+          - relationships:
+              arguments:
+                to: ref('hub_consumer_loan')
+                field: consumer_loan_hashkey
+              config:
+                severity: warn
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+          - not_null:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+      - name: hashdiff
+        data_type: string
+      - name: source_event_date
+        data_type: date
+      - name: load_timestamp
+        data_type: timestamp
+      - name: record_source
+        data_type: string
+      - name: id
+        data_type: bigint
+

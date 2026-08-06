@@ -1,0 +1,8 @@
+target/
+- target-2
+logs/
+.user.yml
+dbt_internal_packages/
+.DS_Store
+test_pipeline/
+mapping/

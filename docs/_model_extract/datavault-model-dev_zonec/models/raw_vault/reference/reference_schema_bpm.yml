@@ -1,0 +1,250 @@
+version: 2
+
+models:
+  - name: ref_bpm_auth_nhom
+    config:
+      contract:
+        enforced: true
+    columns:
+      - name: ref_hashkey
+        data_type: string
+        tests:
+          - unique:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+          - not_null:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+      - name: ref_type
+        data_type: string
+      - name: ref_code
+        data_type: string
+      - name: ref_description
+        data_type: string
+      - name: id
+        data_type: bigint
+      - name: ma_nhom
+        data_type: string
+      - name: ten_nhom_viet_tat
+        data_type: string
+      - name: ten_nhom_day_du
+        data_type: string
+      - name: trang_thai
+        data_type: bigint
+      - name: ghi_chu
+        data_type: string
+      - name: ocb_hrm_id
+        data_type: bigint
+      - name: nhom_cap_tren
+        data_type: bigint
+      - name: search_scope
+        data_type: bigint
+      - name: nhom_dai_dien
+        data_type: bigint
+      - name: cap_phe_duyet
+        data_type: bigint
+      - name: quy_trinh
+        data_type: bigint
+      - name: cap_do
+        data_type: bigint
+      - name: cap_do_tim_kiem
+        data_type: bigint
+      - name: cap_do_ecm
+        data_type: bigint
+      - name: cap_do_ecm_xlgdtd
+        data_type: bigint
+      - name: cap_do_ecm_tsbd
+        data_type: bigint
+      - name: json_ecm
+        data_type: string
+      - name: ma_nhom_ten
+        data_type: string
+      - name: hashdiff
+        data_type: string
+      - name: source_event_date
+        data_type: date
+      - name: record_source
+        data_type: string
+      - name: load_timestamp
+        data_type: timestamp
+
+  - name: ref_bpm_c_danh_muc
+    config:
+      contract:
+        enforced: true
+    columns:
+      - name: ref_hashkey
+        data_type: string
+        tests:
+          - unique:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+          - not_null:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+      - name: ref_type
+        data_type: string
+      - name: ref_code
+        data_type: string
+      - name: ref_description
+        data_type: string
+      - name: ten_danh_muc
+        data_type: string
+      - name: ghi_chu
+        data_type: string
+      - name: parent_id
+        data_type: bigint
+      - name: trang_thai
+        data_type: bigint
+      - name: hashdiff
+        data_type: string
+      - name: source_event_date
+        data_type: date
+      - name: record_source
+        data_type: string
+      - name: load_timestamp
+        data_type: timestamp
+
+  - name: ref_bpm_danh_muc
+    config:
+      contract:
+        enforced: true
+    columns:
+      - name: ref_hashkey
+        data_type: string
+        tests:
+          - unique:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+          - not_null:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+      - name: ref_type
+        data_type: string
+      - name: ref_code
+        data_type: string
+      - name: ref_description
+        data_type: string
+      - name: id
+        data_type: bigint
+      - name: loai
+        data_type: bigint
+      - name: ma
+        data_type: string
+      - name: ten
+        data_type: string
+      - name: ghi_chu
+        data_type: string
+      - name: stt
+        data_type: bigint
+      - name: trang_thai
+        data_type: bigint
+      - name: nguoi_tao
+        data_type: bigint
+      - name: ngay_tao
+        data_type: string
+      - name: nguoi_update
+        data_type: bigint
+      - name: ngay_update
+        data_type: string
+      - name: hashdiff
+        data_type: string
+      - name: source_event_date
+        data_type: date
+      - name: record_source
+        data_type: string
+      - name: load_timestamp
+        data_type: timestamp
+
+  - name: ref_bpm_sk10_san_pham
+    config:
+      contract:
+        enforced: true
+    columns:
+      - name: ref_hashkey
+        data_type: string
+        tests:
+          - unique:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+          - not_null:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+      - name: ref_type
+        data_type: string
+      - name: ref_code
+        data_type: string
+      - name: ref_description
+        data_type: string
+      - name: id
+        data_type: bigint
+      - name: ma_san_pham
+        data_type: string
+      - name: ten_san_pham
+        data_type: string
+      - name: phan_nhom_san_pham
+        data_type: string
+      - name: parent_group
+        data_type: string
+      - name: hieu_luc_sp
+        data_type: string
+      - name: ghi_chu
+        data_type: string
+      - name: category_t24
+        data_type: string
+      - name: loan_support_t24
+        data_type: string
+      - name: dieu_kien_t24
+        data_type: string
+      - name: ngay_tao
+        data_type: string
+      - name: hashdiff
+        data_type: string
+      - name: source_event_date
+        data_type: date
+      - name: record_source
+        data_type: string
+      - name: load_timestamp
+        data_type: timestamp
+
+
+  - name: ref_bpm_danh_muc_chi_tiet
+    config:
+      contract:
+        enforced: true
+    columns:
+      - name: ref_hashkey
+        data_type: string
+        tests:
+          - unique:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+          - not_null:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+      - name: ref_type
+        data_type: string
+      - name: ref_code
+        data_type: string
+      - name: ref_description
+        data_type: string
+      - name: SUB_ID
+        data_type: decimal(38,0)
+      - name: PARENT_ID
+        data_type: decimal(38,0)
+      - name: TIEU_CHI_ID
+        data_type: decimal(38,0)
+      - name: GHI_CHU
+        data_type: string
+      - name: TRANG_THAI
+        data_type: decimal(38,0)
+      - name: NGAY_TAO
+        data_type: string
+      - name: hashdiff
+        data_type: string
+      - name: source_event_date
+        data_type: date
+      - name: record_source
+        data_type: string
+      - name: load_timestamp
+        data_type: timestamp

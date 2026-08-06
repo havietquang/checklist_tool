@@ -1,0 +1,112 @@
+resources:
+  jobs:
+    dbrjobs_run_daily_datavault_silver_business_vault:
+      name: dbrjobs-run-daily-datavault-silver-business-vault
+      email_notifications:
+        on_failure:
+          - anhptv6@ocb.com.vn
+      max_concurrent_runs: 1
+
+      parameters:
+        - name: environment
+          default: "${var.env}"
+        - name: target_date
+          default: ""
+        - name: threads
+          default: "20"
+        - name: run_mode
+          default: "daily"
+        - name: source_name
+          default: "business_vault"
+
+      tasks:
+        - task_key: generate_target_date
+          spark_python_task:
+            python_file: ../sourcing/generate_target_date.py
+            source: WORKSPACE
+            parameters:
+              - --target-date
+              - "{{job.parameters.target_date}}"
+              - --threads
+              - "{{job.parameters.threads}}"
+              - --run-mode
+              - "{{job.parameters.run_mode}}"
+              - --environment
+              - "{{job.parameters.environment}}"
+          job_cluster_key: dbt_job_cluster
+
+        - task_key: run_business_vault
+          depends_on:
+            - task_key: generate_target_date
+          dbt_task:
+            project_directory: ${workspace.file_path}
+            commands:
+              - >-
+                dbt run --select path:models/business_vault
+                --target {{job.parameters.environment}} --threads {{job.parameters.threads}} --vars
+                '{"target_date":"{{tasks.generate_target_date.values.target_date}}","run_mode":"{{job.parameters.run_mode}}","job_id":"{{job.id}}","run_id":"{{job.run_id}}","task_key":"run","checkpoint_hooks_enabled":true,"bronze_database":"ocb_datavault_{{job.parameters.environment}}_sourcing","raw_vault_database":"ocb_datavault_{{job.parameters.environment}}_cleaned"}'
+                --target-path /Volumes/ocb_datavault_{{job.parameters.environment}}_cleaned/raw_vault/dbt-target/{{tasks.generate_target_date.values.target_date}}
+                --log-level info --log-level-file error --log-path /Volumes/ocb_datavault_{{job.parameters.environment}}_cleaned/raw_vault/logs/{{job.parameters.source_name}}
+            source: WORKSPACE
+          job_cluster_key: dbt_job_cluster
+
+        - task_key: test_business_vault
+          depends_on:
+            - task_key: run_business_vault
+          run_if: ALL_DONE
+          dbt_task:
+            project_directory: ${workspace.file_path}
+            commands:
+              - >-
+                dbt test --select path:models/business_vault
+                --target {{job.parameters.environment}} --threads {{job.parameters.threads}} --vars
+                '{"target_date":"{{tasks.generate_target_date.values.target_date}}","run_mode":"{{job.parameters.run_mode}}","job_id":"{{job.id}}","run_id":"{{job.run_id}}","task_key":"test","checkpoint_hooks_enabled":true,"bronze_database":"ocb_datavault_{{job.parameters.environment}}_sourcing","raw_vault_database":"ocb_datavault_{{job.parameters.environment}}_cleaned"}'
+                --target-path /Volumes/ocb_datavault_{{job.parameters.environment}}_cleaned/raw_vault/dbt-target/{{tasks.generate_target_date.values.target_date}}
+                --log-level info --log-level-file error --log-path /Volumes/ocb_datavault_{{job.parameters.environment}}_cleaned/raw_vault/logs/{{job.parameters.source_name}}
+            source: WORKSPACE
+          job_cluster_key: dbt_job_cluster
+
+      job_clusters:
+        - job_cluster_key: dbt_job_cluster
+          new_cluster:
+            spark_version: 15.4.x-scala2.12
+            spark_conf:
+              spark.sql.redaction.string.regex: \"(password|user)\"[\s]*[^\"]*\"[^\"]*\" 
+              spark.hadoop.datanucleus.fixedDatastore: "false"
+              spark.hadoop.javax.jdo.option.ConnectionDriverName: org.apache.derby.jdbc.EmbeddedDriver
+              spark.hadoop.javax.jdo.option.ConnectionURL: jdbc:derby:memory:myInMemDB;create=true
+              spark.hadoop.javax.jdo.option.ConnectionUserName: hiveuser
+              spark.hadoop.javax.jdo.option.ConnectionPassword: hivepass
+              spark.hadoop.datanucleus.autoCreateSchema: "true"
+              spark.hadoop.datanucleus.autoCreateTables: "true"
+              spark.sql.catalogImplementation: hive
+            aws_attributes:
+              availability: ON_DEMAND
+            node_type_id: m5d.xlarge
+            custom_tags:
+              costproject: datavault-model
+              zone: silver
+              map-migrated: migV58YOK697G
+            spark_env_vars:
+              PYSPARK_PYTHON: /databricks/python3/bin/python3
+              DATABRICKS_HOST: "${var.host}"
+              DATABRICKS_SQL_WAREHOUSE_HTTP_PATH: "${var.sql_warehouse_http_path}"
+              DATABRICKS_DESTINATION_CATALOG: "${var.destination_catalog}"
+              DATABRICKS_DESTINATION_SCHEMA: "${var.destination_schema}"
+              DATABRICKS_CLIENT_ID: "{{secrets/ocb-cdp-datavault/datavault_dbt_job_client_id}}"
+              DATABRICKS_CLIENT_SECRET: "{{secrets/ocb-cdp-datavault/datavault_dbt_job_client_secret}}"
+            init_scripts:
+              - volumes:
+                  destination: /Volumes/ocb_cdp_python_library_jdbc/default/init_script/ocb_datavault_dbt_shared_cluster.sh
+            data_security_mode: DATA_SECURITY_MODE_DEDICATED
+            runtime_engine: STANDARD
+            kind: CLASSIC_PREVIEW
+            is_single_node: true
+
+      tags:
+        project: datavault-model
+        zone: silver
+
+        map-migrated: migV58YOK697G
+      queue:
+        enabled: true

@@ -1,0 +1,162 @@
+variables:
+  NEXUS_PYPI_INDEX_URL: "https://nexus-dso.ocb.vn/repository/dev-shared-proxy-python/simple"
+  NEXUS_PYPI_HOST: "nexus-dso.ocb.vn"
+  PYTHON_VERSION: "3.10"
+  DBX_CLI_IMAGE: "nexus-dso-registry.ocb.vn/databricks/cli:0.262.0"
+  VALID_BRANCHES: "dev pilotcloud prod"
+  GIT_CLEAN_FLAGS: -ffdx -e .databricks/
+  PROJECT_DIR: "datavault-model" 
+
+stages:
+  - checkout
+  - validate_bundle
+  - deploy_bundle
+
+# ====================
+# STAGE 0: CHECKOUT
+# ====================
+checkout:
+  stage: checkout
+  tags: ["shell"]
+  before_script:
+    - sudo rm -rf .databricks/ || rm -rf .databricks/ || true
+  script:
+    - set -euo pipefail
+    - |
+      if [[ " ${VALID_BRANCHES} " =~ " ${CI_COMMIT_REF_NAME} " ]]; then
+        echo "ENVIRONMENT=${CI_COMMIT_REF_NAME}" > variables.env
+        echo "BUNDLETARGET=${CI_COMMIT_REF_NAME}" >> variables.env
+      else
+        echo "Unsupported Git branch: ${CI_COMMIT_REF_NAME}"
+        exit 1
+      fi
+    - cat variables.env
+  artifacts:
+    reports:
+      dotenv: variables.env
+  only:
+    - dev
+    - pilotcloud
+    - prod
+
+# ====================
+# STAGE 2: VALIDATE
+# ====================
+validate_bundle:
+  stage: validate_bundle
+  tags: ["shell"]
+  dependencies:
+    - checkout
+  before_script:
+    - sudo rm -rf .databricks/ || rm -rf .databricks/ || true
+  script:
+    - echo "Using Databricks CLI from Docker image:${DBX_CLI_IMAGE}"
+    - echo "Environment:${ENVIRONMENT}"
+    - echo "Bundle target:${BUNDLETARGET}"
+    - echo "Project directory:${PROJECT_DIR}"
+    
+    - |
+      # Set credentials based on environment
+      UPPER_ENV=$(echo "${ENVIRONMENT}" | tr '[:lower:]' '[:upper:]')
+      eval "DATABRICKS_HOST=\$DATABRICKS_HOST_${UPPER_ENV}"
+      eval "DATABRICKS_CLIENT_ID=\$DATABRICKS_CLIENT_ID_${UPPER_ENV}"
+      eval "DATABRICKS_CLIENT_SECRET=\$DATABRICKS_CLIENT_SECRET_${UPPER_ENV}"
+      eval "DATABRICKS_SQL_WAREHOUSE_HTTP_PATH=\$DATABRICKS_SQL_WAREHOUSE_HTTP_PATH_${UPPER_ENV}"
+      eval "DATABRICKS_SQL_WAREHOUSE_ID=\$DATABRICKS_SQL_WAREHOUSE_ID_${UPPER_ENV}"
+      eval "DATABRICKS_DESTINATION_CATALOG=\$DATABRICKS_DESTINATION_CATALOG_${UPPER_ENV}"
+      eval "DATABRICKS_DESTINATION_SCHEMA=\$DATABRICKS_DESTINATION_SCHEMA_${UPPER_ENV}"
+      
+      # Validate credentials are set
+      if [ -z "${DATABRICKS_HOST}" ] || [ -z "${DATABRICKS_CLIENT_ID}" ] || [ -z "${DATABRICKS_CLIENT_SECRET}" ]; then
+        echo "ERROR: DATABRICKS_HOST, DATABRICKS_CLIENT_ID, or DATABRICKS_CLIENT_SECRET is not set"
+        exit 1
+      fi
+      
+      # Remove any trailing slashes and whitespace from credentials
+      DATABRICKS_HOST=$(echo "${DATABRICKS_HOST}" | sed 's:/*$::' | xargs)
+      DATABRICKS_CLIENT_ID=$(echo "${DATABRICKS_CLIENT_ID}" | xargs)
+      DATABRICKS_CLIENT_SECRET=$(echo "${DATABRICKS_CLIENT_SECRET}" | xargs)
+      
+      
+      # Run validation with --project-dir flag
+      docker run --rm \
+        -v $(pwd):/workspace \
+        -w /workspace/${PROJECT_DIR} \
+        -e DATABRICKS_HOST="${DATABRICKS_HOST}" \
+        -e DATABRICKS_CLIENT_ID="${DATABRICKS_CLIENT_ID}" \
+        -e DATABRICKS_CLIENT_SECRET="${DATABRICKS_CLIENT_SECRET}" \
+        -e BUNDLE_VAR_env="${ENVIRONMENT}" \
+        "${DBX_CLI_IMAGE}" \
+        bundle validate --target ${BUNDLETARGET} \
+        --debug \
+        --var="service_principal_name=${DATABRICKS_CLIENT_ID},host=${DATABRICKS_HOST},sql_warehouse_http_path=${DATABRICKS_SQL_WAREHOUSE_HTTP_PATH},sql_warehouse_id=${DATABRICKS_SQL_WAREHOUSE_ID},destination_catalog=${DATABRICKS_DESTINATION_CATALOG},destination_schema=${DATABRICKS_DESTINATION_SCHEMA}"
+  after_script:
+    - sudo rm -rf .databricks/ || rm -rf .databricks/ || true
+  only:
+    - dev
+    - pilotcloud
+    - prod
+
+# ====================
+# STAGE 3: DEPLOY
+# ====================
+deploy_bundle:
+  stage: deploy_bundle
+  tags: ["shell"]
+  dependencies:
+    - checkout
+  before_script:
+    - sudo rm -rf .databricks/ || rm -rf .databricks/ || true
+  script:
+    - echo "Using Databricks CLI from Docker image:${DBX_CLI_IMAGE}"
+    - echo "Environment:${ENVIRONMENT}"
+    - echo "Bundle target:${BUNDLETARGET}"
+    - echo "Project directory:${PROJECT_DIR}"
+    - |
+      # Set credentials based on environment
+      UPPER_ENV=$(echo "${ENVIRONMENT}" | tr '[:lower:]' '[:upper:]')
+      eval "DATABRICKS_HOST=\$DATABRICKS_HOST_${UPPER_ENV}"
+      eval "DATABRICKS_CLIENT_ID=\$DATABRICKS_CLIENT_ID_${UPPER_ENV}"
+      eval "DATABRICKS_CLIENT_SECRET=\$DATABRICKS_CLIENT_SECRET_${UPPER_ENV}"
+      eval "DATABRICKS_SQL_WAREHOUSE_HTTP_PATH=\$DATABRICKS_SQL_WAREHOUSE_HTTP_PATH_${UPPER_ENV}"
+      eval "DATABRICKS_SQL_WAREHOUSE_ID=\$DATABRICKS_SQL_WAREHOUSE_ID_${UPPER_ENV}"
+      eval "DATABRICKS_DESTINATION_CATALOG=\$DATABRICKS_DESTINATION_CATALOG_${UPPER_ENV}"
+      eval "DATABRICKS_DESTINATION_SCHEMA=\$DATABRICKS_DESTINATION_SCHEMA_${UPPER_ENV}"
+      
+      # Validate credentials are set
+      if [ -z "${DATABRICKS_HOST}" ] || [ -z "${DATABRICKS_CLIENT_ID}" ] || [ -z "${DATABRICKS_CLIENT_SECRET}" ]; then
+        echo "ERROR: DATABRICKS_HOST, DATABRICKS_CLIENT_ID, or DATABRICKS_CLIENT_SECRET is not set"
+        exit 1
+      fi
+      
+      # Remove any trailing slashes and whitespace from credentials
+      DATABRICKS_HOST=$(echo "${DATABRICKS_HOST}" | sed 's:/*$::' | xargs)
+      DATABRICKS_CLIENT_ID=$(echo "${DATABRICKS_CLIENT_ID}" | xargs)
+      DATABRICKS_CLIENT_SECRET=$(echo "${DATABRICKS_CLIENT_SECRET}" | xargs)
+      
+      echo "Databricks Host: ${DATABRICKS_HOST}"
+      echo "Client ID length: ${#DATABRICKS_CLIENT_ID}"
+      echo "Client Secret length: ${#DATABRICKS_CLIENT_SECRET}"
+      
+      # Run deployment with --project-dir flag
+      echo "Deploying prebuilt wheel to Databricks..."
+      docker run --rm \
+        -v $(pwd):/workspace \
+        -w /workspace/${PROJECT_DIR} \
+        -e DATABRICKS_HOST="${DATABRICKS_HOST}" \
+        -e DATABRICKS_CLIENT_ID="${DATABRICKS_CLIENT_ID}" \
+        -e DATABRICKS_CLIENT_SECRET="${DATABRICKS_CLIENT_SECRET}" \
+        -e BUNDLE_VAR_env="${ENVIRONMENT}" \
+        "${DBX_CLI_IMAGE}" \
+        bundle deploy --force-lock --target ${BUNDLETARGET} \
+        --var="service_principal_name=${DATABRICKS_CLIENT_ID},host=${DATABRICKS_HOST},sql_warehouse_http_path=${DATABRICKS_SQL_WAREHOUSE_HTTP_PATH},sql_warehouse_id=${DATABRICKS_SQL_WAREHOUSE_ID},destination_catalog=${DATABRICKS_DESTINATION_CATALOG},destination_schema=${DATABRICKS_DESTINATION_SCHEMA}"
+      
+      echo "Deployment completed for ${ENVIRONMENT}"
+  after_script:
+    - sudo rm -rf .databricks/ || rm -rf .databricks/ || true
+  environment:
+    name: ${CI_COMMIT_REF_NAME}
+  only:
+    - dev
+    - pilotcloud
+    - prod

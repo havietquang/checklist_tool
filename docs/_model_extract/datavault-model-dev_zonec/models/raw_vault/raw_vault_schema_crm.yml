@@ -1,0 +1,743 @@
+# models/raw_vault/schema.yml
+version: 2
+
+models:
+  # ====================== HUBS  ======================
+
+  - name: hub_crm_contact_hist
+    config:
+      contract:
+        enforced: true
+    columns:
+      - name: crm_contact_hist_hashkey
+        data_type: string
+        tests:
+          - unique:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+          - not_null:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+      - name: business_key
+        data_type: int
+        tests:
+          - unique:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+          - not_null:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+      - name: source_event_date
+        data_type: date
+      - name: record_source
+        data_type: string
+      - name: load_timestamp
+        data_type: timestamp
+
+  - name: hub_crm_contact_notes
+    config:
+      contract:
+        enforced: true
+    columns:
+      - name: crm_contact_notes_hashkey
+        data_type: string
+        tests:
+          - unique:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+          - not_null:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+      - name: business_key
+        data_type: string
+        tests:
+          - unique:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+          - not_null:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+      - name: source_event_date
+        data_type: date
+      - name: record_source
+        data_type: string
+      - name: load_timestamp
+        data_type: timestamp
+
+  - name: hub_crm_users
+    config:
+      contract:
+        enforced: true
+    columns:
+      - name: crm_users_hashkey
+        data_type: string
+        tests:
+          - unique:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+          - not_null:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+      - name: business_key
+        data_type: string
+        tests:
+          - unique:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+          - not_null:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+      - name: source_event_date
+        data_type: date
+      - name: record_source
+        data_type: string
+      - name: load_timestamp
+        data_type: timestamp
+
+  - name: sat_crm_users_information
+    config:
+      contract:
+        enforced: true
+    columns:
+      - name: crm_users_hashkey
+        data_type: string
+        tests:
+          - relationships:
+              arguments:
+                to: ref('hub_crm_users')
+                field: crm_users_hashkey
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+          - not_null:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+      - name: hashdiff
+        data_type: string
+      - name: source_event_date
+        data_type: date
+      - name: load_timestamp
+        data_type: timestamp
+      - name: record_source
+        data_type: string
+      - name: user_last_name
+        data_type: string
+      - name: user_first_name
+        data_type: string
+      - name: user_full_name
+        data_type: string
+      - name: user_status_id
+        data_type: string
+      - name: date_last_off
+        data_type: string
+      - name: session_id
+        data_type: string
+      - name: user_email
+        data_type: string
+      - name: extension
+        data_type: string
+      - name: language
+        data_type: string
+      - name: user_phone
+        data_type: string
+      - name: omni
+        data_type: string
+      - name: telext
+        data_type: string
+      - name: branch_code
+        data_type: string
+      - name: custgroup
+        data_type: string
+      - name: func_group
+        data_type: string
+      - name: account_officer_id
+        data_type: string
+      - name: job_key
+        data_type: string
+      - name: nearly_job_title
+        data_type: string
+
+    data_tests:
+      - unique_combination_of_columns:
+          arguments:
+            combination_of_columns:
+              - crm_users_hashkey
+              - hashdiff
+              - source_event_date
+
+  - name: sat_crm_users_other
+    config:
+      contract:
+        enforced: true
+    columns:
+      - name: crm_users_hashkey
+        data_type: string
+        tests:
+          - relationships:
+              arguments:
+                to: ref('hub_crm_users')
+                field: crm_users_hashkey
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+          - not_null:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+      - name: hashdiff
+        data_type: string
+      - name: source_event_date
+        data_type: date
+      - name: load_timestamp
+        data_type: timestamp
+      - name: record_source
+        data_type: string
+      - name: is_team_manage
+        data_type: string
+      - name: isactive
+        data_type: string
+      - name: isdeleted
+        data_type: string
+      - name: is_enable_market_place
+        data_type: string
+      - name: is_lso_sk
+        data_type: string
+      - name: is_out_of_line
+        data_type: string
+      - name: old_custgroup
+        data_type: string
+      - name: old_branch_code
+        data_type: string
+      - name: old_user_full_name
+        data_type: string
+      - name: old_account_officer_id
+        data_type: string
+      - name: old_func_group
+        data_type: string
+      - name: old_user_phone
+        data_type: string
+      - name: old_telext
+        data_type: string
+      - name: user_created
+        data_type: string
+      - name: date_created
+        data_type: string
+      - name: user_updated
+        data_type: string
+      - name: date_updated
+        data_type: string
+      - name: user_deleted
+        data_type: string
+      - name: date_deleted
+        data_type: string
+
+    data_tests:
+      - unique_combination_of_columns:
+          arguments:
+            combination_of_columns:
+              - crm_users_hashkey
+              - hashdiff
+              - source_event_date
+  - name: sat_crm_contact_notes_information
+    config:
+      contract:
+        enforced: true
+    columns:
+      - name: crm_contact_notes_hashkey
+        data_type: string
+        tests:
+          - relationships:
+              arguments:
+                to: ref('hub_crm_contact_notes')
+                field: crm_contact_notes_hashkey
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+          - not_null:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+      - name: hashdiff
+        data_type: string
+      - name: source_event_date
+        data_type: date
+      - name: load_timestamp
+        data_type: timestamp
+      - name: record_source
+        data_type: string
+      - name: name
+        data_type: string
+      - name: status
+        data_type: string
+      - name: date_created
+        data_type: string
+      - name: user_created
+        data_type: string
+      - name: is_imported
+        data_type: int
+      - name: program_type
+        data_type: string
+      - name: program_code
+        data_type: string
+      - name: is_program_hot
+        data_type: int
+      - name: end_date_program
+        data_type: string
+      - name: start_date_program
+        data_type: string
+      - name: id_product
+        data_type: decimal(38,10)
+      - name: custgroup
+        data_type: int
+      - name: department
+        data_type: string
+      - name: parent_key
+        data_type: string
+      - name: file_banner
+        data_type: string
+      - name: file_manual
+        data_type: string
+      - name: file_info_prod
+        data_type: string
+      - name: data_type
+        data_type: string
+      - name: date_updated
+        data_type: string
+      - name: user_updated
+        data_type: string
+      - name: position
+        data_type: int
+
+    data_tests:
+      - unique_combination_of_columns:
+          arguments:
+            combination_of_columns:
+              - crm_contact_notes_hashkey
+              - hashdiff
+              - source_event_date
+  - name: sat_crm_contact_hist_information
+    config:
+      contract:
+        enforced: true
+    columns:
+      - name: crm_contact_hist_hashkey
+        data_type: string
+        tests:
+          - relationships:
+              arguments:
+                to: ref('hub_crm_contact_hist')
+                field: crm_contact_hist_hashkey
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+          - not_null:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+      - name: hashdiff
+        data_type: string
+      - name: source_event_date
+        data_type: date
+      - name: load_timestamp
+        data_type: timestamp
+      - name: record_source
+        data_type: string
+      - name: CIF
+        data_type: int 
+      - name: DATE_CONTACT
+        data_type: string
+      - name: FUNC_GROUP
+        data_type: string
+      - name: BRANCH_CODE
+        data_type: string
+      - name: NOTES
+        data_type: string
+      - name: SOUCRE
+        data_type: string
+      - name: CONTACT_STATUS_ID
+        data_type: int
+      - name: CONTACT_TYPE_ID
+        data_type: int
+      - name: CONTACT_RESULT_ID
+        data_type: int
+      - name: CONTACTNOTEID
+        data_type: int
+      - name: IMPORT_ID
+        data_type: bigint
+      - name: PROGRAM_NOTYFY_ID
+        data_type: int
+      - name: SALE_CODE
+        data_type: int
+      - name: PROMISE_DATE
+        data_type: string
+      - name: RECALL_DATE
+        data_type: string
+      - name: CONDITION_DATE
+        data_type: string
+      - name: REFERENCES_DATE
+        data_type: string
+      - name: DIALID
+        data_type: string
+      - name: DATETIME_CREATED
+        data_type: timestamp
+      - name: DATETIME_UPDATED
+        data_type: string
+      - name: USER_CREATED
+        data_type: string
+      - name: USER_UPDATED
+        data_type: string
+      - name: UPDATE_TIMES
+        data_type: decimal(38,10)
+
+    data_tests:
+      - unique_combination_of_columns:
+          arguments:
+            combination_of_columns:
+              - crm_contact_hist_hashkey
+              - hashdiff
+              - source_event_date
+  - name: link_crm_users_dept_acct_officer
+    config:
+      contract:
+        enforced: true
+    columns:
+      - name: link_crm_users_dept_acct_officer_hashkey
+        data_type: string
+        tests:
+          - unique:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+          - not_null:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+      - name: crm_users_hashkey
+        data_type: string
+        tests:
+          - relationships:
+              arguments:
+                to: ref('hub_crm_users')
+                field: crm_users_hashkey
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+          - not_null:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+      - name: dept_acct_officer_hashkey
+        data_type: string
+        tests:
+          - relationships:
+              arguments:
+                to: ref('hub_acct_officer')
+                field: dept_acct_officer_hashkey
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+          - not_null:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+      - name: source_event_date
+        data_type: date
+      - name: record_source
+        data_type: string
+      - name: load_timestamp
+        data_type: timestamp
+
+  - name: link_crm_user_manager
+    config:
+      contract:
+        enforced: true
+    columns:
+      - name: link_crm_user_manager_hashkey
+        data_type: string
+        tests:
+          - unique:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+          - not_null:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+      - name: crm_users_hashkey
+        data_type: string
+        tests:
+          - relationships:
+              arguments:
+                to: ref('hub_crm_users')
+                field: crm_users_hashkey
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+          - not_null:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+      - name: crm_users_manager_hashkey
+        data_type: string
+        tests:
+          - relationships:
+              arguments:
+                to: ref('hub_crm_users')
+                field: crm_users_hashkey
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+          - not_null:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+      - name: source_event_date
+        data_type: date
+      - name: record_source
+        data_type: string
+      - name: load_timestamp
+        data_type: timestamp
+
+  - name: sat_crm_user_structure
+    config:
+      contract:
+        enforced: true
+    columns:
+      - name: crm_users_hashkey
+        data_type: string
+        tests:
+          - relationships:
+              arguments:
+                to: ref('hub_crm_users')
+                field: crm_users_hashkey
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+          - not_null:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+      - name: hashdiff
+        data_type: string
+      - name: source_event_date
+        data_type: date
+      - name: load_timestamp
+        data_type: timestamp
+      - name: record_source
+        data_type: string
+      - name: ma_key
+        data_type: string
+      - name: user_manager_id
+        data_type: string
+      - name: custgroup
+        data_type: bigint
+      - name: branch_code
+        data_type: string
+      - name: division_id
+        data_type: int
+      - name: user_created
+        data_type: string
+      - name: datetime_created
+        data_type: date
+      - name: user_updated
+        data_type: string
+      - name: datetime_updated
+        data_type: date
+      - name: user_sale_code
+        data_type: string
+      - name: user_manager_sale_code
+        data_type: string
+
+    data_tests:
+      - unique_combination_of_columns:
+          arguments:
+            combination_of_columns:
+              - crm_users_hashkey
+              - ma_key
+              - hashdiff
+              - source_event_date
+
+  - name: effsat_link_crm_user_manager
+    config:
+      contract:
+        enforced: true
+    columns:
+      - name: link_crm_user_manager_hashkey
+        data_type: string
+        tests:
+          - relationships:
+              arguments:
+                to: ref('link_crm_user_manager')
+                field: link_crm_user_manager_hashkey
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+          - not_null:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+      - name: source_event_date
+        data_type: date
+      - name: record_source
+        data_type: string
+      - name: load_timestamp
+        data_type: timestamp
+      - name: active_flag
+        data_type: int
+
+  - name: link_crm_users_branch
+    config:
+      contract:
+        enforced: true
+    columns:
+      - name: link_crm_users_branch_hashkey
+        data_type: string
+        tests:
+          - unique:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+          - not_null:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+      - name: crm_users_hashkey
+        data_type: string
+        tests:
+          - relationships:
+              arguments:
+                to: ref('hub_crm_users')
+                field: crm_users_hashkey
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+          - not_null:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+      - name: branch_hashkey
+        data_type: string
+        tests:
+          - relationships:
+              arguments:
+                to: ref('hub_branch')
+                field: branch_hashkey
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+          - not_null:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+      - name: source_event_date
+        data_type: date
+      - name: record_source
+        data_type: string
+      - name: load_timestamp
+        data_type: timestamp
+
+  - name: link_contact_hist_branch
+    config:
+      contract:
+        enforced: true
+    columns:
+      - name: link_contact_hist_branch_hashkey
+        data_type: string
+        tests:
+          - unique:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+          - not_null:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+      - name: crm_contact_hist_hashkey
+        data_type: string
+        tests:
+          - relationships:
+              arguments:
+                to: ref('hub_crm_contact_hist')
+                field: crm_contact_hist_hashkey
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+          - not_null:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+      - name: branch_hashkey
+        data_type: string
+        tests:
+          - relationships:
+              arguments:
+                to: ref('hub_branch')
+                field: branch_hashkey
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+          - not_null:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+      - name: source_event_date
+        data_type: date
+      - name: record_source
+        data_type: string
+      - name: load_timestamp
+        data_type: timestamp
+
+  - name: link_contact_hist_customer
+    config:
+      contract:
+        enforced: true
+    columns:
+      - name: link_contact_hist_customer_hashkey
+        data_type: string
+        tests:
+          - unique:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+          - not_null:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+      - name: crm_contact_hist_hashkey
+        data_type: string
+        tests:
+          - relationships:
+              arguments:
+                to: ref('hub_crm_contact_hist')
+                field: crm_contact_hist_hashkey
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+          - not_null:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+      - name: customer_hashkey
+        data_type: string
+        tests:
+          - relationships:
+              arguments:
+                to: ref('hub_customer')
+                field: customer_hashkey
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+          - not_null:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+      - name: source_event_date
+        data_type: date
+      - name: record_source
+        data_type: string
+      - name: load_timestamp
+        data_type: timestamp
+
+  - name: link_contact_hist_contact_notes
+    config:
+      contract:
+        enforced: true
+    columns:
+      - name: link_contact_hist_contact_notes_hashkey
+        data_type: string
+        tests:
+          - unique:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+          - not_null:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+      - name: crm_contact_hist_hashkey
+        data_type: string
+        tests:
+          - relationships:
+              arguments:
+                to: ref('hub_crm_contact_hist')
+                field: crm_contact_hist_hashkey
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+          - not_null:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+      - name: crm_contact_notes_hashkey
+        data_type: string
+        tests:
+          - relationships:
+              arguments:
+                to: ref('hub_crm_contact_notes')
+                field: crm_contact_notes_hashkey
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+          - not_null:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+      - name: source_event_date
+        data_type: date
+      - name: record_source
+        data_type: string
+      - name: load_timestamp
+        data_type: timestamp

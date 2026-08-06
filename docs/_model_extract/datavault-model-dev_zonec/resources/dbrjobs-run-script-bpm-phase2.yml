@@ -1,0 +1,202 @@
+resources:
+  jobs:
+    dbrjobs_run_script_bpm_phase2:
+      name: dbrjobs-run-script-bpm-phase2
+      email_notifications:
+        on_failure:
+          - anhptv6@ocb.com.vn
+      max_concurrent_runs: 1
+
+      parameters:
+        - name: start_date
+          default: "20250101"
+        - name: end_date
+          default: "20250110"
+        - name: environment
+          default: "${var.env}"
+        - name: catalog_sourcing
+          default: "ocb_datavault_${var.env}_sourcing"
+        - name: catalog_cleaned
+          default: "ocb_datavault_${var.env}_cleaned"
+
+      tasks:
+
+        - task_key: bpm__hub_giao_dich
+          run_if: ALL_SUCCESS
+          sql_task:
+            file: {path: ../analyses/phase2/bpm/hub_giao_dich.sql, source: WORKSPACE}
+            warehouse_id: "${var.sql_warehouse_id}"
+            parameters: {start_date: "{{job.parameters.start_date}}", end_date: "{{job.parameters.end_date}}", catalog_sourcing: "{{job.parameters.catalog_sourcing}}", catalog_cleaned: "{{job.parameters.catalog_cleaned}}"}
+
+        - task_key: bpm__hub_pdtd_nhom_giao_dich
+          run_if: ALL_SUCCESS
+          sql_task:
+            file: {path: ../analyses/phase2/bpm/hub_pdtd_nhom_giao_dich.sql, source: WORKSPACE}
+            warehouse_id: "${var.sql_warehouse_id}"
+            parameters: {start_date: "{{job.parameters.start_date}}", end_date: "{{job.parameters.end_date}}", catalog_sourcing: "{{job.parameters.catalog_sourcing}}", catalog_cleaned: "{{job.parameters.catalog_cleaned}}"}
+
+        - task_key: bpm__hub_khach_hang
+          run_if: ALL_SUCCESS
+          sql_task:
+            file: {path: ../analyses/phase2/bpm/hub_khach_hang.sql, source: WORKSPACE}
+            warehouse_id: "${var.sql_warehouse_id}"
+            parameters: {start_date: "{{job.parameters.start_date}}", end_date: "{{job.parameters.end_date}}", catalog_sourcing: "{{job.parameters.catalog_sourcing}}", catalog_cleaned: "{{job.parameters.catalog_cleaned}}"}
+
+        # ================================================================
+        # BPM SOURCES (sat/link - khong con ghi hub chung)
+        # ================================================================
+        - task_key: bpm__giao_dich_the
+          run_if: ALL_SUCCESS
+          sql_task:
+            file: {path: ../analyses/phase2/bpm/giao_dich_the.sql, source: WORKSPACE}
+            warehouse_id: "${var.sql_warehouse_id}"
+            parameters: {start_date: "{{job.parameters.start_date}}", end_date: "{{job.parameters.end_date}}", catalog_sourcing: "{{job.parameters.catalog_sourcing}}", catalog_cleaned: "{{job.parameters.catalog_cleaned}}"}
+
+        - task_key: bpm__h_pdtd_gdich_ctiet_pduyet
+          run_if: ALL_SUCCESS
+          sql_task:
+            file: {path: ../analyses/phase2/bpm/h_pdtd_gdich_ctiet_pduyet.sql, source: WORKSPACE}
+            warehouse_id: "${var.sql_warehouse_id}"
+            parameters: {start_date: "{{job.parameters.start_date}}", end_date: "{{job.parameters.end_date}}", catalog_sourcing: "{{job.parameters.catalog_sourcing}}", catalog_cleaned: "{{job.parameters.catalog_cleaned}}"}
+
+        - task_key: bpm__h_pdtd_gdich_lsu_pduyet
+          run_if: ALL_SUCCESS
+          sql_task:
+            file: {path: ../analyses/phase2/bpm/h_pdtd_gdich_lsu_pduyet.sql, source: WORKSPACE}
+            warehouse_id: "${var.sql_warehouse_id}"
+            parameters: {start_date: "{{job.parameters.start_date}}", end_date: "{{job.parameters.end_date}}", catalog_sourcing: "{{job.parameters.catalog_sourcing}}", catalog_cleaned: "{{job.parameters.catalog_cleaned}}"}
+
+        - task_key: bpm__khach_hang_ca_nhan
+          run_if: ALL_SUCCESS
+          sql_task:
+            file: {path: ../analyses/phase2/bpm/khach_hang_ca_nhan.sql, source: WORKSPACE}
+            warehouse_id: "${var.sql_warehouse_id}"
+            parameters: {start_date: "{{job.parameters.start_date}}", end_date: "{{job.parameters.end_date}}", catalog_sourcing: "{{job.parameters.catalog_sourcing}}", catalog_cleaned: "{{job.parameters.catalog_cleaned}}"}
+
+        - task_key: bpm__khach_hang_doanh_nghiep
+          run_if: ALL_SUCCESS
+          sql_task:
+            file: {path: ../analyses/phase2/bpm/khach_hang_doanh_nghiep.sql, source: WORKSPACE}
+            warehouse_id: "${var.sql_warehouse_id}"
+            parameters: {start_date: "{{job.parameters.start_date}}", end_date: "{{job.parameters.end_date}}", catalog_sourcing: "{{job.parameters.catalog_sourcing}}", catalog_cleaned: "{{job.parameters.catalog_cleaned}}"}
+
+        - task_key: bpm__lich_su_giao_dich
+          run_if: ALL_SUCCESS
+          sql_task:
+            file: {path: ../analyses/phase2/bpm/lich_su_giao_dich.sql, source: WORKSPACE}
+            warehouse_id: "${var.sql_warehouse_id}"
+            parameters: {start_date: "{{job.parameters.start_date}}", end_date: "{{job.parameters.end_date}}", catalog_sourcing: "{{job.parameters.catalog_sourcing}}", catalog_cleaned: "{{job.parameters.catalog_cleaned}}"}
+
+        - task_key: bpm__pdtd_giao_dich_tin_dung
+          run_if: ALL_SUCCESS
+          sql_task:
+            file: {path: ../analyses/phase2/bpm/pdtd_giao_dich_tin_dung.sql, source: WORKSPACE}
+            warehouse_id: "${var.sql_warehouse_id}"
+            parameters: {start_date: "{{job.parameters.start_date}}", end_date: "{{job.parameters.end_date}}", catalog_sourcing: "{{job.parameters.catalog_sourcing}}", catalog_cleaned: "{{job.parameters.catalog_cleaned}}"}
+
+        - task_key: bpm__qlns_nguoi_lao_dong_info
+          run_if: ALL_SUCCESS
+          sql_task:
+            file: {path: ../analyses/phase2/bpm/qlns_nguoi_lao_dong_info.sql, source: WORKSPACE}
+            warehouse_id: "${var.sql_warehouse_id}"
+            parameters: {start_date: "{{job.parameters.start_date}}", end_date: "{{job.parameters.end_date}}", catalog_sourcing: "{{job.parameters.catalog_sourcing}}", catalog_cleaned: "{{job.parameters.catalog_cleaned}}"}
+
+        - task_key: bpm__tc_stk_lich_su
+          run_if: ALL_SUCCESS
+          sql_task:
+            file: {path: ../analyses/phase2/bpm/tc_stk_lich_su.sql, source: WORKSPACE}
+            warehouse_id: "${var.sql_warehouse_id}"
+            parameters: {start_date: "{{job.parameters.start_date}}", end_date: "{{job.parameters.end_date}}", catalog_sourcing: "{{job.parameters.catalog_sourcing}}", catalog_cleaned: "{{job.parameters.catalog_cleaned}}"}
+
+        - task_key: bpm__tc_stk_thong_tin_tong_hop
+          run_if: ALL_SUCCESS
+          sql_task:
+            file: {path: ../analyses/phase2/bpm/tc_stk_thong_tin_tong_hop.sql, source: WORKSPACE}
+            warehouse_id: "${var.sql_warehouse_id}"
+            parameters: {start_date: "{{job.parameters.start_date}}", end_date: "{{job.parameters.end_date}}", catalog_sourcing: "{{job.parameters.catalog_sourcing}}", catalog_cleaned: "{{job.parameters.catalog_cleaned}}"}
+
+        - task_key: bpm__tcstk_thong_tin_bao_dam
+          run_if: ALL_SUCCESS
+          sql_task:
+            file: {path: ../analyses/phase2/bpm/tcstk_thong_tin_bao_dam.sql, source: WORKSPACE}
+            warehouse_id: "${var.sql_warehouse_id}"
+            parameters: {start_date: "{{job.parameters.start_date}}", end_date: "{{job.parameters.end_date}}", catalog_sourcing: "{{job.parameters.catalog_sourcing}}", catalog_cleaned: "{{job.parameters.catalog_cleaned}}"}
+
+        - task_key: bpm__tcstk_thong_tin_chung
+          run_if: ALL_SUCCESS
+          sql_task:
+            file: {path: ../analyses/phase2/bpm/tcstk_thong_tin_chung.sql, source: WORKSPACE}
+            warehouse_id: "${var.sql_warehouse_id}"
+            parameters: {start_date: "{{job.parameters.start_date}}", end_date: "{{job.parameters.end_date}}", catalog_sourcing: "{{job.parameters.catalog_sourcing}}", catalog_cleaned: "{{job.parameters.catalog_cleaned}}"}
+
+        - task_key: bpm__tcstk_thong_tin_giao_dich
+          run_if: ALL_SUCCESS
+          sql_task:
+            file: {path: ../analyses/phase2/bpm/tcstk_thong_tin_giao_dich.sql, source: WORKSPACE}
+            warehouse_id: "${var.sql_warehouse_id}"
+            parameters: {start_date: "{{job.parameters.start_date}}", end_date: "{{job.parameters.end_date}}", catalog_sourcing: "{{job.parameters.catalog_sourcing}}", catalog_cleaned: "{{job.parameters.catalog_cleaned}}"}
+
+        - task_key: bpm__tdcn_chi_tiet_san_pham
+          run_if: ALL_SUCCESS
+          sql_task:
+            file: {path: ../analyses/phase2/bpm/tdcn_chi_tiet_san_pham.sql, source: WORKSPACE}
+            warehouse_id: "${var.sql_warehouse_id}"
+            parameters: {start_date: "{{job.parameters.start_date}}", end_date: "{{job.parameters.end_date}}", catalog_sourcing: "{{job.parameters.catalog_sourcing}}", catalog_cleaned: "{{job.parameters.catalog_cleaned}}"}
+
+        - task_key: bpm__tdcn_khoan_cap_td_the
+          run_if: ALL_SUCCESS
+          sql_task:
+            file: {path: ../analyses/phase2/bpm/tdcn_khoan_cap_td_the.sql, source: WORKSPACE}
+            warehouse_id: "${var.sql_warehouse_id}"
+            parameters: {start_date: "{{job.parameters.start_date}}", end_date: "{{job.parameters.end_date}}", catalog_sourcing: "{{job.parameters.catalog_sourcing}}", catalog_cleaned: "{{job.parameters.catalog_cleaned}}"}
+
+        - task_key: bpm__tdcn_nguoi_dong_vay
+          run_if: ALL_SUCCESS
+          sql_task:
+            file: {path: ../analyses/phase2/bpm/tdcn_nguoi_dong_vay.sql, source: WORKSPACE}
+            warehouse_id: "${var.sql_warehouse_id}"
+            parameters: {start_date: "{{job.parameters.start_date}}", end_date: "{{job.parameters.end_date}}", catalog_sourcing: "{{job.parameters.catalog_sourcing}}", catalog_cleaned: "{{job.parameters.catalog_cleaned}}"}
+
+        - task_key: bpm__tdcn_sp_nhu_cau_td
+          run_if: ALL_SUCCESS
+          sql_task:
+            file: {path: ../analyses/phase2/bpm/tdcn_sp_nhu_cau_td.sql, source: WORKSPACE}
+            warehouse_id: "${var.sql_warehouse_id}"
+            parameters: {start_date: "{{job.parameters.start_date}}", end_date: "{{job.parameters.end_date}}", catalog_sourcing: "{{job.parameters.catalog_sourcing}}", catalog_cleaned: "{{job.parameters.catalog_cleaned}}"}
+
+        - task_key: bpm__tdcn_thu_nhap_tra_no
+          run_if: ALL_SUCCESS
+          sql_task:
+            file: {path: ../analyses/phase2/bpm/tdcn_thu_nhap_tra_no.sql, source: WORKSPACE}
+            warehouse_id: "${var.sql_warehouse_id}"
+            parameters: {start_date: "{{job.parameters.start_date}}", end_date: "{{job.parameters.end_date}}", catalog_sourcing: "{{job.parameters.catalog_sourcing}}", catalog_cleaned: "{{job.parameters.catalog_cleaned}}"}
+
+        - task_key: bpm__tsbd_chu_so_huu
+          run_if: ALL_SUCCESS
+          sql_task:
+            file: {path: ../analyses/phase2/bpm/tsbd_chu_so_huu.sql, source: WORKSPACE}
+            warehouse_id: "${var.sql_warehouse_id}"
+            parameters: {start_date: "{{job.parameters.start_date}}", end_date: "{{job.parameters.end_date}}", catalog_sourcing: "{{job.parameters.catalog_sourcing}}", catalog_cleaned: "{{job.parameters.catalog_cleaned}}"}
+
+        - task_key: bpm__tsbd_giaodich_taisan_chusohuu
+          run_if: ALL_SUCCESS
+          sql_task:
+            file: {path: ../analyses/phase2/bpm/tsbd_giaodich_taisan_chusohuu.sql, source: WORKSPACE}
+            warehouse_id: "${var.sql_warehouse_id}"
+            parameters: {start_date: "{{job.parameters.start_date}}", end_date: "{{job.parameters.end_date}}", catalog_sourcing: "{{job.parameters.catalog_sourcing}}", catalog_cleaned: "{{job.parameters.catalog_cleaned}}"}
+
+        - task_key: bpm__ttd_giao_dich_igen
+          run_if: ALL_SUCCESS
+          sql_task:
+            file: {path: ../analyses/phase2/bpm/ttd_giao_dich_igen.sql, source: WORKSPACE}
+            warehouse_id: "${var.sql_warehouse_id}"
+            parameters: {start_date: "{{job.parameters.start_date}}", end_date: "{{job.parameters.end_date}}", catalog_sourcing: "{{job.parameters.catalog_sourcing}}", catalog_cleaned: "{{job.parameters.catalog_cleaned}}"}
+
+      tags:
+        project: datavault-model
+        zone: silver
+        phase: phase2
+
+        map-migrated: migV58YOK697G
+      queue:
+        enabled: true

@@ -1,0 +1,2035 @@
+# models/raw_vault/raw_vault_schema_appsflyer.yml
+
+version: 2
+
+models:
+  # ====================== HUBS ======================
+
+  - name: hub_appsflyer
+    config:
+      contract:
+        enforced: true
+    columns:
+      - name: appsflyer_hashkey
+        data_type: string
+        tests:
+          - unique:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+          - not_null:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+      - name: business_key
+        data_type: string
+        tests:
+          - unique:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+          - not_null:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+      - name: source_event_date
+        data_type: date
+      - name: record_source
+        data_type: string
+      - name: load_timestamp
+        data_type: timestamp
+
+  # ====================== SATELLITES ======================
+
+  # --- installs ---
+  - name: sat_installs_report_event
+    config:
+      contract:
+        enforced: true
+    columns:
+      - name: appsflyer_hashkey
+        data_type: string
+        tests:
+          - relationships:
+              arguments:
+                to: ref('hub_appsflyer')
+                field: appsflyer_hashkey
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+          - not_null:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+      - name: hashdiff
+        data_type: string
+      - name: source_event_date
+        data_type: date
+      - name: load_timestamp
+        data_type: timestamp
+      - name: record_source
+        data_type: string
+      - name: install_time
+        data_type: string
+      - name: event_time
+        data_type: string
+      - name: event_name
+        data_type: string
+      - name: event_value
+        data_type: string
+      - name: event_revenue
+        data_type: string
+      - name: event_revenue_currency
+        data_type: string
+      - name: event_revenue_usd
+        data_type: string
+      - name: event_source
+        data_type: string
+      - name: is_receipt_validated
+        data_type: string
+      - name: attributed_touch_type
+        data_type: string
+      - name: attributed_touch_time
+        data_type: string
+      - name: partner
+        data_type: string
+      - name: media_source
+        data_type: string
+      - name: channel
+        data_type: string
+      - name: keywords
+        data_type: string
+      - name: campaign
+        data_type: string
+      - name: campaign_id
+        data_type: string
+      - name: adset
+        data_type: string
+      - name: adset_id
+        data_type: string
+      - name: ad
+        data_type: string
+      - name: ad_id
+        data_type: string
+      - name: ad_type
+        data_type: string
+      - name: site_id
+        data_type: string
+      - name: sub_site_id
+        data_type: string
+      - name: sub_param_1
+        data_type: string
+      - name: sub_param_2
+        data_type: string
+      - name: sub_param_3
+        data_type: string
+      - name: sub_param_4
+        data_type: string
+      - name: sub_param_5
+        data_type: string
+      - name: carrier
+        data_type: string
+      - name: cost_model
+        data_type: string
+      - name: cost_value
+        data_type: string
+      - name: cost_currency
+        data_type: string
+      - name: contributor_1_partner
+        data_type: string
+      - name: contributor_1_media_source
+        data_type: string
+      - name: contributor_1_campaign
+        data_type: string
+      - name: contributor_1_touch_type
+        data_type: string
+      - name: contributor_1_touch_time
+        data_type: string
+      - name: contributor_2_partner
+        data_type: string
+      - name: contributor_2_media_source
+        data_type: string
+      - name: contributor_2_campaign
+        data_type: string
+      - name: contributor_2_touch_type
+        data_type: string
+      - name: contributor_2_touch_time
+        data_type: string
+      - name: contributor_3_partner
+        data_type: string
+      - name: contributor_3_media_source
+        data_type: string
+      - name: contributor_3_campaign
+        data_type: string
+      - name: contributor_3_touch_type
+        data_type: string
+      - name: contributor_3_touch_time
+        data_type: string
+      - name: is_retargeting
+        data_type: string
+      - name: retargeting_conversion_type
+        data_type: string
+      - name: attribution_lookback
+        data_type: string
+      - name: reengagement_window
+        data_type: string
+      - name: is_primary_attribution
+        data_type: string
+
+    data_tests:
+      - unique_combination_of_columns:
+          arguments:
+            combination_of_columns:
+              - appsflyer_hashkey
+              - hashdiff
+              - source_event_date
+
+  # --- installs ---
+  - name: sat_installs_report_device
+    config:
+      contract:
+        enforced: true
+    columns:
+      - name: appsflyer_hashkey
+        data_type: string
+        tests:
+          - relationships:
+              arguments:
+                to: ref('hub_appsflyer')
+                field: appsflyer_hashkey
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+          - not_null:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+      - name: hashdiff
+        data_type: string
+      - name: source_event_date
+        data_type: date
+      - name: load_timestamp
+        data_type: timestamp
+      - name: record_source
+        data_type: string
+      - name: city
+        data_type: string
+      - name: wifi
+        data_type: string
+      - name: operator
+        data_type: string
+      - name: language
+        data_type: string
+      - name: advertising_id
+        data_type: string
+      - name: idfa
+        data_type: string
+      - name: android_id
+        data_type: string
+      - name: customer_user_id
+        data_type: string
+      - name: imei
+        data_type: string
+      - name: idfv
+        data_type: string
+      - name: platform
+        data_type: string
+      - name: device_type
+        data_type: string
+      - name: os_version
+        data_type: string
+      - name: app_version
+        data_type: string
+      - name: sdk_version
+        data_type: string
+      - name: app_id
+        data_type: string
+      - name: app_name
+        data_type: string
+      - name: bundle_id
+        data_type: string
+      - name: country_code
+        data_type: string
+      - name: dma
+        data_type: string
+      - name: ip
+        data_type: string
+      - name: postal_code
+        data_type: string
+      - name: region
+        data_type: string
+      - name: state
+        data_type: string
+      - name: user_agent
+        data_type: string
+      - name: http_referrer
+        data_type: string
+      - name: original_url
+        data_type: string
+
+    data_tests:
+      - unique_combination_of_columns:
+          arguments:
+            combination_of_columns:
+              - appsflyer_hashkey
+              - hashdiff
+              - source_event_date
+
+  # --- installs ---
+  - name: sat_organic_installs_report_event
+    config:
+      contract:
+        enforced: true
+    columns:
+      - name: appsflyer_hashkey
+        data_type: string
+        tests:
+          - relationships:
+              arguments:
+                to: ref('hub_appsflyer')
+                field: appsflyer_hashkey
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+          - not_null:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+      - name: hashdiff
+        data_type: string
+      - name: source_event_date
+        data_type: date
+      - name: load_timestamp
+        data_type: timestamp
+      - name: record_source
+        data_type: string
+      - name: install_time
+        data_type: string
+      - name: event_time
+        data_type: string
+      - name: event_name
+        data_type: string
+      - name: event_value
+        data_type: string
+      - name: event_revenue
+        data_type: string
+      - name: event_revenue_currency
+        data_type: string
+      - name: event_revenue_usd
+        data_type: string
+      - name: event_source
+        data_type: string
+      - name: is_receipt_validated
+        data_type: string
+      - name: attributed_touch_type
+        data_type: string
+      - name: attributed_touch_time
+        data_type: string
+      - name: partner
+        data_type: string
+      - name: media_source
+        data_type: string
+      - name: channel
+        data_type: string
+      - name: keywords
+        data_type: string
+      - name: campaign
+        data_type: string
+      - name: campaign_id
+        data_type: string
+      - name: adset
+        data_type: string
+      - name: adset_id
+        data_type: string
+      - name: ad
+        data_type: string
+      - name: ad_id
+        data_type: string
+      - name: ad_type
+        data_type: string
+      - name: site_id
+        data_type: string
+      - name: sub_site_id
+        data_type: string
+      - name: sub_param_1
+        data_type: string
+      - name: sub_param_2
+        data_type: string
+      - name: sub_param_3
+        data_type: string
+      - name: sub_param_4
+        data_type: string
+      - name: sub_param_5
+        data_type: string
+      - name: carrier
+        data_type: string
+      - name: cost_model
+        data_type: string
+      - name: cost_value
+        data_type: string
+      - name: cost_currency
+        data_type: string
+      - name: contributor_1_partner
+        data_type: string
+      - name: contributor_1_media_source
+        data_type: string
+      - name: contributor_1_campaign
+        data_type: string
+      - name: contributor_1_touch_type
+        data_type: string
+      - name: contributor_1_touch_time
+        data_type: string
+      - name: contributor_2_partner
+        data_type: string
+      - name: contributor_2_media_source
+        data_type: string
+      - name: contributor_2_campaign
+        data_type: string
+      - name: contributor_2_touch_type
+        data_type: string
+      - name: contributor_2_touch_time
+        data_type: string
+      - name: contributor_3_partner
+        data_type: string
+      - name: contributor_3_media_source
+        data_type: string
+      - name: contributor_3_campaign
+        data_type: string
+      - name: contributor_3_touch_type
+        data_type: string
+      - name: contributor_3_touch_time
+        data_type: string
+      - name: is_retargeting
+        data_type: string
+      - name: retargeting_conversion_type
+        data_type: string
+      - name: attribution_lookback
+        data_type: string
+      - name: reengagement_window
+        data_type: string
+      - name: is_primary_attribution
+        data_type: string
+
+    data_tests:
+      - unique_combination_of_columns:
+          arguments:
+            combination_of_columns:
+              - appsflyer_hashkey
+              - hashdiff
+              - source_event_date
+
+  # --- installs ---
+  - name: sat_organic_installs_report_device
+    config:
+      contract:
+        enforced: true
+    columns:
+      - name: appsflyer_hashkey
+        data_type: string
+        tests:
+          - relationships:
+              arguments:
+                to: ref('hub_appsflyer')
+                field: appsflyer_hashkey
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+          - not_null:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+      - name: hashdiff
+        data_type: string
+      - name: source_event_date
+        data_type: date
+      - name: load_timestamp
+        data_type: timestamp
+      - name: record_source
+        data_type: string
+      - name: city
+        data_type: string
+      - name: wifi
+        data_type: string
+      - name: operator
+        data_type: string
+      - name: language
+        data_type: string
+      - name: advertising_id
+        data_type: string
+      - name: idfa
+        data_type: string
+      - name: android_id
+        data_type: string
+      - name: customer_user_id
+        data_type: string
+      - name: imei
+        data_type: string
+      - name: idfv
+        data_type: string
+      - name: platform
+        data_type: string
+      - name: device_type
+        data_type: string
+      - name: os_version
+        data_type: string
+      - name: app_version
+        data_type: string
+      - name: sdk_version
+        data_type: string
+      - name: app_id
+        data_type: string
+      - name: app_name
+        data_type: string
+      - name: bundle_id
+        data_type: string
+      - name: country_code
+        data_type: string
+      - name: dma
+        data_type: string
+      - name: ip
+        data_type: string
+      - name: postal_code
+        data_type: string
+      - name: region
+        data_type: string
+      - name: state
+        data_type: string
+      - name: user_agent
+        data_type: string
+      - name: http_referrer
+        data_type: string
+      - name: original_url
+        data_type: string
+
+    data_tests:
+      - unique_combination_of_columns:
+          arguments:
+            combination_of_columns:
+              - appsflyer_hashkey
+              - hashdiff
+              - source_event_date
+
+  # --- reinstalls ---
+  - name: sat_reinstalls_event
+    config:
+      contract:
+        enforced: true
+    columns:
+      - name: appsflyer_hashkey
+        data_type: string
+        tests:
+          - relationships:
+              arguments:
+                to: ref('hub_appsflyer')
+                field: appsflyer_hashkey
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+          - not_null:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+      - name: hashdiff
+        data_type: string
+      - name: source_event_date
+        data_type: date
+      - name: load_timestamp
+        data_type: timestamp
+      - name: record_source
+        data_type: string
+      - name: install_time
+        data_type: string
+      - name: event_time
+        data_type: string
+      - name: event_name
+        data_type: string
+      - name: event_value
+        data_type: string
+      - name: event_revenue
+        data_type: string
+      - name: event_revenue_currency
+        data_type: string
+      - name: event_revenue_usd
+        data_type: string
+      - name: event_source
+        data_type: string
+      - name: is_receipt_validated
+        data_type: string
+      - name: attributed_touch_type
+        data_type: string
+      - name: attributed_touch_time
+        data_type: string
+      - name: partner
+        data_type: string
+      - name: media_source
+        data_type: string
+      - name: channel
+        data_type: string
+      - name: keywords
+        data_type: string
+      - name: campaign
+        data_type: string
+      - name: campaign_id
+        data_type: string
+      - name: adset
+        data_type: string
+      - name: adset_id
+        data_type: string
+      - name: ad
+        data_type: string
+      - name: ad_id
+        data_type: string
+      - name: ad_type
+        data_type: string
+      - name: site_id
+        data_type: string
+      - name: sub_site_id
+        data_type: string
+      - name: sub_param_1
+        data_type: string
+      - name: sub_param_2
+        data_type: string
+      - name: sub_param_3
+        data_type: string
+      - name: sub_param_4
+        data_type: string
+      - name: sub_param_5
+        data_type: string
+      - name: carrier
+        data_type: string
+      - name: cost_model
+        data_type: string
+      - name: cost_value
+        data_type: string
+      - name: cost_currency
+        data_type: string
+      - name: contributor_1_partner
+        data_type: string
+      - name: contributor_1_media_source
+        data_type: string
+      - name: contributor_1_campaign
+        data_type: string
+      - name: contributor_1_touch_type
+        data_type: string
+      - name: contributor_1_touch_time
+        data_type: string
+      - name: contributor_2_partner
+        data_type: string
+      - name: contributor_2_media_source
+        data_type: string
+      - name: contributor_2_campaign
+        data_type: string
+      - name: contributor_2_touch_type
+        data_type: string
+      - name: contributor_2_touch_time
+        data_type: string
+      - name: contributor_3_partner
+        data_type: string
+      - name: contributor_3_media_source
+        data_type: string
+      - name: contributor_3_campaign
+        data_type: string
+      - name: contributor_3_touch_type
+        data_type: string
+      - name: contributor_3_touch_time
+        data_type: string
+      - name: is_retargeting
+        data_type: string
+      - name: retargeting_conversion_type
+        data_type: string
+      - name: attribution_lookback
+        data_type: string
+      - name: reengagement_window
+        data_type: string
+      - name: is_primary_attribution
+        data_type: string
+
+    data_tests:
+      - unique_combination_of_columns:
+          arguments:
+            combination_of_columns:
+              - appsflyer_hashkey
+              - hashdiff
+              - source_event_date
+
+  # --- reinstalls ---
+  - name: sat_reinstalls_device
+    config:
+      contract:
+        enforced: true
+    columns:
+      - name: appsflyer_hashkey
+        data_type: string
+        tests:
+          - relationships:
+              arguments:
+                to: ref('hub_appsflyer')
+                field: appsflyer_hashkey
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+          - not_null:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+      - name: hashdiff
+        data_type: string
+      - name: source_event_date
+        data_type: date
+      - name: load_timestamp
+        data_type: timestamp
+      - name: record_source
+        data_type: string
+      - name: city
+        data_type: string
+      - name: wifi
+        data_type: string
+      - name: operator
+        data_type: string
+      - name: language
+        data_type: string
+      - name: advertising_id
+        data_type: string
+      - name: idfa
+        data_type: string
+      - name: android_id
+        data_type: string
+      - name: customer_user_id
+        data_type: string
+      - name: imei
+        data_type: string
+      - name: idfv
+        data_type: string
+      - name: platform
+        data_type: string
+      - name: device_type
+        data_type: string
+      - name: os_version
+        data_type: string
+      - name: app_version
+        data_type: string
+      - name: sdk_version
+        data_type: string
+      - name: app_id
+        data_type: string
+      - name: app_name
+        data_type: string
+      - name: bundle_id
+        data_type: string
+      - name: country_code
+        data_type: string
+      - name: dma
+        data_type: string
+      - name: ip
+        data_type: string
+      - name: postal_code
+        data_type: string
+      - name: region
+        data_type: string
+      - name: state
+        data_type: string
+      - name: user_agent
+        data_type: string
+      - name: http_referrer
+        data_type: string
+      - name: original_url
+        data_type: string
+
+    data_tests:
+      - unique_combination_of_columns:
+          arguments:
+            combination_of_columns:
+              - appsflyer_hashkey
+              - hashdiff
+              - source_event_date
+
+  # --- reinstalls ---
+  - name: sat_reinstalls_organic_event
+    config:
+      contract:
+        enforced: true
+    columns:
+      - name: appsflyer_hashkey
+        data_type: string
+        tests:
+          - relationships:
+              arguments:
+                to: ref('hub_appsflyer')
+                field: appsflyer_hashkey
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+          - not_null:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+      - name: hashdiff
+        data_type: string
+      - name: source_event_date
+        data_type: date
+      - name: load_timestamp
+        data_type: timestamp
+      - name: record_source
+        data_type: string
+      - name: install_time
+        data_type: string
+      - name: event_time
+        data_type: string
+      - name: event_name
+        data_type: string
+      - name: event_value
+        data_type: string
+      - name: event_revenue
+        data_type: string
+      - name: event_revenue_currency
+        data_type: string
+      - name: event_revenue_usd
+        data_type: string
+      - name: event_source
+        data_type: string
+      - name: is_receipt_validated
+        data_type: string
+      - name: attributed_touch_type
+        data_type: string
+      - name: attributed_touch_time
+        data_type: string
+      - name: partner
+        data_type: string
+      - name: media_source
+        data_type: string
+      - name: channel
+        data_type: string
+      - name: keywords
+        data_type: string
+      - name: campaign
+        data_type: string
+      - name: campaign_id
+        data_type: string
+      - name: adset
+        data_type: string
+      - name: adset_id
+        data_type: string
+      - name: ad
+        data_type: string
+      - name: ad_id
+        data_type: string
+      - name: ad_type
+        data_type: string
+      - name: site_id
+        data_type: string
+      - name: sub_site_id
+        data_type: string
+      - name: sub_param_1
+        data_type: string
+      - name: sub_param_2
+        data_type: string
+      - name: sub_param_3
+        data_type: string
+      - name: sub_param_4
+        data_type: string
+      - name: sub_param_5
+        data_type: string
+      - name: carrier
+        data_type: string
+      - name: cost_model
+        data_type: string
+      - name: cost_value
+        data_type: string
+      - name: cost_currency
+        data_type: string
+      - name: contributor_1_partner
+        data_type: string
+      - name: contributor_1_media_source
+        data_type: string
+      - name: contributor_1_campaign
+        data_type: string
+      - name: contributor_1_touch_type
+        data_type: string
+      - name: contributor_1_touch_time
+        data_type: string 
+      - name: contributor_2_partner
+        data_type: string
+      - name: contributor_2_media_source
+        data_type: string
+      - name: contributor_2_campaign
+        data_type: string
+      - name: contributor_2_touch_type
+        data_type: string
+      - name: contributor_2_touch_time
+        data_type: string
+      - name: contributor_3_partner
+        data_type: string
+      - name: contributor_3_media_source
+        data_type: string
+      - name: contributor_3_campaign
+        data_type: string
+      - name: contributor_3_touch_type
+        data_type: string
+      - name: contributor_3_touch_time
+        data_type: string
+      - name: is_retargeting
+        data_type: string
+      - name: retargeting_conversion_type
+        data_type: string
+      - name: attribution_lookback
+        data_type: string
+      - name: reengagement_window
+        data_type: string
+      - name: is_primary_attribution
+        data_type: string
+
+    data_tests:
+      - unique_combination_of_columns:
+          arguments:
+            combination_of_columns:
+              - appsflyer_hashkey
+              - hashdiff
+              - source_event_date
+
+  # --- reinstalls ---
+  - name: sat_reinstalls_organic_device
+    config:
+      contract:
+        enforced: true
+    columns:
+      - name: appsflyer_hashkey
+        data_type: string
+        tests:
+          - relationships:
+              arguments:
+                to: ref('hub_appsflyer')
+                field: appsflyer_hashkey
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+          - not_null:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+      - name: hashdiff
+        data_type: string
+      - name: source_event_date
+        data_type: date
+      - name: load_timestamp
+        data_type: timestamp
+      - name: record_source
+        data_type: string
+      - name: city
+        data_type: string
+      - name: wifi
+        data_type: string
+      - name: operator
+        data_type: string
+      - name: language
+        data_type: string
+      - name: advertising_id
+        data_type: string
+      - name: idfa
+        data_type: string
+      - name: android_id
+        data_type: string
+      - name: customer_user_id
+        data_type: string
+      - name: imei
+        data_type: string
+      - name: idfv
+        data_type: string
+      - name: platform
+        data_type: string
+      - name: device_type
+        data_type: string
+      - name: os_version
+        data_type: string
+      - name: app_version
+        data_type: string
+      - name: sdk_version
+        data_type: string
+      - name: app_id
+        data_type: string
+      - name: app_name
+        data_type: string
+      - name: bundle_id
+        data_type: string
+      - name: country_code
+        data_type: string
+      - name: dma
+        data_type: string
+      - name: ip
+        data_type: string
+      - name: postal_code
+        data_type: string
+      - name: region
+        data_type: string
+      - name: state
+        data_type: string
+      - name: user_agent
+        data_type: string
+      - name: http_referrer
+        data_type: string
+      - name: original_url
+        data_type: string
+
+    data_tests:
+      - unique_combination_of_columns:
+          arguments:
+            combination_of_columns:
+              - appsflyer_hashkey
+              - hashdiff
+              - source_event_date
+
+  # --- in_app_events ---
+  - name: non_his_sat_in_app_events_event
+    config:
+      contract:
+        enforced: true
+    columns:
+      - name: appsflyer_hashkey
+        data_type: string
+        tests:
+          - relationships:
+              arguments:
+                to: ref('hub_appsflyer')
+                field: appsflyer_hashkey
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+          - not_null:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+      - name: source_event_date
+        data_type: date
+      - name: load_timestamp
+        data_type: timestamp
+      - name: record_source
+        data_type: string
+      - name: install_time
+        data_type: string
+      - name: event_time
+        data_type: string
+      - name: event_name
+        data_type: string
+      - name: event_value
+        data_type: string
+      - name: event_revenue
+        data_type: string
+      - name: event_revenue_currency
+        data_type: string
+      - name: event_revenue_usd
+        data_type: string
+      - name: event_source
+        data_type: string
+      - name: is_receipt_validated
+        data_type: string
+      - name: attributed_touch_type
+        data_type: string
+      - name: attributed_touch_time
+        data_type: string
+      - name: partner
+        data_type: string
+      - name: media_source
+        data_type: string
+      - name: channel
+        data_type: string
+      - name: keywords
+        data_type: string
+      - name: campaign
+        data_type: string
+      - name: campaign_id
+        data_type: string
+      - name: adset
+        data_type: string
+      - name: adset_id
+        data_type: string
+      - name: ad
+        data_type: string
+      - name: ad_id
+        data_type: string
+      - name: ad_type
+        data_type: string
+      - name: site_id
+        data_type: string
+      - name: sub_site_id
+        data_type: string
+      - name: sub_param_1
+        data_type: string
+      - name: sub_param_2
+        data_type: string
+      - name: sub_param_3
+        data_type: string
+      - name: sub_param_4
+        data_type: string
+      - name: sub_param_5
+        data_type: string
+      - name: carrier
+        data_type: string
+      - name: cost_model
+        data_type: string
+      - name: cost_value
+        data_type: string
+      - name: cost_currency
+        data_type: string
+      - name: contributor_1_partner
+        data_type: string
+      - name: contributor_1_media_source
+        data_type: string
+      - name: contributor_1_campaign
+        data_type: string
+      - name: contributor_1_touch_type
+        data_type: string
+      - name: contributor_1_touch_time
+        data_type: string
+      - name: contributor_2_partner
+        data_type: string
+      - name: contributor_2_media_source
+        data_type: string
+      - name: contributor_2_campaign
+        data_type: string
+      - name: contributor_2_touch_type
+        data_type: string
+      - name: contributor_2_touch_time
+        data_type: string
+      - name: contributor_3_partner
+        data_type: string
+      - name: contributor_3_media_source
+        data_type: string
+      - name: contributor_3_campaign
+        data_type: string
+      - name: contributor_3_touch_type
+        data_type: string
+      - name: contributor_3_touch_time
+        data_type: string
+      - name: is_retargeting
+        data_type: string
+      - name: retargeting_conversion_type
+        data_type: string
+      - name: attribution_lookback
+        data_type: string
+      - name: reengagement_window
+        data_type: string
+      - name: is_primary_attribution
+        data_type: string
+
+
+  # --- in_app_events ---
+  - name: non_his_sat_in_app_events_device
+    config:
+      contract:
+        enforced: true
+    columns:
+      - name: appsflyer_hashkey
+        data_type: string
+        tests:
+          - relationships:
+              arguments:
+                to: ref('hub_appsflyer')
+                field: appsflyer_hashkey
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+          - not_null:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+      - name: source_event_date
+        data_type: date
+      - name: load_timestamp
+        data_type: timestamp
+      - name: record_source
+        data_type: string
+      - name: city
+        data_type: string
+      - name: wifi
+        data_type: string
+      - name: operator
+        data_type: string
+      - name: language
+        data_type: string
+      - name: advertising_id
+        data_type: string
+      - name: original_url
+        data_type: string
+      - name: android_id
+        data_type: string
+      - name: customer_user_id
+        data_type: string
+      - name: imei
+        data_type: string
+      - name: idfv
+        data_type: string
+      - name: platform
+        data_type: string
+      - name: device_type
+        data_type: string
+      - name: os_version
+        data_type: string
+      - name: app_version
+        data_type: string
+      - name: sdk_version
+        data_type: string
+      - name: app_id
+        data_type: string
+      - name: app_name
+        data_type: string
+      - name: bundle_id
+        data_type: string
+      - name: country_code
+        data_type: string
+      - name: dma
+        data_type: string
+      - name: ip
+        data_type: string
+      - name: postal_code
+        data_type: string
+      - name: region
+        data_type: string
+      - name: state
+        data_type: string
+      - name: user_agent
+        data_type: string
+      - name: http_referrer
+        data_type: string
+      - name: original_url
+        data_type: string
+
+
+  # --- in_app_events ---
+  - name: non_his_sat_organic_in_app_events_event
+    config:
+      contract:
+        enforced: true
+    columns:
+      - name: appsflyer_hashkey
+        data_type: string
+        tests:
+          - relationships:
+              arguments:
+                to: ref('hub_appsflyer')
+                field: appsflyer_hashkey
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+          - not_null:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+      - name: source_event_date
+        data_type: date
+      - name: load_timestamp
+        data_type: timestamp
+      - name: record_source
+        data_type: string
+      - name: install_time
+        data_type: string
+      - name: event_time
+        data_type: string
+      - name: event_name
+        data_type: string
+      - name: event_value
+        data_type: string
+      - name: event_revenue
+        data_type: string
+      - name: event_revenue_currency
+        data_type: string
+      - name: event_revenue_usd
+        data_type: string
+      - name: event_source
+        data_type: string
+      - name: is_receipt_validated
+        data_type: string
+      - name: attributed_touch_type
+        data_type: string
+      - name: attributed_touch_time
+        data_type: string
+      - name: partner
+        data_type: string
+      - name: media_source
+        data_type: string
+      - name: channel
+        data_type: string
+      - name: keywords
+        data_type: string
+      - name: campaign
+        data_type: string
+      - name: campaign_id
+        data_type: string
+      - name: adset
+        data_type: string
+      - name: adset_id
+        data_type: string
+      - name: ad
+        data_type: string
+      - name: ad_id
+        data_type: string
+      - name: ad_type
+        data_type: string
+      - name: site_id
+        data_type: string
+      - name: sub_site_id
+        data_type: string
+      - name: sub_param_1
+        data_type: string
+      - name: sub_param_2
+        data_type: string
+      - name: sub_param_3
+        data_type: string
+      - name: sub_param_4
+        data_type: string
+      - name: sub_param_5
+        data_type: string
+      - name: carrier
+        data_type: string
+      - name: cost_model
+        data_type: string
+      - name: cost_value
+        data_type: string
+      - name: cost_currency
+        data_type: string
+      - name: contributor_1_partner
+        data_type: string
+      - name: contributor_1_media_source
+        data_type: string
+      - name: contributor_1_campaign
+        data_type: string
+      - name: contributor_1_touch_type
+        data_type: string
+      - name: contributor_1_touch_time
+        data_type: string
+      - name: contributor_2_partner
+        data_type: string
+      - name: contributor_2_media_source
+        data_type: string
+      - name: contributor_2_campaign
+        data_type: string
+      - name: contributor_2_touch_type
+        data_type: string
+      - name: contributor_2_touch_time
+        data_type: string
+      - name: contributor_3_partner
+        data_type: string
+      - name: contributor_3_media_source
+        data_type: string
+      - name: contributor_3_campaign
+        data_type: string
+      - name: contributor_3_touch_type
+        data_type: string
+      - name: contributor_3_touch_time
+        data_type: string
+      - name: is_retargeting
+        data_type: string
+      - name: retargeting_conversion_type
+        data_type: string
+      - name: attribution_lookback
+        data_type: string
+      - name: reengagement_window
+        data_type: string
+      - name: is_primary_attribution
+        data_type: string
+
+
+  # --- in_app_events ---
+  - name: non_his_sat_organic_in_app_events_device
+    config:
+      contract:
+        enforced: true
+    columns:
+      - name: appsflyer_hashkey
+        data_type: string
+        tests:
+          - relationships:
+              arguments:
+                to: ref('hub_appsflyer')
+                field: appsflyer_hashkey
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+          - not_null:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+      - name: source_event_date
+        data_type: date
+      - name: load_timestamp
+        data_type: timestamp
+      - name: record_source
+        data_type: string
+      - name: city
+        data_type: string
+      - name: wifi
+        data_type: string
+      - name: operator
+        data_type: string
+      - name: language
+        data_type: string
+      - name: advertising_id
+        data_type: string
+      - name: idfa
+        data_type: string
+      - name: android_id
+        data_type: string
+      - name: customer_user_id
+        data_type: string
+      - name: imei
+        data_type: string
+      - name: idfv
+        data_type: string
+      - name: platform
+        data_type: string
+      - name: device_type
+        data_type: string
+      - name: os_version
+        data_type: string
+      - name: app_version
+        data_type: string
+      - name: sdk_version
+        data_type: string
+      - name: app_id
+        data_type: string
+      - name: app_name
+        data_type: string
+      - name: bundle_id
+        data_type: string
+      - name: country_code
+        data_type: string
+      - name: dma
+        data_type: string
+      - name: ip
+        data_type: string
+      - name: postal_code
+        data_type: string
+      - name: region
+        data_type: string
+      - name: state
+        data_type: string
+      - name: user_agent
+        data_type: string
+      - name: http_referrer
+        data_type: string
+      - name: original_url
+        data_type: string
+
+
+  # --- uninstall ---
+  - name: sat_uninstall_events_report_event
+    config:
+      contract:
+        enforced: true
+    columns:
+      - name: appsflyer_hashkey
+        data_type: string
+        tests:
+          - relationships:
+              arguments:
+                to: ref('hub_appsflyer')
+                field: appsflyer_hashkey
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+          - not_null:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+      - name: hashdiff
+        data_type: string
+      - name: source_event_date
+        data_type: date
+      - name: load_timestamp
+        data_type: timestamp
+      - name: record_source
+        data_type: string
+      - name: install_time
+        data_type: string
+      - name: event_time
+        data_type: string
+      - name: event_name
+        data_type: string
+      - name: event_value
+        data_type: string
+      - name: event_revenue
+        data_type: string
+      - name: event_revenue_currency
+        data_type: string
+      - name: event_revenue_usd
+        data_type: string
+      - name: event_source
+        data_type: string
+      - name: is_receipt_validated
+        data_type: string
+      - name: attributed_touch_type
+        data_type: string
+      - name: attributed_touch_time
+        data_type: string
+      - name: partner
+        data_type: string
+      - name: media_source
+        data_type: string
+      - name: channel
+        data_type: string
+      - name: keywords
+        data_type: string
+      - name: campaign
+        data_type: string
+      - name: campaign_id
+        data_type: string
+      - name: adset
+        data_type: string
+      - name: adset_id
+        data_type: string
+      - name: ad
+        data_type: string
+      - name: ad_id
+        data_type: string
+      - name: ad_type
+        data_type: string
+      - name: site_id
+        data_type: string
+      - name: sub_site_id
+        data_type: string
+      - name: sub_param_1
+        data_type: string
+      - name: sub_param_2
+        data_type: string
+      - name: sub_param_3
+        data_type: string
+      - name: sub_param_4
+        data_type: string
+      - name: sub_param_5
+        data_type: string
+      - name: carrier
+        data_type: string
+      - name: cost_model
+        data_type: string
+      - name: cost_value
+        data_type: string
+      - name: cost_currency
+        data_type: string
+      - name: contributor_1_partner
+        data_type: string
+      - name: contributor_1_media_source
+        data_type: string
+      - name: contributor_1_campaign
+        data_type: string
+      - name: contributor_1_touch_type
+        data_type: string
+      - name: contributor_1_touch_time
+        data_type: string
+      - name: contributor_2_partner
+        data_type: string
+      - name: contributor_2_media_source
+        data_type: string
+      - name: contributor_2_campaign
+        data_type: string
+      - name: contributor_2_touch_type
+        data_type: string
+      - name: contributor_2_touch_time
+        data_type: string
+      - name: contributor_3_partner
+        data_type: string
+      - name: contributor_3_media_source
+        data_type: string
+      - name: contributor_3_campaign
+        data_type: string
+      - name: contributor_3_touch_type
+        data_type: string
+      - name: contributor_3_touch_time
+        data_type: string
+      - name: is_retargeting
+        data_type: string
+      - name: retargeting_conversion_type
+        data_type: string
+      - name: attribution_lookback
+        data_type: string
+      - name: reengagement_window
+        data_type: string
+      - name: is_primary_attribution
+        data_type: string
+
+    data_tests:
+      - unique_combination_of_columns:
+          arguments:
+            combination_of_columns:
+              - appsflyer_hashkey
+              - hashdiff
+              - source_event_date
+
+  # --- uninstall ---
+  - name: sat_uninstall_events_report_device
+    config:
+      contract:
+        enforced: true
+    columns:
+      - name: appsflyer_hashkey
+        data_type: string
+        tests:
+          - relationships:
+              arguments:
+                to: ref('hub_appsflyer')
+                field: appsflyer_hashkey
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+          - not_null:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+      - name: hashdiff
+        data_type: string
+      - name: source_event_date
+        data_type: date
+      - name: load_timestamp
+        data_type: timestamp
+      - name: record_source
+        data_type: string
+      - name: city
+        data_type: string
+      - name: wifi
+        data_type: string
+      - name: operator
+        data_type: string
+      - name: language
+        data_type: string
+      - name: advertising_id
+        data_type: string
+      - name: idfa
+        data_type: string
+      - name: android_id
+        data_type: string
+      - name: customer_user_id
+        data_type: string
+      - name: imei
+        data_type: string
+      - name: idfv
+        data_type: string
+      - name: platform
+        data_type: string
+      - name: device_type
+        data_type: string
+      - name: os_version
+        data_type: string
+      - name: app_version
+        data_type: string
+      - name: sdk_version
+        data_type: string
+      - name: app_id
+        data_type: string
+      - name: app_name
+        data_type: string
+      - name: bundle_id
+        data_type: string
+      - name: country_code
+        data_type: string
+      - name: dma
+        data_type: string
+      - name: ip
+        data_type: string
+      - name: postal_code
+        data_type: string
+      - name: region
+        data_type: string
+      - name: state
+        data_type: string
+      - name: user_agent
+        data_type: string
+      - name: http_referrer
+        data_type: string
+      - name: original_url
+        data_type: string
+
+    data_tests:
+      - unique_combination_of_columns:
+          arguments:
+            combination_of_columns:
+              - appsflyer_hashkey
+              - hashdiff
+              - source_event_date
+
+  # --- uninstall ---
+  - name: sat_organic_uninstall_events_report_event
+    config:
+      contract:
+        enforced: true
+    columns:
+      - name: appsflyer_hashkey
+        data_type: string
+        tests:
+          - relationships:
+              arguments:
+                to: ref('hub_appsflyer')
+                field: appsflyer_hashkey
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+          - not_null:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+      - name: hashdiff
+        data_type: string
+      - name: source_event_date
+        data_type: date
+      - name: load_timestamp
+        data_type: timestamp
+      - name: record_source
+        data_type: string
+      - name: install_time
+        data_type: string
+      - name: event_time
+        data_type: string
+      - name: event_name
+        data_type: string
+      - name: event_value
+        data_type: string
+      - name: event_revenue
+        data_type: string
+      - name: event_revenue_currency
+        data_type: string
+      - name: event_revenue_usd
+        data_type: string
+      - name: event_source
+        data_type: string
+      - name: is_receipt_validated
+        data_type: string
+      - name: attributed_touch_type
+        data_type: string
+      - name: attributed_touch_time
+        data_type: string
+      - name: partner
+        data_type: string
+      - name: media_source
+        data_type: string
+      - name: channel
+        data_type: string
+      - name: keywords
+        data_type: string
+      - name: campaign
+        data_type: string
+      - name: campaign_id
+        data_type: string
+      - name: adset
+        data_type: string
+      - name: adset_id
+        data_type: string
+      - name: ad
+        data_type: string
+      - name: ad_id
+        data_type: string
+      - name: ad_type
+        data_type: string
+      - name: site_id
+        data_type: string
+      - name: sub_site_id
+        data_type: string
+      - name: sub_param_1
+        data_type: string
+      - name: sub_param_2
+        data_type: string
+      - name: sub_param_3
+        data_type: string
+      - name: sub_param_4
+        data_type: string
+      - name: sub_param_5
+        data_type: string
+      - name: carrier
+        data_type: string
+      - name: cost_model
+        data_type: string
+      - name: cost_value
+        data_type: string
+      - name: cost_currency
+        data_type: string
+      - name: contributor_1_partner
+        data_type: string
+      - name: contributor_1_media_source
+        data_type: string
+      - name: contributor_1_campaign
+        data_type: string
+      - name: contributor_1_touch_type
+        data_type: string
+      - name: contributor_1_touch_time
+        data_type: string
+      - name: contributor_2_partner
+        data_type: string
+      - name: contributor_2_media_source
+        data_type: string
+      - name: contributor_2_campaign
+        data_type: string
+      - name: contributor_2_touch_type
+        data_type: string
+      - name: contributor_2_touch_time
+        data_type: string
+      - name: contributor_3_partner
+        data_type: string
+      - name: contributor_3_media_source
+        data_type: string
+      - name: contributor_3_campaign
+        data_type: string
+      - name: contributor_3_touch_type
+        data_type: string
+      - name: contributor_3_touch_time
+        data_type: string
+      - name: is_retargeting
+        data_type: string
+      - name: retargeting_conversion_type
+        data_type: string
+      - name: attribution_lookback
+        data_type: string
+      - name: reengagement_window
+        data_type: string
+      - name: is_primary_attribution
+        data_type: string
+
+    data_tests:
+      - unique_combination_of_columns:
+          arguments:
+            combination_of_columns:
+              - appsflyer_hashkey
+              - hashdiff
+              - source_event_date
+
+  # --- uninstall ---
+  - name: sat_organic_uninstall_events_report_device
+    config:
+      contract:
+        enforced: true
+    columns:
+      - name: appsflyer_hashkey
+        data_type: string
+        tests:
+          - relationships:
+              arguments:
+                to: ref('hub_appsflyer')
+                field: appsflyer_hashkey
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+          - not_null:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+      - name: hashdiff
+        data_type: string
+      - name: source_event_date
+        data_type: date
+      - name: load_timestamp
+        data_type: timestamp
+      - name: record_source
+        data_type: string
+      - name: city
+        data_type: string
+      - name: wifi
+        data_type: string
+      - name: operator
+        data_type: string
+      - name: language
+        data_type: string
+      - name: advertising_id
+        data_type: string
+      - name: idfa
+        data_type: string
+      - name: android_id
+        data_type: string
+      - name: customer_user_id
+        data_type: string
+      - name: imei
+        data_type: string
+      - name: idfv
+        data_type: string
+      - name: platform
+        data_type: string
+      - name: device_type
+        data_type: string
+      - name: os_version
+        data_type: string
+      - name: app_version
+        data_type: string
+      - name: sdk_version
+        data_type: string
+      - name: app_id
+        data_type: string
+      - name: app_name
+        data_type: string
+      - name: bundle_id
+        data_type: string
+      - name: country_code
+        data_type: string
+      - name: dma
+        data_type: string
+      - name: ip
+        data_type: string
+      - name: postal_code
+        data_type: string
+      - name: region
+        data_type: string
+      - name: state
+        data_type: string
+      - name: user_agent
+        data_type: string
+      - name: http_referrer
+        data_type: string
+      - name: original_url
+        data_type: string
+
+    data_tests:
+      - unique_combination_of_columns:
+          arguments:
+            combination_of_columns:
+              - appsflyer_hashkey
+              - hashdiff
+              - source_event_date
+
+  # ====================== STS HUB (status tracking satellite) ======================
+  # --- in_app_events ---
+  - name: sts_hub_appsflyer_in_app_events_report
+    config:
+      contract:
+        enforced: true
+    columns:
+      - name: appsflyer_hashkey
+        data_type: string
+        tests:
+          - not_null:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+      - name: source_event_date
+        data_type: date
+      - name: cdc_status
+        data_type: string
+    data_tests:
+      - unique_combination_of_columns:
+          arguments:
+            combination_of_columns:
+              - appsflyer_hashkey
+              - source_event_date
+              - cdc_status
+
+  # --- installs ---
+  - name: sts_hub_appsflyer_installs_report
+    config:
+      contract:
+        enforced: true
+    columns:
+      - name: appsflyer_hashkey
+        data_type: string
+        tests:
+          - not_null:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+      - name: source_event_date
+        data_type: date
+      - name: cdc_status
+        data_type: string
+    data_tests:
+      - unique_combination_of_columns:
+          arguments:
+            combination_of_columns:
+              - appsflyer_hashkey
+              - source_event_date
+              - cdc_status
+
+  # --- organic_in_app_events ---
+  - name: sts_hub_appsflyer_organic_in_app_events_report
+    config:
+      contract:
+        enforced: true
+    columns:
+      - name: appsflyer_hashkey
+        data_type: string
+        tests:
+          - not_null:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+      - name: source_event_date
+        data_type: date
+      - name: cdc_status
+        data_type: string
+    data_tests:
+      - unique_combination_of_columns:
+          arguments:
+            combination_of_columns:
+              - appsflyer_hashkey
+              - source_event_date
+              - cdc_status
+
+  # --- organic_installs ---
+  - name: sts_hub_appsflyer_organic_installs_report
+    config:
+      contract:
+        enforced: true
+    columns:
+      - name: appsflyer_hashkey
+        data_type: string
+        tests:
+          - not_null:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+      - name: source_event_date
+        data_type: date
+      - name: cdc_status
+        data_type: string
+    data_tests:
+      - unique_combination_of_columns:
+          arguments:
+            combination_of_columns:
+              - appsflyer_hashkey
+              - source_event_date
+              - cdc_status
+
+  # --- organic_uninstall_events ---
+  - name: sts_hub_appsflyer_organic_uninstall_events_report
+    config:
+      contract:
+        enforced: true
+    columns:
+      - name: appsflyer_hashkey
+        data_type: string
+        tests:
+          - not_null:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+      - name: source_event_date
+        data_type: date
+      - name: cdc_status
+        data_type: string
+    data_tests:
+      - unique_combination_of_columns:
+          arguments:
+            combination_of_columns:
+              - appsflyer_hashkey
+              - source_event_date
+              - cdc_status
+
+  # --- reinstalls ---
+  - name: sts_hub_appsflyer_reinstalls
+    config:
+      contract:
+        enforced: true
+    columns:
+      - name: appsflyer_hashkey
+        data_type: string
+        tests:
+          - not_null:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+      - name: source_event_date
+        data_type: date
+      - name: cdc_status
+        data_type: string
+    data_tests:
+      - unique_combination_of_columns:
+          arguments:
+            combination_of_columns:
+              - appsflyer_hashkey
+              - source_event_date
+              - cdc_status
+
+  # --- reinstalls_organic ---
+  - name: sts_hub_appsflyer_reinstalls_organic
+    config:
+      contract:
+        enforced: true
+    columns:
+      - name: appsflyer_hashkey
+        data_type: string
+        tests:
+          - not_null:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+      - name: source_event_date
+        data_type: date
+      - name: cdc_status
+        data_type: string
+    data_tests:
+      - unique_combination_of_columns:
+          arguments:
+            combination_of_columns:
+              - appsflyer_hashkey
+              - source_event_date
+              - cdc_status
+
+  # --- uninstall_events ---
+  - name: sts_hub_appsflyer_uninstall_events_report
+    config:
+      contract:
+        enforced: true
+    columns:
+      - name: appsflyer_hashkey
+        data_type: string
+        tests:
+          - not_null:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+      - name: source_event_date
+        data_type: date
+      - name: cdc_status
+        data_type: string
+    data_tests:
+      - unique_combination_of_columns:
+          arguments:
+            combination_of_columns:
+              - appsflyer_hashkey
+              - source_event_date
+              - cdc_status

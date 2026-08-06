@@ -1,0 +1,304 @@
+version: 2
+
+models:
+
+  # ---- HUBS ----
+  - name: hub_ldm_partner
+    config:
+      contract:
+        enforced: true
+    columns:
+      - name: ldm_partner_hashkey
+        data_type: string
+        tests:
+          - unique:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+          - not_null:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+      - name: business_key
+        data_type: string
+      - name: source_event_date
+        data_type: date
+      - name: record_source
+        data_type: string
+      - name: load_timestamp
+        data_type: timestamp
+
+  # ---- LINKS ----
+  - name: link_ldm_partner_customer
+    config:
+      contract:
+        enforced: true
+    columns:
+      - name: link_ldm_partner_customer_hashkey
+        data_type: string
+        tests:
+          - unique:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+          - not_null:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+      - name: ldm_partner_hashkey
+        data_type: string
+      - name: customer_hashkey
+        data_type: string
+      - name: source_event_date
+        data_type: date
+      - name: record_source
+        data_type: string
+      - name: load_timestamp
+        data_type: timestamp
+
+  - name: link_ldm_partner_branch
+    config:
+      contract:
+        enforced: true
+    columns:
+      - name: link_ldm_partner_branch_hashkey
+        data_type: string
+        tests:
+          - unique:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+          - not_null:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+      - name: ldm_partner_hashkey
+        data_type: string
+      - name: branch_hashkey
+        data_type: string
+      - name: source_event_date
+        data_type: date
+      - name: record_source
+        data_type: string
+      - name: load_timestamp
+        data_type: timestamp
+
+  # ---- SATELLITES ----
+  - name: sat_ldm_partner_information
+    config:
+      contract:
+        enforced: true
+    columns:
+      - name: ldm_partner_hashkey
+        data_type: string
+        tests:
+          - relationships:
+              arguments:
+                to: ref('hub_ldm_partner')
+                field: ldm_partner_hashkey
+              config:
+                severity: warn
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+          - not_null:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+      - name: hashdiff
+        data_type: string
+      - name: source_event_date
+        data_type: date
+      - name: load_timestamp
+        data_type: timestamp
+      - name: record_source
+        data_type: string
+      - name: cif
+        data_type: bigint
+      - name: partner_type_id
+        data_type: string
+      - name: partner_name
+        data_type: string
+      - name: short_name
+        data_type: string
+      - name: commission_rate_limit
+        data_type: decimal(10,3)
+      - name: brand_id
+        data_type: string
+      - name: create_date_time
+        data_type: string
+      - name: user_create
+        data_type: string
+      - name: status
+        data_type: bigint
+      - name: approve_date_time
+        data_type: string
+      - name: user_approve
+        data_type: string
+      - name: branch_code
+        data_type: string
+      - name: business_code
+        data_type: string
+      - name: business_name
+        data_type: string
+      - name: cust_group
+        data_type: decimal(38,0)
+      - name: web
+        data_type: string
+      - name: contract_date
+        data_type: string
+      - name: founded_date
+        data_type: string
+      - name: second_hand
+        data_type: bigint
+      - name: private
+        data_type: bigint
+      - name: position
+        data_type: string
+      - name: phone_number
+        data_type: string
+      - name: email
+        data_type: string
+      - name: note
+        data_type: string
+      - name: cif_full_name
+        data_type: string
+      - name: account_officer_id
+        data_type: string
+      - name: account_officer_name
+        data_type: string
+      - name: branch_contact
+        data_type: string
+      - name: last_user_update
+        data_type: string
+      - name: last_date_update
+        data_type: string
+      - name: reject_note
+        data_type: string
+      - name: partner_id_t24
+        data_type: string
+      - name: car_number
+        data_type: decimal(38,0)
+      - name: staff_number
+        data_type: decimal(38,0)
+      - name: commission_rate_loan
+        data_type: decimal(38,0)
+      - name: partner_account_number
+        data_type: string
+      - name: partner_bank_at
+        data_type: string
+      - name: cust_group_comfirm
+        data_type: decimal(38,0)
+      - name: fax
+        data_type: string
+      - name: contract
+        data_type: string
+      - name: english_name
+        data_type: string
+      - name: business_type
+        data_type: string
+
+  - name: sat_ldm_partner_detail
+    config:
+      contract:
+        enforced: true
+    columns:
+      - name: ldm_partner_hashkey
+        data_type: string
+        tests:
+          - relationships:
+              arguments:
+                to: ref('hub_ldm_partner')
+                field: ldm_partner_hashkey
+              config:
+                severity: warn
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+          - not_null:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+      - name: hashdiff
+        data_type: string
+      - name: source_event_date
+        data_type: date
+      - name: load_timestamp
+        data_type: timestamp
+      - name: record_source
+        data_type: string
+      - name: vicegerent_name
+        data_type: string
+      - name: vicegerent_position
+        data_type: string
+      - name: vicegernet_phone_number
+        data_type: string
+      - name: contact_name
+        data_type: string
+      - name: contact_position
+        data_type: string
+      - name: contact_phone_number
+        data_type: string
+      - name: business_home_address
+        data_type: string
+      - name: business_province_address
+        data_type: decimal(38,0)
+      - name: business_district_address
+        data_type: decimal(38,0)
+      - name: business_town_address
+        data_type: string
+      - name: current_b_home_address
+        data_type: string
+      - name: current_b_province_address
+        data_type: decimal(38,0)
+      - name: current_b_district_address
+        data_type: decimal(38,0)
+      - name: current_b_town_address
+        data_type: string
+      - name: owner_home_address
+        data_type: string
+      - name: owner_province_address
+        data_type: decimal(38,0)
+      - name: owner_district_address
+        data_type: decimal(38,0)
+      - name: owner_town_address
+        data_type: string
+      - name: project_home_address
+        data_type: string
+      - name: project_province_address
+        data_type: decimal(38,0)
+      - name: project_district_address
+        data_type: decimal(38,0)
+      - name: project_town_address
+        data_type: string
+      - name: office_home_address
+        data_type: string
+      - name: office_province_address
+        data_type: decimal(38,0)
+      - name: office_district_address
+        data_type: decimal(38,0)
+      - name: office_town_address
+        data_type: string
+      - name: ho_contact
+        data_type: string
+      - name: ho_position
+        data_type: string
+      - name: ho_phone_number
+        data_type: string
+      - name: ho_email
+        data_type: string
+      - name: branch_position
+        data_type: string
+      - name: branch_phone_number
+        data_type: string
+      - name: branch_email
+        data_type: string
+      - name: vicegerent_email
+        data_type: string
+      - name: vicegerent_cell_phone
+        data_type: string
+      - name: contact_mail
+        data_type: string
+      - name: contact_cell_phone
+        data_type: string
+      - name: office_phone_number
+        data_type: string
+      - name: office_fax
+        data_type: string
+      - name: expired_date
+        data_type: string
+      - name: auto_extend
+        data_type: bigint
+      - name: status_coop
+        data_type: decimal(38,0)
+      - name: reason_coop
+        data_type: string
+

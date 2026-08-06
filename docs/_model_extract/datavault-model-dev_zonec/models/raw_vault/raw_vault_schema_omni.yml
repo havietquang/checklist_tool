@@ -1,0 +1,5556 @@
+# models/raw_vault/schema.yml
+version: 2
+
+models:
+  # ====================== HUBS  ======================
+
+  - name: hub_user_omni
+    config:
+      contract:
+        enforced: true
+    columns:
+      - name: omni_user_hashkey
+        data_type: string
+        tests:
+          - unique:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+          - not_null:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+      - name: business_key
+        data_type: string
+        tests:
+          - unique:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+          - not_null:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+      - name: source_event_date
+        data_type: date
+      - name: record_source
+        data_type: string
+      - name: load_timestamp
+        data_type: timestamp
+
+  - name: hub_transfer_bill
+    config:
+      contract:
+        enforced: true
+    columns:
+      - name: transfer_bill_hashkey
+        data_type: string
+        tests:
+          - unique:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+          - not_null:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+      - name: business_key
+        data_type: bigint
+        tests:
+          - unique:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+          - not_null:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+      - name: source_event_date
+        data_type: date
+      - name: record_source
+        data_type: string
+      - name: load_timestamp
+        data_type: timestamp
+
+  - name: hub_service
+    config:
+      contract:
+        enforced: true
+    columns:
+      - name: omni_service_hashkey
+        data_type: string
+        tests:
+          - unique:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+          - not_null:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+      - name: business_key
+        data_type: string
+        tests:
+          - unique:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+          - not_null:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+      - name: source_event_date
+        data_type: date
+      - name: record_source
+        data_type: string
+      - name: load_timestamp
+        data_type: timestamp
+
+  - name: hub_notification
+    config:
+      contract:
+        enforced: true
+    columns:
+      - name: notification_hashkey
+        data_type: string
+        tests:
+          - unique:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+          - not_null:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+      - name: business_key
+        data_type: bigint
+        tests:
+          - unique:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+          - not_null:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+      - name: source_event_date
+        data_type: date
+      - name: record_source
+        data_type: string
+      - name: load_timestamp
+        data_type: timestamp
+
+  - name: hub_payment_order
+    config:
+      contract:
+        enforced: true
+    columns:
+      - name: payment_order_hashkey
+        data_type: string
+        tests:
+          - unique:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+          - not_null:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+      - name: business_key
+        data_type: string
+        tests:
+          - unique:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+          - not_null:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+      - name: source_event_date
+        data_type: date
+      - name: record_source
+        data_type: string
+      - name: load_timestamp
+        data_type: timestamp
+
+  - name: hub_party
+    config:
+      contract:
+        enforced: true
+    columns:
+      - name: party_hashkey
+        data_type: string
+        tests:
+          - unique:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+          - not_null:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+      - name: business_key
+        data_type: string
+        tests:
+          - unique:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+          - not_null:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+      - name: source_event_date
+        data_type: date
+      - name: record_source
+        data_type: string
+      - name: load_timestamp
+        data_type: timestamp
+
+  - name: hub_data_sharing_consent
+    config:
+      contract:
+        enforced: true
+    columns:
+      - name: data_sharing_consent_hashkey
+        data_type: string
+        tests:
+          - unique:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+          - not_null:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+      - name: business_key
+        data_type: string
+        tests:
+          - unique:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+          - not_null:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+      - name: source_event_date
+        data_type: date
+      - name: record_source
+        data_type: string
+      - name: load_timestamp
+        data_type: timestamp
+
+  - name: hub_onboarding
+    config:
+      contract:
+        enforced: true
+    columns:
+      - name: onboarding_hashkey
+        data_type: string
+        tests:
+          - unique:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+          - not_null:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+      - name: business_key
+        data_type: string
+        tests:
+          - unique:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+          - not_null:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+      - name: source_event_date
+        data_type: date
+      - name: record_source
+        data_type: string
+      - name: load_timestamp
+        data_type: timestamp
+
+  - name: hub_payment_history
+    config:
+      contract:
+        enforced: true
+    columns:
+      - name: payment_history_hashkey
+        data_type: string
+        tests:
+          - unique:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+          - not_null:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+      - name: business_key
+        data_type: string
+        tests:
+          - unique:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+          - not_null:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+      - name: source_event_date
+        data_type: date
+      - name: record_source
+        data_type: string
+      - name: load_timestamp
+        data_type: timestamp
+
+  - name: hub_device_omni
+    config:
+      contract:
+        enforced: true
+    columns:
+      - name: device_omni_hashkey
+        data_type: string
+        tests:
+          - unique:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+          - not_null:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+      - name: business_key
+        data_type: string
+        tests:
+          - unique:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+          - not_null:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+      - name: source_event_date
+        data_type: date
+      - name: record_source
+        data_type: string
+      - name: load_timestamp
+        data_type: timestamp
+
+  - name: hub_od_registration
+    config:
+      contract:
+        enforced: true
+    columns:
+      - name: od_registration_hashkey
+        data_type: string
+        tests:
+          - unique:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+          - not_null:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+      - name: business_key
+        data_type: string
+        tests:
+          - unique:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+          - not_null:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+      - name: source_event_date
+        data_type: date
+      - name: record_source
+        data_type: string
+      - name: load_timestamp
+        data_type: timestamp
+
+  - name: hub_voucher
+    config:
+      contract:
+        enforced: true
+    columns:
+      - name: voucher_hashkey
+        data_type: string
+        tests:
+          - unique:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+          - not_null:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+      - name: business_key
+        data_type: string
+        tests:
+          - unique:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+          - not_null:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+      - name: source_event_date
+        data_type: date
+      - name: record_source
+        data_type: string
+      - name: load_timestamp
+        data_type: timestamp
+
+  - name: hub_voucher_campaign
+    config:
+      contract:
+        enforced: true
+    columns:
+      - name: voucher_campaign_hashkey
+        data_type: string
+        tests:
+          - unique:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+          - not_null:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+      - name: business_key
+        data_type: string
+        tests:
+          - unique:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+          - not_null:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+      - name: source_event_date
+        data_type: date
+      - name: record_source
+        data_type: string
+      - name: load_timestamp
+        data_type: timestamp
+
+  - name: hub_voucher_generate
+    config:
+      contract:
+        enforced: true
+    columns:
+      - name: voucher_generate_hashkey
+        data_type: string
+        tests:
+          - unique:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+          - not_null:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+      - name: business_key
+        data_type: string
+        tests:
+          - unique:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+          - not_null:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+      - name: source_event_date
+        data_type: date
+      - name: record_source
+        data_type: string
+      - name: load_timestamp
+        data_type: timestamp
+
+  - name: hub_credit_card_registration
+    config:
+      contract:
+        enforced: true
+    columns:
+      - name: credit_card_registration_hashkey
+        data_type: string
+        tests:
+          - unique:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+          - not_null:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+      - name: business_key
+        data_type: bigint
+        tests:
+          - unique:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+          - not_null:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+      - name: source_event_date
+        data_type: date
+      - name: record_source
+        data_type: string
+      - name: load_timestamp
+        data_type: timestamp
+
+  - name: hub_oversea_ft_request
+    config:
+      contract:
+        enforced: true
+    columns:
+      - name: oversea_ft_request_hashkey
+        data_type: string
+        tests:
+          - unique:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+          - not_null:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+      - name: business_key
+        data_type: string
+        tests:
+          - unique:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+          - not_null:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+      - name: source_event_date
+        data_type: date
+      - name: record_source
+        data_type: string
+      - name: load_timestamp
+        data_type: timestamp
+
+  - name: hub_auto_debit
+    config:
+      contract:
+        enforced: true
+    columns:
+      - name: auto_debit_hashkey
+        data_type: string
+        tests:
+          - unique:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+          - not_null:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+      - name: business_key
+        data_type: bigint
+        tests:
+          - unique:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+          - not_null:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+      - name: source_event_date
+        data_type: date
+      - name: record_source
+        data_type: string
+      - name: load_timestamp
+        data_type: timestamp
+
+  - name: hub_audit_message
+    config:
+      contract:
+        enforced: true
+    columns:
+      - name: audit_message_hashkey
+        data_type: string
+        tests:
+          - unique:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+          - not_null:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+      - name: business_key
+        data_type: bigint
+        tests:
+          - unique:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+          - not_null:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+      - name: source_event_date
+        data_type: date
+      - name: record_source
+        data_type: string
+      - name: load_timestamp
+        data_type: timestamp
+
+  - name: sat_omni_user_information
+    config:
+      contract:
+        enforced: true
+    columns:
+      - name: omni_user_hashkey
+        data_type: string
+        tests:
+          - relationships:
+              arguments:
+                to: ref('hub_user_omni')
+                field: omni_user_hashkey
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+          - not_null:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+      - name: hashdiff
+        data_type: string
+      - name: source_event_date
+        data_type: date
+      - name: load_timestamp
+        data_type: timestamp
+      - name: record_source
+        data_type: string
+      - name: username
+        data_type: string
+      - name: username_up
+        data_type: string
+      - name: preferred_language
+        data_type: string
+      - name: realm_id
+        data_type: string
+      - name: external_id
+        data_type: string
+      - name: external_id_up
+        data_type: string
+      - name: legal_entity_id
+        data_type: string
+      - name: full_name
+        data_type: string
+      - name: full_name_up
+        data_type: string
+      - name: idp_id
+        data_type: string
+      - name: cb_user_id
+        data_type: string
+      - name: cb_issuer
+        data_type: string
+
+    data_tests:
+      - unique_combination_of_columns:
+          arguments:
+            combination_of_columns:
+              - omni_user_hashkey
+              - hashdiff
+              - source_event_date
+  - name: sat_omni_customer_information
+    config:
+      contract:
+        enforced: true
+    columns:
+      - name: customer_hashkey
+        data_type: string
+        tests:
+          - relationships:
+              arguments:
+                to: ref('hub_customer')
+                field: customer_hashkey
+              config:
+                severity: warn
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+          - not_null:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+      - name: hashdiff
+        data_type: string
+      - name: source_event_date
+        data_type: date
+      - name: load_timestamp
+        data_type: timestamp
+      - name: record_source
+        data_type: string
+      - name: created_at
+        data_type: string
+      - name: customer_status
+        data_type: string
+
+    data_tests:
+      - unique_combination_of_columns:
+          arguments:
+            combination_of_columns:
+              - customer_hashkey
+              - hashdiff
+              - source_event_date
+  - name: sat_transfer_bill_information
+    config:
+      contract:
+        enforced: true
+    columns:
+      - name: transfer_bill_hashkey
+        data_type: string
+        tests:
+          - relationships:
+              arguments:
+                to: ref('hub_transfer_bill')
+                field: transfer_bill_hashkey
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+          - not_null:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+      - name: hashdiff
+        data_type: string
+      - name: source_event_date
+        data_type: date
+      - name: load_timestamp
+        data_type: timestamp
+      - name: record_source
+        data_type: string
+      - name: card_number
+        data_type: string
+      - name: card_account_num
+        data_type: string
+      - name: method
+        data_type: string
+      - name: service_code
+        data_type: string
+      - name: provider_code
+        data_type: string
+      - name: description
+        data_type: string
+      - name: bill_code
+        data_type: string
+      - name: bill_item_no
+        data_type: string
+      - name: bill_type
+        data_type: string
+      - name: status
+        data_type: string
+      - name: consumption_id
+        data_type: string
+      - name: created_at
+        data_type: string
+      - name: modified_at
+        data_type: string
+
+    data_tests:
+      - unique_combination_of_columns:
+          arguments:
+            combination_of_columns:
+              - transfer_bill_hashkey
+              - hashdiff
+              - source_event_date
+  - name: sat_transfer_bill_amount
+    config:
+      contract:
+        enforced: true
+    columns:
+      - name: transfer_bill_hashkey
+        data_type: string
+        tests:
+          - relationships:
+              arguments:
+                to: ref('hub_transfer_bill')
+                field: transfer_bill_hashkey
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+          - not_null:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+      - name: hashdiff
+        data_type: string
+      - name: source_event_date
+        data_type: date
+      - name: load_timestamp
+        data_type: timestamp
+      - name: record_source
+        data_type: string
+      - name: currency
+        data_type: string
+      - name: amount
+        data_type: string
+      - name: amount_per_month
+        data_type: decimal(38,10)
+      - name: quantity
+        data_type: bigint
+
+    data_tests:
+      - unique_combination_of_columns:
+          arguments:
+            combination_of_columns:
+              - transfer_bill_hashkey
+              - hashdiff
+              - source_event_date
+  - name: sat_transfer_bill_response
+    config:
+      contract:
+        enforced: true
+    columns:
+      - name: transfer_bill_hashkey
+        data_type: string
+        tests:
+          - relationships:
+              arguments:
+                to: ref('hub_transfer_bill')
+                field: transfer_bill_hashkey
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+          - not_null:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+      - name: hashdiff
+        data_type: string
+      - name: source_event_date
+        data_type: date
+      - name: load_timestamp
+        data_type: timestamp
+      - name: record_source
+        data_type: string
+      - name: core_response
+        data_type: string
+      - name: core_response_time
+        data_type: string
+
+    data_tests:
+      - unique_combination_of_columns:
+          arguments:
+            combination_of_columns:
+              - transfer_bill_hashkey
+              - hashdiff
+              - source_event_date
+  - name: sat_notification
+    config:
+      contract:
+        enforced: true
+    columns:
+      - name: notification_hashkey
+        data_type: string
+        tests:
+          - relationships:
+              arguments:
+                to: ref('hub_notification')
+                field: notification_hashkey
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+          - not_null:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+      - name: hashdiff
+        data_type: string
+      - name: source_event_date
+        data_type: date
+      - name: load_timestamp
+        data_type: timestamp
+      - name: record_source
+        data_type: string
+      - name: created_on
+        data_type: string
+      - name: effective_date
+        data_type: string
+      - name: severity_level
+        data_type: string
+      - name: title
+        data_type: string
+      - name: message
+        data_type: string
+      - name: acknowledgement_code
+        data_type: tinyint
+
+    data_tests:
+      - unique_combination_of_columns:
+          arguments:
+            combination_of_columns:
+              - notification_hashkey
+              - hashdiff
+              - source_event_date
+  - name: sat_service_package
+    config:
+      contract:
+        enforced: true
+    columns:
+      - name: omni_service_hashkey
+        data_type: string
+        tests:
+          - relationships:
+              arguments:
+                to: ref('hub_service')
+                field: omni_service_hashkey
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+          - not_null:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+      - name: hashdiff
+        data_type: string
+      - name: source_event_date
+        data_type: date
+      - name: load_timestamp
+        data_type: timestamp
+      - name: record_source
+        data_type: string
+      - name: package_id
+        data_type: string
+      - name: package_mounting_account
+        data_type: string
+      - name: account_package_code
+        data_type: string
+      - name: account_package_date
+        data_type: string
+      - name: smart_account_package_code
+        data_type: string
+      - name: smart_account_package_name
+        data_type: string
+      - name: package_offer_code
+        data_type: string
+      - name: package_offer_name
+        data_type: string
+      - name: limit
+        data_type: decimal(38,10)
+      - name: service_agreement_id
+        data_type: string
+      - name: fee_discount_id
+        data_type: string
+
+    data_tests:
+      - unique_combination_of_columns:
+          arguments:
+            combination_of_columns:
+              - omni_service_hashkey
+              - hashdiff
+              - source_event_date
+  - name: sat_service_information
+    config:
+      contract:
+        enforced: true
+    columns:
+      - name: omni_service_hashkey
+        data_type: string
+        tests:
+          - relationships:
+              arguments:
+                to: ref('hub_service')
+                field: omni_service_hashkey
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+          - not_null:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+      - name: hashdiff
+        data_type: string
+      - name: source_event_date
+        data_type: date
+      - name: load_timestamp
+        data_type: timestamp
+      - name: record_source
+        data_type: string
+      - name: email
+        data_type: string
+      - name: phone_number
+        data_type: string
+      - name: username
+        data_type: string
+      - name: old_omni_username
+        data_type: string
+      - name: status
+        data_type: string
+      - name: authentication_type_id
+        data_type: string
+      - name: account_number_temp
+        data_type: string
+      - name: branch_code
+        data_type: string
+      - name: branch_name
+        data_type: string
+      - name: is_same_username_group
+        data_type: binary
+
+    data_tests:
+      - unique_combination_of_columns:
+          arguments:
+            combination_of_columns:
+              - omni_service_hashkey
+              - hashdiff
+              - source_event_date
+  - name: sat_service_audit
+    config:
+      contract:
+        enforced: true
+    columns:
+      - name: omni_service_hashkey
+        data_type: string
+        tests:
+          - relationships:
+              arguments:
+                to: ref('hub_service')
+                field: omni_service_hashkey
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+          - not_null:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+      - name: hashdiff
+        data_type: string
+      - name: source_event_date
+        data_type: date
+      - name: load_timestamp
+        data_type: timestamp
+      - name: record_source
+        data_type: string
+      - name: created_at
+        data_type: string
+      - name: created_by
+        data_type: string
+      - name: updated_at
+        data_type: string
+      - name: updated_by
+        data_type: string
+      - name: locked_at
+        data_type: string
+      - name: locked_by
+        data_type: string
+      - name: locking_reason
+        data_type: string
+      - name: last_login_platform
+        data_type: string
+      - name: first_login_new_omni_app_at
+        data_type: string
+      - name: last_login_device_id
+        data_type: string
+      - name: created_from
+        data_type: string
+      - name: sale_employee_id
+        data_type: string
+
+    data_tests:
+      - unique_combination_of_columns:
+          arguments:
+            combination_of_columns:
+              - omni_service_hashkey
+              - hashdiff
+              - source_event_date
+  - name: sat_payment_order_classification
+    config:
+      contract:
+        enforced: true
+    columns:
+      - name: payment_order_hashkey
+        data_type: string
+        tests:
+          - relationships:
+              arguments:
+                to: ref('hub_payment_order')
+                field: payment_order_hashkey
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+          - not_null:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+      - name: hashdiff
+        data_type: string
+      - name: source_event_date
+        data_type: date
+      - name: load_timestamp
+        data_type: timestamp
+      - name: record_source
+        data_type: string
+      - name: status
+        data_type: string
+      - name: bank_status
+        data_type: string
+      - name: pmt_mode
+        data_type: string
+      - name: pmt_type
+        data_type: string
+      - name: priority
+        data_type: string
+      - name: role
+        data_type: string
+      - name: entry_class
+        data_type: string
+      - name: intra_legal_entity
+        data_type: binary
+      - name: remaining_occurrences
+        data_type: bigint
+      - name: account_scheme
+        data_type: string
+
+    data_tests:
+      - unique_combination_of_columns:
+          arguments:
+            combination_of_columns:
+              - payment_order_hashkey
+              - hashdiff
+              - source_event_date
+  - name: sat_payment_order_information
+    config:
+      contract:
+        enforced: true
+    columns:
+      - name: payment_order_hashkey
+        data_type: string
+        tests:
+          - relationships:
+              arguments:
+                to: ref('hub_payment_order')
+                field: payment_order_hashkey
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+          - not_null:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+      - name: hashdiff
+        data_type: string
+      - name: source_event_date
+        data_type: date
+      - name: load_timestamp
+        data_type: timestamp
+      - name: record_source
+        data_type: string
+      - name: account
+        data_type: string
+      - name: name
+        data_type: string
+      - name: amount
+        data_type: string
+      - name: currency
+        data_type: string
+      - name: orig_acc_currency
+        data_type: string
+      - name: send_to_core_datetime
+        data_type: string
+      - name: delivery_date
+        data_type: string
+      - name: rejection_reason
+        data_type: string
+      - name: reason_code
+        data_type: string
+      - name: reason_text
+        data_type: string
+      - name: error_description
+        data_type: string
+      - name: address_line1
+        data_type: string
+      - name: address_line2
+        data_type: string
+      - name: street_name
+        data_type: string
+      - name: town
+        data_type: string
+      - name: country_sub_division
+        data_type: string
+      - name: post_code
+        data_type: string
+      - name: country
+        data_type: string
+      - name: arrangement_id
+        data_type: string
+      - name: ext_arrangement_id
+        data_type: string
+      - name: service_agreement_id
+        data_type: string
+      - name: additions
+        data_type: string
+      - name: payment_setup_id
+        data_type: string
+      - name: approval_id
+        data_type: string
+      - name: payment_submission_id
+        data_type: string
+      - name: confirmation_id
+        data_type: string
+      - name: bank_reference_id
+        data_type: string
+      - name: created_at
+        data_type: string
+      - name: created_by
+        data_type: string
+      - name: updated_at
+        data_type: string
+      - name: updated_by
+        data_type: string
+
+    data_tests:
+      - unique_combination_of_columns:
+          arguments:
+            combination_of_columns:
+              - payment_order_hashkey
+              - hashdiff
+              - source_event_date
+  - name: sat_payment_order_schedule
+    config:
+      contract:
+        enforced: true
+    columns:
+      - name: payment_order_hashkey
+        data_type: string
+        tests:
+          - relationships:
+              arguments:
+                to: ref('hub_payment_order')
+                field: payment_order_hashkey
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+          - not_null:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+      - name: hashdiff
+        data_type: string
+      - name: source_event_date
+        data_type: date
+      - name: load_timestamp
+        data_type: timestamp
+      - name: record_source
+        data_type: string
+      - name: requested_exec_date
+        data_type: string
+      - name: start_date
+        data_type: string
+      - name: end_date
+        data_type: string
+      - name: frequency
+        data_type: string
+      - name: every
+        data_type: string
+      - name: when_execute
+        data_type: bigint
+      - name: repetition
+        data_type: bigint
+      - name: remaining_occurrences
+        data_type: bigint
+      - name: non_working_day_strategy
+        data_type: string
+
+    data_tests:
+      - unique_combination_of_columns:
+          arguments:
+            combination_of_columns:
+              - payment_order_hashkey
+              - hashdiff
+              - source_event_date
+  - name: sat_party_classification
+    config:
+      contract:
+        enforced: true
+    columns:
+      - name: party_hashkey
+        data_type: string
+        tests:
+          - relationships:
+              arguments:
+                to: ref('hub_party')
+                field: party_hashkey
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+          - not_null:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+      - name: hashdiff
+        data_type: string
+      - name: source_event_date
+        data_type: date
+      - name: load_timestamp
+        data_type: timestamp
+      - name: record_source
+        data_type: string
+      - name: status
+        data_type: string
+      - name: category
+        data_type: string
+      - name: type
+        data_type: string
+
+    data_tests:
+      - unique_combination_of_columns:
+          arguments:
+            combination_of_columns:
+              - party_hashkey
+              - hashdiff
+              - source_event_date
+  - name: sat_party_business
+    config:
+      contract:
+        enforced: true
+    columns:
+      - name: party_hashkey
+        data_type: string
+        tests:
+          - relationships:
+              arguments:
+                to: ref('hub_party')
+                field: party_hashkey
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+          - not_null:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+      - name: hashdiff
+        data_type: string
+      - name: source_event_date
+        data_type: date
+      - name: load_timestamp
+        data_type: timestamp
+      - name: record_source
+        data_type: string
+      - name: last_payment_date
+        data_type: date
+      - name: last_payment_amount
+        data_type: decimal(23,5)
+      - name: action
+        data_type: string
+
+    data_tests:
+      - unique_combination_of_columns:
+          arguments:
+            combination_of_columns:
+              - party_hashkey
+              - hashdiff
+              - source_event_date
+  - name: sat_party_information
+    config:
+      contract:
+        enforced: true
+    columns:
+      - name: party_hashkey
+        data_type: string
+        tests:
+          - relationships:
+              arguments:
+                to: ref('hub_party')
+                field: party_hashkey
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+          - not_null:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+      - name: hashdiff
+        data_type: string
+      - name: source_event_date
+        data_type: date
+      - name: load_timestamp
+        data_type: timestamp
+      - name: record_source
+        data_type: string
+      - name: name
+        data_type: string
+      - name: alias
+        data_type: string
+      - name: contact_person
+        data_type: string
+
+    data_tests:
+      - unique_combination_of_columns:
+          arguments:
+            combination_of_columns:
+              - party_hashkey
+              - hashdiff
+              - source_event_date
+  - name: sat_data_sharing_consent_information
+    config:
+      contract:
+        enforced: true
+    columns:
+      - name: data_sharing_consent_hashkey
+        data_type: string
+        tests:
+          - relationships:
+              arguments:
+                to: ref('hub_data_sharing_consent')
+                field: data_sharing_consent_hashkey
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+          - not_null:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+      - name: hashdiff
+        data_type: string
+      - name: source_event_date
+        data_type: date
+      - name: load_timestamp
+        data_type: timestamp
+      - name: record_source
+        data_type: string
+      - name: channel
+        data_type: string
+      - name: partner_code
+        data_type: string
+      - name: consent_status
+        data_type: string
+      - name: os_info
+        data_type: string
+      - name: device_name
+        data_type: string
+      - name: user_agent
+        data_type: string
+
+    data_tests:
+      - unique_combination_of_columns:
+          arguments:
+            combination_of_columns:
+              - data_sharing_consent_hashkey
+              - hashdiff
+              - source_event_date
+  - name: sat_onboarding_information
+    config:
+      contract:
+        enforced: true
+    columns:
+      - name: onboarding_hashkey
+        data_type: string
+        tests:
+          - relationships:
+              arguments:
+                to: ref('hub_onboarding')
+                field: onboarding_hashkey
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+          - not_null:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+      - name: hashdiff
+        data_type: string
+      - name: source_event_date
+        data_type: date
+      - name: load_timestamp
+        data_type: timestamp
+      - name: record_source
+        data_type: string
+      - name: step_name
+        data_type: string
+      - name: report_data
+        data_type: string
+      - name: phone_number
+        data_type: string
+      - name: email
+        data_type: string
+      - name: identity_number
+        data_type: string
+      - name: full_name
+        data_type: string
+      - name: created_at
+        data_type: string
+      - name: modified_at
+        data_type: string
+
+    data_tests:
+      - unique_combination_of_columns:
+          arguments:
+            combination_of_columns:
+              - onboarding_hashkey
+              - hashdiff
+              - source_event_date
+  - name: sat_payment_history_information
+    config:
+      contract:
+        enforced: true
+    columns:
+      - name: payment_history_hashkey
+        data_type: string
+        tests:
+          - relationships:
+              arguments:
+                to: ref('hub_payment_history')
+                field: payment_history_hashkey
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+          - not_null:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+      - name: hashdiff
+        data_type: string
+      - name: source_event_date
+        data_type: date
+      - name: load_timestamp
+        data_type: timestamp
+      - name: record_source
+        data_type: string
+      - name: description
+        data_type: string
+      - name: payment_type
+        data_type: string
+      - name: status
+        data_type: string
+      - name: amount
+        data_type: bigint
+      - name: to_account_number
+        data_type: string
+      - name: to_card_number
+        data_type: string
+      - name: bank_reference_id
+        data_type: string
+
+    data_tests:
+      - unique_combination_of_columns:
+          arguments:
+            combination_of_columns:
+              - payment_history_hashkey
+              - hashdiff
+              - source_event_date
+  - name: sat_party_account_information
+    config:
+      contract:
+        enforced: true
+    columns:
+      - name: party_hashkey
+        data_type: string
+        tests:
+          - relationships:
+              arguments:
+                to: ref('hub_party')
+                field: party_hashkey
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+          - not_null:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+      - name: hashdiff
+        data_type: string
+      - name: source_event_date
+        data_type: date
+      - name: load_timestamp
+        data_type: timestamp
+      - name: record_source
+        data_type: string
+      - name: account_number
+        data_type: string
+      - name: account_type
+        data_type: string
+      - name: name
+        data_type: string
+      - name: other_identifier
+        data_type: string
+      - name: bank_name
+        data_type: string
+      - name: bank_code
+        data_type: string
+      - name: bic
+        data_type: string
+      - name: iban
+        data_type: string
+
+    data_tests:
+      - unique_combination_of_columns:
+          arguments:
+            combination_of_columns:
+              - party_hashkey
+              - hashdiff
+              - source_event_date
+  - name: sat_device_omni_information
+    config:
+      contract:
+        enforced: true
+    columns:
+      - name: device_omni_hashkey
+        data_type: string
+        tests:
+          - relationships:
+              arguments:
+                to: ref('hub_device_omni')
+                field: device_omni_hashkey
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+          - not_null:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+      - name: hashdiff
+        data_type: string
+      - name: source_event_date
+        data_type: date
+      - name: load_timestamp
+        data_type: timestamp
+      - name: record_source
+        data_type: string
+      - name: friendly_name
+        data_type: string
+      - name: vendor
+        data_type: string
+      - name: model
+        data_type: string
+      - name: created_date_time
+        data_type: bigint
+      - name: updated_date_time
+        data_type: bigint
+      - name: status
+        data_type: string
+      - name: platform
+        data_type: string
+      - name: push_token
+        data_type: string
+      - name: dbs_user_id
+        data_type: string
+
+    data_tests:
+      - unique_combination_of_columns:
+          arguments:
+            combination_of_columns:
+              - device_omni_hashkey
+              - hashdiff
+              - source_event_date
+  - name: sat_device_detail
+    config:
+      contract:
+        enforced: true
+    columns:
+      - name: device_omni_hashkey
+        data_type: string
+        tests:
+          - relationships:
+              arguments:
+                to: ref('hub_device_omni')
+                field: device_omni_hashkey
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+          - not_null:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+      - name: hashdiff
+        data_type: string
+      - name: source_event_date
+        data_type: date
+      - name: load_timestamp
+        data_type: timestamp
+      - name: record_source
+        data_type: string
+      - name: ma_key
+        data_type: string
+      - name: nfc_enabled
+        data_type: tinyint
+      - name: omni_version
+        data_type: string
+      - name: os_version
+        data_type: string
+      - name: unique_device_id
+        data_type: string
+
+    data_tests:
+      - unique_combination_of_columns:
+          arguments:
+            combination_of_columns:
+              - device_omni_hashkey
+              - hashdiff
+              - source_event_date
+              - ma_key
+  - name: sat_od_registration_limit
+    config:
+      contract:
+        enforced: true
+    columns:
+      - name: od_registration_hashkey
+        data_type: string
+        tests:
+          - relationships:
+              arguments:
+                to: ref('hub_od_registration')
+                field: od_registration_hashkey
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+          - not_null:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+      - name: hashdiff
+        data_type: string
+      - name: source_event_date
+        data_type: date
+      - name: load_timestamp
+        data_type: timestamp
+      - name: record_source
+        data_type: string
+      - name: requested_limit_amount
+        data_type: decimal(38,2)
+      - name: approved_limit_amount
+        data_type: decimal(38,2)
+      - name: interest_rate
+        data_type: double
+
+    data_tests:
+      - unique_combination_of_columns:
+          arguments:
+            combination_of_columns:
+              - od_registration_hashkey
+              - hashdiff
+              - source_event_date
+  - name: sat_od_registration_agreement
+    config:
+      contract:
+        enforced: true
+    columns:
+      - name: od_registration_hashkey
+        data_type: string
+        tests:
+          - relationships:
+              arguments:
+                to: ref('hub_od_registration')
+                field: od_registration_hashkey
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+          - not_null:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+      - name: hashdiff
+        data_type: string
+      - name: source_event_date
+        data_type: date
+      - name: load_timestamp
+        data_type: timestamp
+      - name: record_source
+        data_type: string
+      - name: contract_file_id
+        data_type: string
+      - name: result_file_id
+        data_type: string
+      - name: approval_file_id
+        data_type: string
+      - name: contract_bill_code
+        data_type: string
+      - name: first_approval_agreement_uuid
+        data_type: string
+      - name: first_approval_bill_code
+        data_type: string
+      - name: second_approval_agreement_uuid
+        data_type: string
+      - name: second_approval_bill_code
+        data_type: string
+      - name: ecm_approval_document_id
+        data_type: string
+      - name: ecm_contract_document_id
+        data_type: string
+      - name: prepare_certificate_request_id
+        data_type: string
+      - name: confirmation_id
+        data_type: string
+      - name: approval_agreement_id
+        data_type: string
+
+    data_tests:
+      - unique_combination_of_columns:
+          arguments:
+            combination_of_columns:
+              - od_registration_hashkey
+              - hashdiff
+              - source_event_date
+  - name: sat_od_registration_date
+    config:
+      contract:
+        enforced: true
+    columns:
+      - name: od_registration_hashkey
+        data_type: string
+        tests:
+          - relationships:
+              arguments:
+                to: ref('hub_od_registration')
+                field: od_registration_hashkey
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+          - not_null:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+      - name: hashdiff
+        data_type: string
+      - name: source_event_date
+        data_type: date
+      - name: load_timestamp
+        data_type: timestamp
+      - name: record_source
+        data_type: string
+      - name: due_date
+        data_type: string
+      - name: effective_date
+        data_type: string
+      - name: requested_date
+        data_type: string
+      - name: issued_date
+        data_type: string
+      - name: created_at
+        data_type: string
+      - name: updated_at
+        data_type: string
+
+    data_tests:
+      - unique_combination_of_columns:
+          arguments:
+            combination_of_columns:
+              - od_registration_hashkey
+              - hashdiff
+              - source_event_date
+  - name: sat_voucher_information
+    config:
+      contract:
+        enforced: true
+    columns:
+      - name: voucher_hashkey
+        data_type: string
+        tests:
+          - relationships:
+              arguments:
+                to: ref('hub_voucher')
+                field: voucher_hashkey
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+          - not_null:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+      - name: hashdiff
+        data_type: string
+      - name: source_event_date
+        data_type: date
+      - name: load_timestamp
+        data_type: timestamp
+      - name: record_source
+        data_type: string
+      - name: service_type_code
+        data_type: string
+      - name: discount_type
+        data_type: string
+      - name: discount_price
+        data_type: int
+      - name: discount_percentage
+        data_type: int
+      - name: max_discount
+        data_type: int
+      - name: min_price_acceptable
+        data_type: int
+      - name: refund_liability_account
+        data_type: string
+
+    data_tests:
+      - unique_combination_of_columns:
+          arguments:
+            combination_of_columns:
+              - voucher_hashkey
+              - hashdiff
+              - source_event_date
+  - name: sat_voucher_campaign_information
+    config:
+      contract:
+        enforced: true
+    columns:
+      - name: voucher_campaign_hashkey
+        data_type: string
+        tests:
+          - relationships:
+              arguments:
+                to: ref('hub_voucher_campaign')
+                field: voucher_campaign_hashkey
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+          - not_null:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+      - name: hashdiff
+        data_type: string
+      - name: source_event_date
+        data_type: date
+      - name: load_timestamp
+        data_type: timestamp
+      - name: record_source
+        data_type: string
+      - name: voucher_campaign_description
+        data_type: string
+      - name: effect_date
+        data_type: string
+      - name: end_effect_date
+        data_type: string
+      - name: limit_date
+        data_type: string
+      - name: import_status
+        data_type: string
+
+    data_tests:
+      - unique_combination_of_columns:
+          arguments:
+            combination_of_columns:
+              - voucher_campaign_hashkey
+              - hashdiff
+              - source_event_date
+  - name: sat_voucher_campaign_limit
+    config:
+      contract:
+        enforced: true
+    columns:
+      - name: voucher_campaign_hashkey
+        data_type: string
+        tests:
+          - relationships:
+              arguments:
+                to: ref('hub_voucher_campaign')
+                field: voucher_campaign_hashkey
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+          - not_null:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+      - name: hashdiff
+        data_type: string
+      - name: source_event_date
+        data_type: date
+      - name: load_timestamp
+        data_type: timestamp
+      - name: record_source
+        data_type: string
+      - name: max_quantity_use_voucher
+        data_type: int
+      - name: current_used_voucher
+        data_type: int
+      - name: number_generated
+        data_type: int
+      - name: budget_limit
+        data_type: int
+      - name: current_budget
+        data_type: int
+      - name: refund_account
+        data_type: string
+      - name: time_pending_refund
+        data_type: int
+
+    data_tests:
+      - unique_combination_of_columns:
+          arguments:
+            combination_of_columns:
+              - voucher_campaign_hashkey
+              - hashdiff
+              - source_event_date
+  - name: sat_voucher_generate_information
+    config:
+      contract:
+        enforced: true
+    columns:
+      - name: voucher_generate_hashkey
+        data_type: string
+        tests:
+          - relationships:
+              arguments:
+                to: ref('hub_voucher_generate')
+                field: voucher_generate_hashkey
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+          - not_null:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+      - name: hashdiff
+        data_type: string
+      - name: source_event_date
+        data_type: date
+      - name: load_timestamp
+        data_type: timestamp
+      - name: record_source
+        data_type: string
+      - name: status
+        data_type: string
+      - name: is_show
+        data_type: tinyint
+
+    data_tests:
+      - unique_combination_of_columns:
+          arguments:
+            combination_of_columns:
+              - voucher_generate_hashkey
+              - hashdiff
+              - source_event_date
+  - name: sat_credit_card_registration_customer_info
+    config:
+      contract:
+        enforced: true
+    columns:
+      - name: credit_card_registration_hashkey
+        data_type: string
+        tests:
+          - relationships:
+              arguments:
+                to: ref('hub_credit_card_registration')
+                field: credit_card_registration_hashkey
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+          - not_null:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+      - name: hashdiff
+        data_type: string
+      - name: source_event_date
+        data_type: date
+      - name: load_timestamp
+        data_type: timestamp
+      - name: record_source
+        data_type: string
+      - name: number_of_dependents
+        data_type: int
+      - name: job
+        data_type: string
+      - name: company_address
+        data_type: string
+      - name: company_address_info
+        data_type: string
+      - name: company_name
+        data_type: string
+      - name: type_of_labor_contract
+        data_type: string
+      - name: position
+        data_type: string
+      - name: working_time
+        data_type: string
+
+    data_tests:
+      - unique_combination_of_columns:
+          arguments:
+            combination_of_columns:
+              - credit_card_registration_hashkey
+              - hashdiff
+              - source_event_date
+  - name: sat_credit_card_registration_financial_profile
+    config:
+      contract:
+        enforced: true
+    columns:
+      - name: credit_card_registration_hashkey
+        data_type: string
+        tests:
+          - relationships:
+              arguments:
+                to: ref('hub_credit_card_registration')
+                field: credit_card_registration_hashkey
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+          - not_null:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+      - name: hashdiff
+        data_type: string
+      - name: source_event_date
+        data_type: date
+      - name: load_timestamp
+        data_type: timestamp
+      - name: record_source
+        data_type: string
+      - name: income_method
+        data_type: string
+      - name: debt_expenses_to_pay_other_credit_institutions
+        data_type: decimal(38,2)
+      - name: real_monthly_income
+        data_type: decimal(38,2)
+      - name: living_expenses
+        data_type: decimal(38,2)
+      - name: salary_income
+        data_type: decimal(38,2)
+      - name: business_income
+        data_type: decimal(38,2)
+      - name: vehicle_rental_income
+        data_type: decimal(38,2)
+      - name: real_estate_rental_income
+        data_type: decimal(38,2)
+      - name: other_income
+        data_type: decimal(38,2)
+
+    data_tests:
+      - unique_combination_of_columns:
+          arguments:
+            combination_of_columns:
+              - credit_card_registration_hashkey
+              - hashdiff
+              - source_event_date
+  - name: sat_credit_card_registration_flow
+    config:
+      contract:
+        enforced: true
+    columns:
+      - name: credit_card_registration_hashkey
+        data_type: string
+        tests:
+          - relationships:
+              arguments:
+                to: ref('hub_credit_card_registration')
+                field: credit_card_registration_hashkey
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+          - not_null:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+      - name: hashdiff
+        data_type: string
+      - name: source_event_date
+        data_type: date
+      - name: load_timestamp
+        data_type: timestamp
+      - name: record_source
+        data_type: string
+      - name: ekyc_type
+        data_type: string
+      - name: face_liveness_status
+        data_type: string
+      - name: face_matching_status
+        data_type: string
+      - name: face_sanity_status
+        data_type: string
+      - name: id_card_ocr_status
+        data_type: string
+      - name: id_card_sanity_status
+        data_type: string
+      - name: in_import_list
+        data_type: boolean
+      - name: signed_contract_file_path
+        data_type: string
+      - name: contract_file_path
+        data_type: string
+      - name: document_id
+        data_type: string
+      - name: agreement_uuid
+        data_type: string
+      - name: contract_no
+        data_type: string
+
+    data_tests:
+      - unique_combination_of_columns:
+          arguments:
+            combination_of_columns:
+              - credit_card_registration_hashkey
+              - hashdiff
+              - source_event_date
+  - name: sat_credit_card_registration_other
+    config:
+      contract:
+        enforced: true
+    columns:
+      - name: credit_card_registration_hashkey
+        data_type: string
+        tests:
+          - relationships:
+              arguments:
+                to: ref('hub_credit_card_registration')
+                field: credit_card_registration_hashkey
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+          - not_null:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+      - name: hashdiff
+        data_type: string
+      - name: source_event_date
+        data_type: date
+      - name: load_timestamp
+        data_type: timestamp
+      - name: record_source
+        data_type: string
+      - name: birthday
+        data_type: string
+      - name: contact_address
+        data_type: string
+      - name: customer_name
+        data_type: string
+      - name: email
+        data_type: string
+      - name: id_card_tampering_status
+        data_type: string
+      - name: legal_id_num
+        data_type: string
+      - name: legal_issue_date
+        data_type: string
+      - name: legal_issue_place
+        data_type: string
+      - name: limit_suggest
+        data_type: decimal(38,2)
+      - name: marital_status
+        data_type: string
+      - name: legal_id_num_other
+        data_type: string
+      - name: permanent_address
+        data_type: string
+      - name: phone_number
+        data_type: string
+      - name: product_code
+        data_type: string
+      - name: product_name
+        data_type: string
+      - name: branch_name
+        data_type: string
+      - name: branch_code
+        data_type: string
+      - name: card_repayment_type
+        data_type: string
+      - name: card_repayment_account_no
+        data_type: string
+      - name: delivery_address
+        data_type: string
+      - name: old_legal_id_no
+        data_type: string
+      - name: legal_id_type
+        data_type: string
+      - name: legal_expired_date
+        data_type: string
+      - name: gender
+        data_type: string
+      - name: sale_name
+        data_type: string
+      - name: nationality
+        data_type: string
+      - name: education_level
+        data_type: string
+      - name: card_token_number
+        data_type: string
+      - name: spouse_name
+        data_type: string
+      - name: spouse_legal_type
+        data_type: string
+      - name: spouse_legal_id
+        data_type: string
+      - name: product_code_offer
+        data_type: string
+      - name: product_name_offer
+        data_type: string
+      - name: product_code_offer_list
+        data_type: string
+      - name: spouse_phone_number
+        data_type: string
+      - name: relationship_type
+        data_type: string
+      - name: reference_id
+        data_type: string
+
+    data_tests:
+      - unique_combination_of_columns:
+          arguments:
+            combination_of_columns:
+              - credit_card_registration_hashkey
+              - hashdiff
+              - source_event_date
+  - name: sat_credit_card_registration_information
+    config:
+      contract:
+        enforced: true
+    columns:
+      - name: credit_card_registration_hashkey
+        data_type: string
+        tests:
+          - relationships:
+              arguments:
+                to: ref('hub_credit_card_registration')
+                field: credit_card_registration_hashkey
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+          - not_null:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+      - name: hashdiff
+        data_type: string
+      - name: source_event_date
+        data_type: date
+      - name: load_timestamp
+        data_type: timestamp
+      - name: record_source
+        data_type: string
+      - name: card_limit_approved
+        data_type: decimal(38,2)
+      - name: created_date
+        data_type: string
+      - name: updated_date
+        data_type: string
+      - name: status
+        data_type: string
+      - name: sale_code
+        data_type: string
+      - name: personal_rank
+        data_type: string
+      - name: personal_rank_start
+        data_type: string
+      - name: personal_rank_renew
+        data_type: string
+      - name: group_personal_rank
+        data_type: string
+      - name: card_issuance_type
+        data_type: string
+      - name: process_type
+        data_type: string
+      - name: policy_groups
+        data_type: string
+
+    data_tests:
+      - unique_combination_of_columns:
+          arguments:
+            combination_of_columns:
+              - credit_card_registration_hashkey
+              - hashdiff
+              - source_event_date
+  - name: sat_credit_card_registration_introduce
+    config:
+      contract:
+        enforced: true
+    columns:
+      - name: credit_card_registration_hashkey
+        data_type: string
+        tests:
+          - relationships:
+              arguments:
+                to: ref('hub_credit_card_registration')
+                field: credit_card_registration_hashkey
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+          - not_null:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+      - name: hashdiff
+        data_type: string
+      - name: source_event_date
+        data_type: date
+      - name: load_timestamp
+        data_type: timestamp
+      - name: record_source
+        data_type: string
+      - name: introduce_name
+        data_type: string
+      - name: introduce_code
+        data_type: string
+      - name: referral_code
+        data_type: string
+      - name: reference_name
+        data_type: string
+      - name: reference_phone_number
+        data_type: string
+
+    data_tests:
+      - unique_combination_of_columns:
+          arguments:
+            combination_of_columns:
+              - credit_card_registration_hashkey
+              - hashdiff
+              - source_event_date
+  - name: sat_oversea_ft_request_information
+    config:
+      contract:
+        enforced: true
+    columns:
+      - name: oversea_ft_request_hashkey
+        data_type: string
+        tests:
+          - relationships:
+              arguments:
+                to: ref('hub_oversea_ft_request')
+                field: oversea_ft_request_hashkey
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+          - not_null:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+      - name: hashdiff
+        data_type: string
+      - name: source_event_date
+        data_type: date
+      - name: load_timestamp
+        data_type: timestamp
+      - name: record_source
+        data_type: string
+      - name: purpose_code
+        data_type: string
+      - name: currency
+        data_type: string
+      - name: req_amount
+        data_type: decimal(38,18)
+      - name: req_charge_type
+        data_type: string
+      - name: internal_reference
+        data_type: string
+      - name: external_id
+        data_type: string
+      - name: external_reference
+        data_type: string
+      - name: status
+        data_type: string
+      - name: account_number
+        data_type: string
+      - name: account_cur
+        data_type: string
+      - name: contract_limit_id
+        data_type: string
+      - name: rm_code
+        data_type: string
+      - name: rm_name
+        data_type: string
+      - name: latest_bpm_comment
+        data_type: string
+      - name: lasted_bpm_updated_at
+        data_type: string
+
+    data_tests:
+      - unique_combination_of_columns:
+          arguments:
+            combination_of_columns:
+              - oversea_ft_request_hashkey
+              - hashdiff
+              - source_event_date
+  - name: sat_oversea_ft_request_beneficiary
+    config:
+      contract:
+        enforced: true
+    columns:
+      - name: oversea_ft_request_hashkey
+        data_type: string
+        tests:
+          - relationships:
+              arguments:
+                to: ref('hub_oversea_ft_request')
+                field: oversea_ft_request_hashkey
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+          - not_null:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+      - name: hashdiff
+        data_type: string
+      - name: source_event_date
+        data_type: date
+      - name: load_timestamp
+        data_type: timestamp
+      - name: record_source
+        data_type: string
+      - name: ben_name
+        data_type: string
+      - name: ben_address
+        data_type: string
+      - name: ben_bank_name
+        data_type: string
+      - name: ben_bank_code
+        data_type: string
+      - name: ben_bank_address
+        data_type: string
+      - name: ben_account_no
+        data_type: string
+      - name: beneficiary_branch_code
+        data_type: string
+
+    data_tests:
+      - unique_combination_of_columns:
+          arguments:
+            combination_of_columns:
+              - oversea_ft_request_hashkey
+              - hashdiff
+              - source_event_date
+  - name: sat_oversea_ft_request_related_party
+    config:
+      contract:
+        enforced: true
+    columns:
+      - name: oversea_ft_request_hashkey
+        data_type: string
+        tests:
+          - relationships:
+              arguments:
+                to: ref('hub_oversea_ft_request')
+                field: oversea_ft_request_hashkey
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+          - not_null:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+      - name: hashdiff
+        data_type: string
+      - name: source_event_date
+        data_type: date
+      - name: load_timestamp
+        data_type: timestamp
+      - name: record_source
+        data_type: string
+      - name: related_name
+        data_type: string
+      - name: related_legal_id_no
+        data_type: string
+      - name: related_address
+        data_type: string
+      - name: related_relationship_code
+        data_type: string
+
+    data_tests:
+      - unique_combination_of_columns:
+          arguments:
+            combination_of_columns:
+              - oversea_ft_request_hashkey
+              - hashdiff
+              - source_event_date
+  - name: sat_oversea_ft_request_visa_commit
+    config:
+      contract:
+        enforced: true
+    columns:
+      - name: oversea_ft_request_hashkey
+        data_type: string
+        tests:
+          - relationships:
+              arguments:
+                to: ref('hub_oversea_ft_request')
+                field: oversea_ft_request_hashkey
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+          - not_null:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+      - name: hashdiff
+        data_type: string
+      - name: source_event_date
+        data_type: date
+      - name: load_timestamp
+        data_type: timestamp
+      - name: record_source
+        data_type: string
+      - name: is_debt_visa_bit
+        data_type: string
+      - name: visa_commit_date
+        data_type: string
+      - name: visa_commit_id
+        data_type: string
+      - name: visa_commit_reference
+        data_type: string
+
+    data_tests:
+      - unique_combination_of_columns:
+          arguments:
+            combination_of_columns:
+              - oversea_ft_request_hashkey
+              - hashdiff
+              - source_event_date
+  - name: sat_oversea_ft_request_execution
+    config:
+      contract:
+        enforced: true
+    columns:
+      - name: oversea_ft_request_hashkey
+        data_type: string
+        tests:
+          - relationships:
+              arguments:
+                to: ref('hub_oversea_ft_request')
+                field: oversea_ft_request_hashkey
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+          - not_null:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+      - name: hashdiff
+        data_type: string
+      - name: source_event_date
+        data_type: date
+      - name: load_timestamp
+        data_type: timestamp
+      - name: record_source
+        data_type: string
+      - name: mt103_reference
+        data_type: string
+      - name: transferred_amount
+        data_type: decimal(38,18)
+      - name: transferred_cur
+        data_type: string
+      - name: transferred_at
+        data_type: string
+      - name: transferred_status
+        data_type: string
+      - name: exchange_rate
+        data_type: decimal(38,18)
+      - name: charge_amt_before
+        data_type: decimal(38,18)
+      - name: charge_amt
+        data_type: decimal(38,18)
+      - name: charge_type
+        data_type: string
+      - name: discount
+        data_type: decimal(38,18)
+
+    data_tests:
+      - unique_combination_of_columns:
+          arguments:
+            combination_of_columns:
+              - oversea_ft_request_hashkey
+              - hashdiff
+              - source_event_date
+  - name: sat_oversea_ft_request_audit
+    config:
+      contract:
+        enforced: true
+    columns:
+      - name: oversea_ft_request_hashkey
+        data_type: string
+        tests:
+          - relationships:
+              arguments:
+                to: ref('hub_oversea_ft_request')
+                field: oversea_ft_request_hashkey
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+          - not_null:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+      - name: hashdiff
+        data_type: string
+      - name: source_event_date
+        data_type: date
+      - name: load_timestamp
+        data_type: timestamp
+      - name: record_source
+        data_type: string
+      - name: created_at
+        data_type: string
+      - name: updated_at
+        data_type: string
+      - name: created_by
+        data_type: string
+      - name: updated_by
+        data_type: string
+      - name: deleted
+        data_type: string
+
+    data_tests:
+      - unique_combination_of_columns:
+          arguments:
+            combination_of_columns:
+              - oversea_ft_request_hashkey
+              - hashdiff
+              - source_event_date
+  - name: sat_auto_debit_information
+    config:
+      contract:
+        enforced: true
+    columns:
+      - name: auto_debit_hashkey
+        data_type: string
+        tests:
+          - relationships:
+              arguments:
+                to: ref('hub_auto_debit')
+                field: auto_debit_hashkey
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+          - not_null:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+      - name: hashdiff
+        data_type: string
+      - name: source_event_date
+        data_type: date
+      - name: load_timestamp
+        data_type: timestamp
+      - name: record_source
+        data_type: string
+      - name: order_code
+        data_type: string
+      - name: bill_code
+        data_type: string
+      - name: status
+        data_type: int
+      - name: channel
+        data_type: string
+      - name: service_provider_id
+        data_type: bigint
+      - name: service_code
+        data_type: string
+      - name: provider_code
+        data_type: string
+      - name: alt_provider_code
+        data_type: string
+
+    data_tests:
+      - unique_combination_of_columns:
+          arguments:
+            combination_of_columns:
+              - auto_debit_hashkey
+              - hashdiff
+              - source_event_date
+  - name: sat_auto_debit_customer
+    config:
+      contract:
+        enforced: true
+    columns:
+      - name: auto_debit_hashkey
+        data_type: string
+        tests:
+          - relationships:
+              arguments:
+                to: ref('hub_auto_debit')
+                field: auto_debit_hashkey
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+          - not_null:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+      - name: hashdiff
+        data_type: string
+      - name: source_event_date
+        data_type: date
+      - name: load_timestamp
+        data_type: timestamp
+      - name: record_source
+        data_type: string
+      - name: account_number
+        data_type: string
+      - name: account_name
+        data_type: string
+      - name: customer_name
+        data_type: string
+      - name: card_number
+        data_type: string
+      - name: card_account_num
+        data_type: string
+
+    data_tests:
+      - unique_combination_of_columns:
+          arguments:
+            combination_of_columns:
+              - auto_debit_hashkey
+              - hashdiff
+              - source_event_date
+  - name: sat_auto_debit_schedule
+    config:
+      contract:
+        enforced: true
+    columns:
+      - name: auto_debit_hashkey
+        data_type: string
+        tests:
+          - relationships:
+              arguments:
+                to: ref('hub_auto_debit')
+                field: auto_debit_hashkey
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+          - not_null:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+      - name: hashdiff
+        data_type: string
+      - name: source_event_date
+        data_type: date
+      - name: load_timestamp
+        data_type: timestamp
+      - name: record_source
+        data_type: string
+      - name: arrangement_id
+        data_type: string
+      - name: payment_setting
+        data_type: string
+      - name: amount_limit
+        data_type: decimal(38,18)
+      - name: recurring_period
+        data_type: string
+      - name: finish_date
+        data_type: string
+      - name: payment_date
+        data_type: string
+
+    data_tests:
+      - unique_combination_of_columns:
+          arguments:
+            combination_of_columns:
+              - auto_debit_hashkey
+              - hashdiff
+              - source_event_date
+  - name: sat_auto_debit_properties
+    config:
+      contract:
+        enforced: true
+    columns:
+      - name: auto_debit_hashkey
+        data_type: string
+        tests:
+          - relationships:
+              arguments:
+                to: ref('hub_auto_debit')
+                field: auto_debit_hashkey
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+          - not_null:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+      - name: hashdiff
+        data_type: string
+      - name: source_event_date
+        data_type: date
+      - name: load_timestamp
+        data_type: timestamp
+      - name: record_source
+        data_type: string
+      - name: prop1
+        data_type: string
+      - name: prop2
+        data_type: string
+      - name: prop3
+        data_type: decimal(38,18)
+      - name: prop4
+        data_type: bigint
+      - name: prop5
+        data_type: string
+
+    data_tests:
+      - unique_combination_of_columns:
+          arguments:
+            combination_of_columns:
+              - auto_debit_hashkey
+              - hashdiff
+              - source_event_date
+  - name: sat_auto_debit_audit
+    config:
+      contract:
+        enforced: true
+    columns:
+      - name: auto_debit_hashkey
+        data_type: string
+        tests:
+          - relationships:
+              arguments:
+                to: ref('hub_auto_debit')
+                field: auto_debit_hashkey
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+          - not_null:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+      - name: hashdiff
+        data_type: string
+      - name: source_event_date
+        data_type: date
+      - name: load_timestamp
+        data_type: timestamp
+      - name: record_source
+        data_type: string
+      - name: is_deleted
+        data_type: int
+      - name: created_at
+        data_type: string
+      - name: modified_at
+        data_type: string
+      - name: created_by
+        data_type: string
+      - name: modified_by
+        data_type: string
+
+    data_tests:
+      - unique_combination_of_columns:
+          arguments:
+            combination_of_columns:
+              - auto_debit_hashkey
+              - hashdiff
+              - source_event_date
+  - name: sat_audit_message_information
+    config:
+      contract:
+        enforced: true
+    columns:
+      - name: audit_message_hashkey
+        data_type: string
+        tests:
+          - relationships:
+              arguments:
+                to: ref('hub_audit_message')
+                field: audit_message_hashkey
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+          - not_null:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+      - name: hashdiff
+        data_type: string
+      - name: source_event_date
+        data_type: date
+      - name: load_timestamp
+        data_type: timestamp
+      - name: record_source
+        data_type: string
+      - name: status
+        data_type: string
+      - name: event_time
+        data_type: string
+      - name: event_category
+        data_type: string
+      - name: object_type
+        data_type: string
+      - name: event_action
+        data_type: string
+      - name: event_desc
+        data_type: string
+      - name: message_set_id
+        data_type: string
+      - name: schema_version
+        data_type: int
+      - name: error
+        data_type: string
+      - name: metadata
+        data_type: string
+      - name: additions
+        data_type: string
+      - name: temp_legacy_id
+        data_type: string
+      - name: day_of_month
+        data_type: int
+      - name: actor_username
+        data_type: string
+      - name: legal_entity_id
+        data_type: string
+      - name: sa_id
+        data_type: bigint
+
+    data_tests:
+      - unique_combination_of_columns:
+          arguments:
+            combination_of_columns:
+              - audit_message_hashkey
+              - hashdiff
+              - source_event_date
+  - name: sat_audit_message_device
+    config:
+      contract:
+        enforced: true
+    columns:
+      - name: audit_message_hashkey
+        data_type: string
+        tests:
+          - relationships:
+              arguments:
+                to: ref('hub_audit_message')
+                field: audit_message_hashkey
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+          - not_null:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+      - name: hashdiff
+        data_type: string
+      - name: source_event_date
+        data_type: date
+      - name: load_timestamp
+        data_type: timestamp
+      - name: record_source
+        data_type: string
+      - name: ip_address
+        data_type: string
+      - name: user_agent
+        data_type: string
+      - name: session_id
+        data_type: string
+
+    data_tests:
+      - unique_combination_of_columns:
+          arguments:
+            combination_of_columns:
+              - audit_message_hashkey
+              - hashdiff
+              - source_event_date
+  - name: sat_audit_message_emulator
+    config:
+      contract:
+        enforced: true
+    columns:
+      - name: audit_message_hashkey
+        data_type: string
+        tests:
+          - relationships:
+              arguments:
+                to: ref('hub_audit_message')
+                field: audit_message_hashkey
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+          - not_null:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+      - name: hashdiff
+        data_type: string
+      - name: source_event_date
+        data_type: date
+      - name: load_timestamp
+        data_type: timestamp
+      - name: record_source
+        data_type: string
+      - name: emulator_user_id
+        data_type: string
+      - name: emulator_username
+        data_type: string
+      - name: emulator_domain
+        data_type: string
+
+    data_tests:
+      - unique_combination_of_columns:
+          arguments:
+            combination_of_columns:
+              - audit_message_hashkey
+              - hashdiff
+              - source_event_date
+
+  - name: sat_clevertap_tracking_detail
+    config:
+      contract:
+        enforced: true
+    columns:
+      - name: clevertap_tracking_hashkey
+        data_type: string
+        tests:
+          - relationships:
+              arguments:
+                to: ref('hub_clevertap_tracking')
+                field: clevertap_tracking_hashkey
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+          - not_null:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+      - name: hashdiff
+        data_type: string
+      - name: source_event_date
+        data_type: date
+      - name: load_timestamp
+        data_type: timestamp
+      - name: record_source
+        data_type: string
+      - name: clevertap_id
+        data_type: string
+      - name: event_name
+        data_type: string
+      - name: channel
+        data_type: string
+      - name: created_at
+        data_type: string
+      - name: modified_at
+        data_type: string
+      - name: cif
+        data_type: string
+
+    data_tests:
+      - unique_combination_of_columns:
+          arguments:
+            combination_of_columns:
+              - clevertap_tracking_hashkey
+              - hashdiff
+              - source_event_date
+
+  - name: sat_message_information
+    config:
+      contract:
+        enforced: true
+    columns:
+      - name: message_hashkey
+        data_type: string
+        tests:
+          - relationships:
+              arguments:
+                to: ref('hub_message')
+                field: message_hashkey
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+          - not_null:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+      - name: hashdiff
+        data_type: string
+      - name: source_event_date
+        data_type: date
+      - name: load_timestamp
+        data_type: timestamp
+      - name: record_source
+        data_type: string
+      - name: uuid
+        data_type: string
+      - name: root_message_id
+        data_type: string
+      - name: subject
+        data_type: string
+      - name: body
+        data_type: string
+      - name: is_body_html
+        data_type: boolean
+      - name: category
+        data_type: string
+      - name: important
+        data_type: int
+      - name: sender
+        data_type: string
+      - name: sender_name
+        data_type: string
+      - name: sent_date_time
+        data_type: string
+      - name: read_receipt
+        data_type: string
+      - name: deletable
+        data_type: int
+      - name: read_only
+        data_type: int
+      - name: content_repo_id
+        data_type: string
+      - name: content_path
+        data_type: string
+      - name: metric_dimensions
+        data_type: string
+      - name: additions
+        data_type: string
+      - name: recipient
+        data_type: string
+
+    data_tests:
+      - unique_combination_of_columns:
+          arguments:
+            combination_of_columns:
+              - message_hashkey
+              - hashdiff
+              - source_event_date
+
+  - name: sat_notification_information
+    config:
+      contract:
+        enforced: true
+    columns:
+      - name: notification_hashkey
+        data_type: string
+        tests:
+          - relationships:
+              arguments:
+                to: ref('hub_notification')
+                field: notification_hashkey
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+          - not_null:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+      - name: hashdiff
+        data_type: string
+      - name: source_event_date
+        data_type: date
+      - name: load_timestamp
+        data_type: timestamp
+      - name: record_source
+        data_type: string
+      - name: uuid
+        data_type: string
+      - name: management_id
+        data_type: string
+      - name: legal_entity_id
+        data_type: string
+      - name: target_group_code
+        data_type: tinyint
+      - name: link
+        data_type: string
+      - name: valid_from
+        data_type: string
+      - name: expires_on
+        data_type: string
+      - name: origin
+        data_type: string
+      - name: where_to
+        data_type: string
+      - name: additions
+        data_type: string
+      - name: route_data
+        data_type: string
+      - name: service_agreement_id
+        data_type: string
+
+    data_tests:
+      - unique_combination_of_columns:
+          arguments:
+            combination_of_columns:
+              - notification_hashkey
+              - hashdiff
+              - source_event_date
+
+  - name: sat_od_linked_deposit_information
+    config:
+      contract:
+        enforced: true
+    columns:
+      - name: od_registration_hashkey
+        data_type: string
+        tests:
+          - relationships:
+              arguments:
+                to: ref('hub_od_registration')
+                field: od_registration_hashkey
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+          - not_null:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+      - name: hashdiff
+        data_type: string
+      - name: source_event_date
+        data_type: date
+      - name: load_timestamp
+        data_type: timestamp
+      - name: record_source
+        data_type: string
+      - name: ma_key
+        data_type: string
+      - name: deposit_balance
+        data_type: decimal(38, 2)
+      - name: maturity_date
+        data_type: string
+      - name: opening_date
+        data_type: string
+      - name: is_additional_request
+        data_type: boolean
+      - name: created_at
+        data_type: string
+      - name: created_by
+        data_type: string
+      - name: updated_at
+        data_type: string
+      - name: updated_by
+        data_type: string
+
+    data_tests:
+      - unique_combination_of_columns:
+          arguments:
+            combination_of_columns:
+              - od_registration_hashkey
+              - hashdiff
+              - source_event_date
+              - ma_key
+
+  - name: sat_od_registration_information
+    config:
+      contract:
+        enforced: true
+    columns:
+      - name: od_registration_hashkey
+        data_type: string
+        tests:
+          - relationships:
+              arguments:
+                to: ref('hub_od_registration')
+                field: od_registration_hashkey
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+          - not_null:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+      - name: hashdiff
+        data_type: string
+      - name: source_event_date
+        data_type: date
+      - name: load_timestamp
+        data_type: timestamp
+      - name: record_source
+        data_type: string
+      - name: status
+        data_type: string
+      - name: full_name
+        data_type: string
+      - name: identity_number
+        data_type: string
+      - name: email
+        data_type: string
+      - name: phone_number
+        data_type: string
+      - name: address
+        data_type: string
+      - name: username
+        data_type: string
+      - name: issued_by
+        data_type: string
+      - name: created_by
+        data_type: string
+      - name: updated_by
+        data_type: string
+
+    data_tests:
+      - unique_combination_of_columns:
+          arguments:
+            combination_of_columns:
+              - od_registration_hashkey
+              - hashdiff
+              - source_event_date
+
+  - name: sat_data_sharing_consent_other
+    config:
+      contract:
+        enforced: true
+    columns:
+      - name: data_sharing_consent_hashkey
+        data_type: string
+        tests:
+          - relationships:
+              arguments:
+                to: ref('hub_data_sharing_consent')
+                field: data_sharing_consent_hashkey
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+          - not_null:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+      - name: hashdiff
+        data_type: string
+      - name: source_event_date
+        data_type: date
+      - name: load_timestamp
+        data_type: timestamp
+      - name: record_source
+        data_type: string
+      - name: created_at
+        data_type: string
+      - name: updated_at
+        data_type: string
+      - name: tracking_schema
+        data_type: string
+      - name: tracking_item
+        data_type: string
+      - name: additions
+        data_type: string
+
+    data_tests:
+      - unique_combination_of_columns:
+          arguments:
+            combination_of_columns:
+              - data_sharing_consent_hashkey
+              - hashdiff
+              - source_event_date
+
+  - name: sat_party_account_other
+    config:
+      contract:
+        enforced: true
+    columns:
+      - name: party_hashkey
+        data_type: string
+        tests:
+          - relationships:
+              arguments:
+                to: ref('hub_party')
+                field: party_hashkey
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+          - not_null:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+      - name: hashdiff
+        data_type: string
+      - name: source_event_date
+        data_type: date
+      - name: load_timestamp
+        data_type: timestamp
+      - name: record_source
+        data_type: string
+      - name: uuid
+        data_type: string
+      - name: alias
+        data_type: string
+      - name: phone_number
+        data_type: string
+      - name: email
+        data_type: string
+      - name: external_id
+        data_type: string
+      - name: party_id
+        data_type: string
+      - name: additions
+        data_type: string
+      - name: bank_address_source
+        data_type: string
+      - name: bank_address_line1
+        data_type: string
+      - name: bank_address_line2
+        data_type: string
+      - name: bank_street_name
+        data_type: string
+      - name: bank_town
+        data_type: string
+      - name: bank_country
+        data_type: string
+      - name: bank_post_code
+        data_type: string
+      - name: bank_country_sub_division
+        data_type: string
+      - name: acc_holder_addr_line1
+        data_type: string
+      - name: acc_holder_addr_line2
+        data_type: string
+      - name: acc_holder_street_name
+        data_type: string
+      - name: acc_holder_town
+        data_type: string
+      - name: acc_holder_country
+        data_type: string
+      - name: acc_holder_post_code
+        data_type: string
+      - name: acc_holder_country_sub_div
+        data_type: string
+
+    data_tests:
+      - unique_combination_of_columns:
+          arguments:
+            combination_of_columns:
+              - party_hashkey
+              - hashdiff
+              - source_event_date
+
+  - name: sat_party_other
+    config:
+      contract:
+        enforced: true
+    columns:
+      - name: party_hashkey
+        data_type: string
+        tests:
+          - relationships:
+              arguments:
+                to: ref('hub_party')
+                field: party_hashkey
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+          - not_null:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+      - name: hashdiff
+        data_type: string
+      - name: source_event_date
+        data_type: date
+      - name: load_timestamp
+        data_type: timestamp
+      - name: record_source
+        data_type: string
+      - name: access_context_scope
+        data_type: int
+      - name: bb_id
+        data_type: string
+      - name: email_id
+        data_type: string
+      - name: phone_number
+        data_type: string
+      - name: legal_entity_id
+        data_type: string
+      - name: service_agreement_id
+        data_type: string
+      - name: external_id
+        data_type: string
+      - name: approval_id
+        data_type: string
+      - name: active_party_id
+        data_type: string
+      - name: import_id
+        data_type: string
+      - name: user_reference
+        data_type: string
+      - name: contact_reference
+        data_type: string
+      - name: searchable_field_one
+        data_type: string
+      - name: searchable_field_two
+        data_type: string
+      - name: created_at
+        data_type: string
+      - name: updated_at
+        data_type: string
+      - name: additions
+        data_type: string
+      - name: address_line1
+        data_type: string
+      - name: address_line2
+        data_type: string
+      - name: street_name
+        data_type: string
+      - name: town
+        data_type: string
+      - name: country
+        data_type: string
+      - name: post_code
+        data_type: string
+      - name: country_sub_division
+        data_type: string
+
+    data_tests:
+      - unique_combination_of_columns:
+          arguments:
+            combination_of_columns:
+              - party_hashkey
+              - hashdiff
+              - source_event_date
+
+  - name: sat_payment_history_other
+    config:
+      contract:
+        enforced: true
+    columns:
+      - name: payment_history_hashkey
+        data_type: string
+        tests:
+          - relationships:
+              arguments:
+                to: ref('hub_payment_history')
+                field: payment_history_hashkey
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+          - not_null:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+      - name: hashdiff
+        data_type: string
+      - name: source_event_date
+        data_type: date
+      - name: load_timestamp
+        data_type: timestamp
+      - name: record_source
+        data_type: string
+      - name: detail_code
+        data_type: string
+      - name: arrangement_id
+        data_type: string
+      - name: core_counter_party_bank_id
+        data_type: bigint
+      - name: counter_party_name
+        data_type: string
+      - name: bank_branch
+        data_type: string
+      - name: bank_province
+        data_type: string
+      - name: created_at
+        data_type: string
+      - name: modified_at
+        data_type: string
+      - name: created_by
+        data_type: string
+      - name: modified_by
+        data_type: string
+      - name: additions
+        data_type: string
+      - name: prop1
+        data_type: string
+      - name: prop2
+        data_type: string
+      - name: prop3
+        data_type: decimal(19, 2)
+      - name: prop4
+        data_type: bigint
+      - name: prop5
+        data_type: string
+
+    data_tests:
+      - unique_combination_of_columns:
+          arguments:
+            combination_of_columns:
+              - payment_history_hashkey
+              - hashdiff
+              - source_event_date
+
+  - name: sat_transfer_bill_other
+    config:
+      contract:
+        enforced: true
+    columns:
+      - name: transfer_bill_hashkey
+        data_type: string
+        tests:
+          - relationships:
+              arguments:
+                to: ref('hub_transfer_bill')
+                field: transfer_bill_hashkey
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+          - not_null:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+      - name: hashdiff
+        data_type: string
+      - name: source_event_date
+        data_type: date
+      - name: load_timestamp
+        data_type: timestamp
+      - name: record_source
+        data_type: string
+      - name: account_name
+        data_type: string
+      - name: customer_name
+        data_type: string
+      - name: ft_trans_no
+        data_type: string
+      - name: reference_id
+        data_type: string
+      - name: client_trans_id
+        data_type: string
+      - name: created_by
+        data_type: string
+      - name: modified_by
+        data_type: string
+      - name: additions
+        data_type: string
+      - name: extras
+        data_type: string
+      - name: prop1
+        data_type: string
+      - name: prop2
+        data_type: string
+      - name: prop3
+        data_type: decimal(38, 10)
+      - name: prop4
+        data_type: bigint
+      - name: prop5
+        data_type: string
+
+    data_tests:
+      - unique_combination_of_columns:
+          arguments:
+            combination_of_columns:
+              - transfer_bill_hashkey
+              - hashdiff
+              - source_event_date
+
+  - name: sat_voucher_campaign_other
+    config:
+      contract:
+        enforced: true
+    columns:
+      - name: voucher_campaign_hashkey
+        data_type: string
+        tests:
+          - relationships:
+              arguments:
+                to: ref('hub_voucher_campaign')
+                field: voucher_campaign_hashkey
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+          - not_null:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+      - name: hashdiff
+        data_type: string
+      - name: source_event_date
+        data_type: date
+      - name: load_timestamp
+        data_type: timestamp
+      - name: record_source
+        data_type: string
+      - name: id
+        data_type: string
+      - name: created_at
+        data_type: string
+      - name: updated_at
+        data_type: string
+      - name: created_by
+        data_type: string
+      - name: updated_by
+        data_type: string
+      - name: voucher_user_group_id
+        data_type: string
+
+    data_tests:
+      - unique_combination_of_columns:
+          arguments:
+            combination_of_columns:
+              - voucher_campaign_hashkey
+              - hashdiff
+              - source_event_date
+
+  - name: sat_voucher_generate_other
+    config:
+      contract:
+        enforced: true
+    columns:
+      - name: voucher_generate_hashkey
+        data_type: string
+        tests:
+          - relationships:
+              arguments:
+                to: ref('hub_voucher_generate')
+                field: voucher_generate_hashkey
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+          - not_null:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+      - name: hashdiff
+        data_type: string
+      - name: source_event_date
+        data_type: date
+      - name: load_timestamp
+        data_type: timestamp
+      - name: record_source
+        data_type: string
+      - name: id
+        data_type: string
+      - name: created_at
+        data_type: string
+      - name: updated_at
+        data_type: string
+      - name: created_by
+        data_type: string
+      - name: updated_by
+        data_type: string
+
+    data_tests:
+      - unique_combination_of_columns:
+          arguments:
+            combination_of_columns:
+              - voucher_generate_hashkey
+              - hashdiff
+              - source_event_date
+
+  - name: sat_voucher_other
+    config:
+      contract:
+        enforced: true
+    columns:
+      - name: voucher_hashkey
+        data_type: string
+        tests:
+          - relationships:
+              arguments:
+                to: ref('hub_voucher')
+                field: voucher_hashkey
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+          - not_null:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+      - name: hashdiff
+        data_type: string
+      - name: source_event_date
+        data_type: date
+      - name: load_timestamp
+        data_type: timestamp
+      - name: record_source
+        data_type: string
+      - name: id
+        data_type: string
+      - name: created_at
+        data_type: string
+      - name: updated_at
+        data_type: string
+      - name: created_by
+        data_type: string
+      - name: updated_by
+        data_type: string
+
+    data_tests:
+      - unique_combination_of_columns:
+          arguments:
+            combination_of_columns:
+              - voucher_hashkey
+              - hashdiff
+              - source_event_date
+
+  - name: hub_clevertap_tracking
+    config:
+      contract:
+        enforced: true
+    columns:
+      - name: clevertap_tracking_hashkey
+        data_type: string
+        tests:
+          - unique:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+          - not_null:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+      - name: business_key
+        data_type: string
+        tests:
+          - unique:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+          - not_null:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+      - name: source_event_date
+        data_type: date
+      - name: record_source
+        data_type: string
+      - name: load_timestamp
+        data_type: timestamp
+
+  - name: hub_message
+    config:
+      contract:
+        enforced: true
+    columns:
+      - name: message_hashkey
+        data_type: string
+        tests:
+          - unique:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+          - not_null:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+      - name: business_key
+        data_type: int
+        tests:
+          - unique:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+          - not_null:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+      - name: source_event_date
+        data_type: date
+      - name: record_source
+        data_type: string
+      - name: load_timestamp
+        data_type: timestamp
+
+  - name: link_omni_user_customer
+    config:
+      contract:
+        enforced: true
+    columns:
+      - name: link_omni_user_customer_hashkey
+        data_type: string
+        tests:
+          - unique:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+          - not_null:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+      - name: omni_user_hashkey
+        data_type: string
+        tests:
+          - relationships:
+              arguments:
+                to: ref('hub_user_omni')
+                field: omni_user_hashkey
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+          - not_null:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+      - name: customer_hashkey
+        data_type: string
+        tests:
+          - relationships:
+              arguments:
+                to: ref('hub_customer')
+                field: customer_hashkey
+              config:
+                severity: warn
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+          - not_null:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+      - name: source_event_date
+        data_type: date
+      - name: record_source
+        data_type: string
+      - name: load_timestamp
+        data_type: timestamp
+
+  - name: link_transfer_bill_customer
+    config:
+      contract:
+        enforced: true
+    columns:
+      - name: link_transfer_bill_customer_hashkey
+        data_type: string
+        tests:
+          - unique:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+          - not_null:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+      - name: transfer_bill_hashkey
+        data_type: string
+        tests:
+          - relationships:
+              arguments:
+                to: ref('hub_transfer_bill')
+                field: transfer_bill_hashkey
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+          - not_null:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+      - name: customer_hashkey
+        data_type: string
+        tests:
+          - relationships:
+              arguments:
+                to: ref('hub_customer')
+                field: customer_hashkey
+              config:
+                severity: warn
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+          - not_null:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+      - name: source_event_date
+        data_type: date
+      - name: record_source
+        data_type: string
+      - name: load_timestamp
+        data_type: timestamp
+
+  - name: link_transfer_bill_account
+    config:
+      contract:
+        enforced: true
+    columns:
+      - name: link_transfer_bill_account_hashkey
+        data_type: string
+        tests:
+          - unique:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+          - not_null:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+      - name: transfer_bill_hashkey
+        data_type: string
+        tests:
+          - relationships:
+              arguments:
+                to: ref('hub_transfer_bill')
+                field: transfer_bill_hashkey
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+          - not_null:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+      - name: account_hashkey
+        data_type: string
+        tests:
+          - relationships:
+              arguments:
+                to: ref('hub_account')
+                field: account_hashkey
+              config:
+                severity: warn
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+          - not_null:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+      - name: source_event_date
+        data_type: date
+      - name: record_source
+        data_type: string
+      - name: load_timestamp
+        data_type: timestamp
+
+  - name: link_transfer_bill_payment_order
+    config:
+      contract:
+        enforced: true
+    columns:
+      - name: link_transfer_bill_payment_order_hashkey
+        data_type: string
+        tests:
+          - unique:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+          - not_null:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+      - name: transfer_bill_hashkey
+        data_type: string
+        tests:
+          - relationships:
+              arguments:
+                to: ref('hub_transfer_bill')
+                field: transfer_bill_hashkey
+              config:
+                severity: warn
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+          - not_null:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+      - name: payment_order_hashkey
+        data_type: string
+        tests:
+          - relationships:
+              arguments:
+                to: ref('hub_payment_order')
+                field: payment_order_hashkey
+              config:
+                severity: warn
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+          - not_null:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+      - name: source_event_date
+        data_type: date
+      - name: record_source
+        data_type: string
+      - name: load_timestamp
+        data_type: timestamp
+
+  - name: link_transfer_bill_funds_transfer
+    config:
+      contract:
+        enforced: true
+    columns:
+      - name: link_transfer_bill_funds_transfer_hashkey
+        data_type: string
+        tests:
+          - unique:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+          - not_null:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+      - name: transfer_bill_hashkey
+        data_type: string
+        tests:
+          - relationships:
+              arguments:
+                to: ref('hub_transfer_bill')
+                field: transfer_bill_hashkey
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+          - not_null:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+      - name: funds_transfer_hashkey
+        data_type: string
+        tests:
+          - relationships:
+              arguments:
+                to: ref('hub_funds_transfer')
+                field: funds_transfer_hashkey
+              config:
+                severity: warn
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+          - not_null:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+      - name: source_event_date
+        data_type: date
+      - name: record_source
+        data_type: string
+      - name: load_timestamp
+        data_type: timestamp
+
+  - name: link_user_notification
+    config:
+      contract:
+        enforced: true
+    columns:
+      - name: link_user_notification_hashkey
+        data_type: string
+        tests:
+          - unique:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+          - not_null:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+      - name: omni_user_hashkey
+        data_type: string
+        tests:
+          - relationships:
+              arguments:
+                to: ref('hub_user_omni')
+                field: omni_user_hashkey
+              config:
+                severity: warn
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+          - not_null:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+      - name: notification_hashkey
+        data_type: string
+        tests:
+          - relationships:
+              arguments:
+                to: ref('hub_notification')
+                field: notification_hashkey
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+          - not_null:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+      - name: source_event_date
+        data_type: date
+      - name: record_source
+        data_type: string
+      - name: load_timestamp
+        data_type: timestamp
+
+  - name: effsat_link_user_notification
+    config:
+      contract:
+        enforced: true
+    columns:
+      - name: link_user_notification_hashkey
+        data_type: string
+        tests:
+          - relationships:
+              arguments:
+                to: ref('link_user_notification')
+                field: link_user_notification_hashkey
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+          - not_null:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+      - name: source_event_date
+        data_type: date
+      - name: record_source
+        data_type: string
+      - name: load_timestamp
+        data_type: timestamp
+      - name: active_flag
+        data_type: int
+
+  - name: link_service_customer
+    config:
+      contract:
+        enforced: true
+    columns:
+      - name: link_omni_service_customer_hashkey
+        data_type: string
+        tests:
+          - unique:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+          - not_null:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+      - name: omni_service_hashkey
+        data_type: string
+        tests:
+          - relationships:
+              arguments:
+                to: ref('hub_service')
+                field: omni_service_hashkey
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+          - not_null:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+      - name: customer_hashkey
+        data_type: string
+        tests:
+          - relationships:
+              arguments:
+                to: ref('hub_customer')
+                field: customer_hashkey
+              config:
+                severity: warn
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+          - not_null:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+      - name: source_event_date
+        data_type: date
+      - name: record_source
+        data_type: string
+      - name: load_timestamp
+        data_type: timestamp
+
+  - name: link_payment_order_user
+    config:
+      contract:
+        enforced: true
+    columns:
+      - name: link_payment_order_user_hashkey
+        data_type: string
+        tests:
+          - unique:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+          - not_null:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+      - name: payment_order_hashkey
+        data_type: string
+        tests:
+          - relationships:
+              arguments:
+                to: ref('hub_payment_order')
+                field: payment_order_hashkey
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+          - not_null:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+      - name: omni_user_hashkey
+        data_type: string
+        tests:
+          - relationships:
+              arguments:
+                to: ref('hub_user_omni')
+                field: omni_user_hashkey
+              config:
+                severity: warn
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+          - not_null:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+      - name: source_event_date
+        data_type: date
+      - name: record_source
+        data_type: string
+      - name: load_timestamp
+        data_type: timestamp
+
+  - name: link_payment_order_hierarchy
+    config:
+      contract:
+        enforced: true
+    columns:
+      - name: payment_order_hashkey
+        data_type: string
+        tests:
+          - relationships:
+              arguments:
+                to: ref('hub_payment_order')
+                field: payment_order_hashkey
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+          - not_null:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+      - name: parent_payment_order_hashkey
+        data_type: string
+        tests:
+          - relationships:
+              arguments:
+                to: ref('hub_payment_order')
+                field: payment_order_hashkey
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+          - not_null:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+      - name: link_payment_order_hashkey
+        data_type: string
+      - name: source_event_date
+        data_type: date
+      - name: record_source
+        data_type: string
+      - name: load_timestamp
+        data_type: timestamp
+
+  - name: link_payment_order_funds_transfer
+    config:
+      contract:
+        enforced: true
+    columns:
+      - name: link_payment_order_funds_transfer_hashkey
+        data_type: string
+        tests:
+          - unique:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+          - not_null:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+      - name: payment_order_hashkey
+        data_type: string
+        tests:
+          - relationships:
+              arguments:
+                to: ref('hub_payment_order')
+                field: payment_order_hashkey
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+          - not_null:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+      - name: funds_transfer_hashkey
+        data_type: string
+        tests:
+          - relationships:
+              arguments:
+                to: ref('hub_funds_transfer')
+                field: funds_transfer_hashkey
+              config:
+                severity: warn
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+          - not_null:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+      - name: source_event_date
+        data_type: date
+      - name: record_source
+        data_type: string
+      - name: load_timestamp
+        data_type: timestamp
+
+  - name: link_payment_history_payment_order
+    config:
+      contract:
+        enforced: true
+    columns:
+      - name: link_payment_history_payment_order_hashkey
+        data_type: string
+        tests:
+          - unique:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+          - not_null:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+      - name: payment_order_hashkey
+        data_type: string
+        tests:
+          - relationships:
+              arguments:
+                to: ref('hub_payment_order')
+                field: payment_order_hashkey
+              config:
+                severity: warn
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+          - not_null:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+      - name: payment_history_hashkey
+        data_type: string
+        tests:
+          - relationships:
+              arguments:
+                to: ref('hub_payment_history')
+                field: payment_history_hashkey
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+          - not_null:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+      - name: source_event_date
+        data_type: date
+      - name: record_source
+        data_type: string
+      - name: load_timestamp
+        data_type: timestamp
+
+  - name: link_party_user
+    config:
+      contract:
+        enforced: true
+    columns:
+      - name: link_party_user_hashkey
+        data_type: string
+        tests:
+          - unique:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+          - not_null:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+      - name: party_hashkey
+        data_type: string
+        tests:
+          - relationships:
+              arguments:
+                to: ref('hub_party')
+                field: party_hashkey
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+          - not_null:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+      - name: omni_user_hashkey
+        data_type: string
+        tests:
+          - relationships:
+              arguments:
+                to: ref('hub_user_omni')
+                field: omni_user_hashkey
+              config:
+                severity: warn
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+          - not_null:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+      - name: source_event_date
+        data_type: date
+      - name: record_source
+        data_type: string
+      - name: load_timestamp
+        data_type: timestamp
+
+  - name: link_data_sharing_consent_customer
+    config:
+      contract:
+        enforced: true
+    columns:
+      - name: link_data_sharing_consent_customer_hashkey
+        data_type: string
+        tests:
+          - unique:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+          - not_null:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+      - name: data_sharing_consent_hashkey
+        data_type: string
+        tests:
+          - relationships:
+              arguments:
+                to: ref('hub_data_sharing_consent')
+                field: data_sharing_consent_hashkey
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+          - not_null:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+      - name: customer_hashkey
+        data_type: string
+        tests:
+          - relationships:
+              arguments:
+                to: ref('hub_customer')
+                field: customer_hashkey
+              config:
+                severity: warn
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+          - not_null:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+      - name: source_event_date
+        data_type: date
+      - name: record_source
+        data_type: string
+      - name: load_timestamp
+        data_type: timestamp
+
+  - name: link_onboarding_customer
+    config:
+      contract:
+        enforced: true
+    columns:
+      - name: link_onboarding_customer_hashkey
+        data_type: string
+        tests:
+          - unique:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+          - not_null:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+      - name: onboarding_hashkey
+        data_type: string
+        tests:
+          - relationships:
+              arguments:
+                to: ref('hub_onboarding')
+                field: onboarding_hashkey
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+          - not_null:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+      - name: customer_hashkey
+        data_type: string
+        tests:
+          - relationships:
+              arguments:
+                to: ref('hub_customer')
+                field: customer_hashkey
+              config:
+                severity: warn
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+          - not_null:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+      - name: source_event_date
+        data_type: date
+      - name: record_source
+        data_type: string
+      - name: load_timestamp
+        data_type: timestamp
+
+  - name: link_onboarding_appflyer
+    config:
+      contract:
+        enforced: true
+    columns:
+      - name: link_onboarding_appflyer_hashkey
+        data_type: string
+        tests:
+          - unique:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+          - not_null:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+      - name: onboarding_hashkey
+        data_type: string
+        tests:
+          - relationships:
+              arguments:
+                to: ref('hub_onboarding')
+                field: onboarding_hashkey
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+          - not_null:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+      - name: appflyer_hashkey
+        data_type: string
+      - name: source_event_date
+        data_type: date
+      - name: record_source
+        data_type: string
+      - name: load_timestamp
+        data_type: timestamp
+
+  - name: link_payment_history_funds_transfer
+    config:
+      contract:
+        enforced: true
+    columns:
+      - name: link_payment_history_funds_transfer_hashkey
+        data_type: string
+        tests:
+          - unique:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+          - not_null:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+      - name: payment_history_hashkey
+        data_type: string
+        tests:
+          - relationships:
+              arguments:
+                to: ref('hub_payment_history')
+                field: payment_history_hashkey
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+          - not_null:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+      - name: funds_transfer_hashkey
+        data_type: string
+        tests:
+          - relationships:
+              arguments:
+                to: ref('hub_funds_transfer')
+                field: funds_transfer_hashkey
+              config:
+                severity: warn
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+          - not_null:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+      - name: source_event_date
+        data_type: date
+      - name: record_source
+        data_type: string
+      - name: load_timestamp
+        data_type: timestamp
+
+  - name: link_payment_history_user
+    config:
+      contract:
+        enforced: true
+    columns:
+      - name: link_payment_history_omni_user_hashkey
+        data_type: string
+        tests:
+          - unique:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+          - not_null:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+      - name: payment_history_hashkey
+        data_type: string
+        tests:
+          - relationships:
+              arguments:
+                to: ref('hub_payment_history')
+                field: payment_history_hashkey
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+          - not_null:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+      - name: omni_user_hashkey
+        data_type: string
+        tests:
+          - relationships:
+              arguments:
+                to: ref('hub_user_omni')
+                field: omni_user_hashkey
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+          - not_null:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+      - name: source_event_date
+        data_type: date
+      - name: record_source
+        data_type: string
+      - name: load_timestamp
+        data_type: timestamp
+
+  - name: link_device_user
+    config:
+      contract:
+        enforced: true
+    columns:
+      - name: link_device_user_hashkey
+        data_type: string
+        tests:
+          - unique:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+          - not_null:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+      - name: device_omni_hashkey
+        data_type: string
+        tests:
+          - relationships:
+              arguments:
+                to: ref('hub_device_omni')
+                field: device_omni_hashkey
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+          - not_null:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+      - name: omni_user_hashkey
+        data_type: string
+        tests:
+          - relationships:
+              arguments:
+                to: ref('hub_user_omni')
+                field: omni_user_hashkey
+              config:
+                severity: warn
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+          - not_null:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+      - name: source_event_date
+        data_type: date
+      - name: record_source
+        data_type: string
+      - name: load_timestamp
+        data_type: timestamp
+
+  - name: link_od_registration_customer
+    config:
+      contract:
+        enforced: true
+    columns:
+      - name: link_od_registration_customer_hashkey
+        data_type: string
+        tests:
+          - unique:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+          - not_null:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+      - name: od_registration_hashkey
+        data_type: string
+        tests:
+          - relationships:
+              arguments:
+                to: ref('hub_od_registration')
+                field: od_registration_hashkey
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+          - not_null:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+      - name: customer_hashkey
+        data_type: string
+        tests:
+          - relationships:
+              arguments:
+                to: ref('hub_customer')
+                field: customer_hashkey
+              config:
+                severity: warn
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+          - not_null:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+      - name: source_event_date
+        data_type: date
+      - name: record_source
+        data_type: string
+      - name: load_timestamp
+        data_type: timestamp
+
+  - name: link_od_registration_overdraft_account
+    config:
+      contract:
+        enforced: true
+    columns:
+      - name: link_od_registration_overdraft_account_hashkey
+        data_type: string
+        tests:
+          - unique:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+          - not_null:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+      - name: od_registration_hashkey
+        data_type: string
+        tests:
+          - relationships:
+              arguments:
+                to: ref('hub_od_registration')
+                field: od_registration_hashkey
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+          - not_null:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+      - name: account_hashkey
+        data_type: string
+        tests:
+          - relationships:
+              arguments:
+                to: ref('hub_account')
+                field: account_hashkey
+              config:
+                severity: warn
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+          - not_null:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+      - name: source_event_date
+        data_type: date
+      - name: record_source
+        data_type: string
+      - name: load_timestamp
+        data_type: timestamp
+
+  - name: link_od_registration_user
+    config:
+      contract:
+        enforced: true
+    columns:
+      - name: link_od_registration_omni_user_hashkey
+        data_type: string
+        tests:
+          - unique:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+          - not_null:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+      - name: od_registration_hashkey
+        data_type: string
+        tests:
+          - relationships:
+              arguments:
+                to: ref('hub_od_registration')
+                field: od_registration_hashkey
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+          - not_null:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+      - name: omni_user_hashkey
+        data_type: string
+        tests:
+          - relationships:
+              arguments:
+                to: ref('hub_user_omni')
+                field: omni_user_hashkey
+              config:
+                severity: warn
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+          - not_null:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+      - name: source_event_date
+        data_type: date
+      - name: record_source
+        data_type: string
+      - name: load_timestamp
+        data_type: timestamp
+
+  - name: link_od_registration_deposit
+    config:
+      contract:
+        enforced: true
+    columns:
+      - name: link_od_registration_deposit_hashkey
+        data_type: string
+        tests:
+          - unique:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+          - not_null:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+      - name: od_registration_hashkey
+        data_type: string
+        tests:
+          - relationships:
+              arguments:
+                to: ref('hub_od_registration')
+                field: od_registration_hashkey
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+          - not_null:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+      - name: deposit_hashkey
+        data_type: string
+        tests:
+          - relationships:
+              arguments:
+                to: ref('hub_deposits')
+                field: deposit_hashkey
+              config:
+                severity: warn
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+          - not_null:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+      - name: source_event_date
+        data_type: date
+      - name: record_source
+        data_type: string
+      - name: load_timestamp
+        data_type: timestamp
+
+  - name: effsat_link_od_registration_deposit
+    config:
+      contract:
+        enforced: true
+    columns:
+      - name: link_od_registration_deposit_hashkey
+        data_type: string
+        tests:
+          - relationships:
+              arguments:
+                to: ref('link_od_registration_deposit')
+                field: link_od_registration_deposit_hashkey
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+          - not_null:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+      - name: source_event_date
+        data_type: date
+      - name: record_source
+        data_type: string
+      - name: load_timestamp
+        data_type: timestamp
+      - name: active_flag
+        data_type: int
+
+  - name: link_od_registration_bpm
+    config:
+      contract:
+        enforced: true
+    columns:
+      - name: link_od_registration_bpm_hashkey
+        data_type: string
+        tests:
+          - unique:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+          - not_null:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+      - name: od_registration_hashkey
+        data_type: string
+        tests:
+          - relationships:
+              arguments:
+                to: ref('hub_od_registration')
+                field: od_registration_hashkey
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+          - not_null:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+      - name: giao_dich_hashkey
+        data_type: string
+        tests:
+          - relationships:
+              arguments:
+                to: ref('hub_giao_dich')
+                field: giao_dich_hashkey
+              config:
+                severity: warn
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+          - not_null:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+      - name: source_event_date
+        data_type: date
+      - name: record_source
+        data_type: string
+      - name: load_timestamp
+        data_type: timestamp
+
+  - name: link_voucher_campaign
+    config:
+      contract:
+        enforced: true
+    columns:
+      - name: link_voucher_campaign_hashkey
+        data_type: string
+        tests:
+          - unique:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+          - not_null:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+      - name: voucher_campaign_hashkey
+        data_type: string
+        tests:
+          - relationships:
+              arguments:
+                to: ref('hub_voucher_campaign')
+                field: voucher_campaign_hashkey
+              config:
+                severity: warn
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+          - not_null:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+      - name: voucher_hashkey
+        data_type: string
+        tests:
+          - relationships:
+              arguments:
+                to: ref('hub_voucher')
+                field: voucher_hashkey
+              config:
+                severity: warn
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+          - not_null:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+      - name: source_event_date
+        data_type: date
+      - name: record_source
+        data_type: string
+      - name: load_timestamp
+        data_type: timestamp
+
+  - name: link_voucher_campaign_user_group
+    config:
+      contract:
+        enforced: true
+    columns:
+      - name: link_voucher_campaign_user_group_hashkey
+        data_type: string
+        tests:
+          - unique:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+          - not_null:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+      - name: voucher_campaign_hashkey
+        data_type: string
+        tests:
+          - relationships:
+              arguments:
+                to: ref('hub_voucher_campaign')
+                field: voucher_campaign_hashkey
+              config:
+                severity: warn
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+          - not_null:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+      - name: user_group_hashkey
+        data_type: string
+        tests:
+          - relationships:
+              arguments:
+                to: ref('hub_user')
+                field: user_hashkey
+              config:
+                severity: warn
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+          - not_null:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+      - name: source_event_date
+        data_type: date
+      - name: record_source
+        data_type: string
+      - name: load_timestamp
+        data_type: timestamp
+
+  - name: link_voucher_generate_customer
+    config:
+      contract:
+        enforced: true
+    columns:
+      - name: link_voucher_generate_customer_hashkey
+        data_type: string
+        tests:
+          - unique:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+          - not_null:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+      - name: voucher_generate_hashkey
+        data_type: string
+        tests:
+          - relationships:
+              arguments:
+                to: ref('hub_voucher_generate')
+                field: voucher_generate_hashkey
+              config:
+                severity: warn
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+          - not_null:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+      - name: customer_hashkey
+        data_type: string
+        tests:
+          - relationships:
+              arguments:
+                to: ref('hub_customer')
+                field: customer_hashkey
+              config:
+                severity: warn
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+          - not_null:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+      - name: source_event_date
+        data_type: date
+      - name: record_source
+        data_type: string
+      - name: load_timestamp
+        data_type: timestamp
+
+  - name: link_voucher_generate_user
+    config:
+      contract:
+        enforced: true
+    columns:
+      - name: link_voucher_generate_omni_user_hashkey
+        data_type: string
+        tests:
+          - unique:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+          - not_null:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+      - name: voucher_generate_hashkey
+        data_type: string
+        tests:
+          - relationships:
+              arguments:
+                to: ref('hub_voucher_generate')
+                field: voucher_generate_hashkey
+              config:
+                severity: warn
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+          - not_null:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+      - name: omni_user_hashkey
+        data_type: string
+        tests:
+          - relationships:
+              arguments:
+                to: ref('hub_user_omni')
+                field: omni_user_hashkey
+              config:
+                severity: warn
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+          - not_null:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+      - name: source_event_date
+        data_type: date
+      - name: record_source
+        data_type: string
+      - name: load_timestamp
+        data_type: timestamp
+
+  - name: link_voucher_generate_voucher_campaign
+    config:
+      contract:
+        enforced: true
+    columns:
+      - name: link_voucher_generate_voucher_campaign_hashkey
+        data_type: string
+        tests:
+          - unique:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+          - not_null:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+      - name: voucher_generate_hashkey
+        data_type: string
+        tests:
+          - relationships:
+              arguments:
+                to: ref('hub_voucher_generate')
+                field: voucher_generate_hashkey
+              config:
+                severity: warn
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+          - not_null:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+      - name: voucher_campaign_hashkey
+        data_type: string
+        tests:
+          - relationships:
+              arguments:
+                to: ref('hub_voucher_campaign')
+                field: voucher_campaign_hashkey
+              config:
+                severity: warn
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+          - not_null:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+      - name: source_event_date
+        data_type: date
+      - name: record_source
+        data_type: string
+      - name: load_timestamp
+        data_type: timestamp
+
+  - name: link_credit_card_registration_customer
+    config:
+      contract:
+        enforced: true
+    columns:
+      - name: link_credit_card_registration_customer_hashkey
+        data_type: string
+        tests:
+          - unique:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+          - not_null:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+      - name: credit_card_registration_hashkey
+        data_type: string
+        tests:
+          - relationships:
+              arguments:
+                to: ref('hub_credit_card_registration')
+                field: credit_card_registration_hashkey
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+          - not_null:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+      - name: customer_hashkey
+        data_type: string
+        tests:
+          - relationships:
+              arguments:
+                to: ref('hub_customer')
+                field: customer_hashkey
+              config:
+                severity: warn
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+          - not_null:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+      - name: source_event_date
+        data_type: date
+      - name: record_source
+        data_type: string
+      - name: load_timestamp
+        data_type: timestamp
+
+  - name: link_credit_card_registration_bpm
+    config:
+      contract:
+        enforced: true
+    columns:
+      - name: link_credit_card_registration_bpm_hashkey
+        data_type: string
+        tests:
+          - unique:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+          - not_null:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+      - name: credit_card_registration_hashkey
+        data_type: string
+        tests:
+          - relationships:
+              arguments:
+                to: ref('hub_credit_card_registration')
+                field: credit_card_registration_hashkey
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+          - not_null:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+      - name: giao_dich_hashkey
+        data_type: string
+        tests:
+          - relationships:
+              arguments:
+                to: ref('hub_giao_dich')
+                field: giao_dich_hashkey
+              config:
+                severity: warn
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+          - not_null:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+      - name: source_event_date
+        data_type: date
+      - name: record_source
+        data_type: string
+      - name: load_timestamp
+        data_type: timestamp
+
+  - name: link_oversea_ft_request_user
+    config:
+      contract:
+        enforced: true
+    columns:
+      - name: link_oversea_ft_request_omni_user_hashkey
+        data_type: string
+      - name: oversea_ft_request_hashkey
+        data_type: string
+        tests:
+          - relationships:
+              arguments:
+                to: ref('hub_oversea_ft_request')
+                field: oversea_ft_request_hashkey
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+          - not_null:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+      - name: omni_user_hashkey
+        data_type: string
+        tests:
+          - relationships:
+              arguments:
+                to: ref('hub_user_omni')
+                field: omni_user_hashkey
+              config:
+                severity: warn
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+          - not_null:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+      - name: source_event_date
+        data_type: date
+      - name: record_source
+        data_type: string
+      - name: load_timestamp
+        data_type: timestamp
+
+  - name: link_oversea_ft_request_forex
+    config:
+      contract:
+        enforced: true
+    columns:
+      - name: link_oversea_ft_request_forex_hashkey
+        data_type: string
+        tests:
+          - unique:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+          - not_null:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+      - name: oversea_ft_request_hashkey
+        data_type: string
+        tests:
+          - relationships:
+              arguments:
+                to: ref('hub_oversea_ft_request')
+                field: oversea_ft_request_hashkey
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+          - not_null:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+      - name: forex_hashkey
+        data_type: string
+        tests:
+          - relationships:
+              arguments:
+                to: ref('hub_forex')
+                field: forex_hashkey
+              config:
+                severity: warn
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+          - not_null:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+      - name: source_event_date
+        data_type: date
+      - name: record_source
+        data_type: string
+      - name: load_timestamp
+        data_type: timestamp
+
+  - name: link_oversea_ft_request_funds_transfer_charge
+    config:
+      contract:
+        enforced: true
+    columns:
+      - name: link_oversea_ft_request_funds_transfer_charge_hashkey
+        data_type: string
+        tests:
+          - unique:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+          - not_null:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+      - name: oversea_ft_request_hashkey
+        data_type: string
+        tests:
+          - relationships:
+              arguments:
+                to: ref('hub_oversea_ft_request')
+                field: oversea_ft_request_hashkey
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+          - not_null:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+      - name: funds_transfer_hashkey
+        data_type: string
+        tests:
+          - relationships:
+              arguments:
+                to: ref('hub_funds_transfer')
+                field: funds_transfer_hashkey
+              config:
+                severity: warn
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+          - not_null:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+      - name: source_event_date
+        data_type: date
+      - name: record_source
+        data_type: string
+      - name: load_timestamp
+        data_type: timestamp
+
+  - name: link_oversea_ft_request_account
+    config:
+      contract:
+        enforced: true
+    columns:
+      - name: link_oversea_ft_request_account_hashkey
+        data_type: string
+        tests:
+          - unique:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+          - not_null:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+      - name: oversea_ft_request_hashkey
+        data_type: string
+        tests:
+          - relationships:
+              arguments:
+                to: ref('hub_oversea_ft_request')
+                field: oversea_ft_request_hashkey
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+          - not_null:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+      - name: account_hashkey
+        data_type: string
+        tests:
+          - relationships:
+              arguments:
+                to: ref('hub_account')
+                field: account_hashkey
+              config:
+                severity: warn
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+          - not_null:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+      - name: source_event_date
+        data_type: date
+      - name: record_source
+        data_type: string
+      - name: load_timestamp
+        data_type: timestamp
+
+  - name: link_auto_debit_customer
+    config:
+      contract:
+        enforced: true
+    columns:
+      - name: link_auto_debit_customer_hashkey
+        data_type: string
+        tests:
+          - unique:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+          - not_null:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+      - name: auto_debit_hashkey
+        data_type: string
+        tests:
+          - relationships:
+              arguments:
+                to: ref('hub_auto_debit')
+                field: auto_debit_hashkey
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+          - not_null:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+      - name: customer_hashkey
+        data_type: string
+        tests:
+          - relationships:
+              arguments:
+                to: ref('hub_customer')
+                field: customer_hashkey
+              config:
+                severity: warn
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+          - not_null:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+      - name: source_event_date
+        data_type: date
+      - name: record_source
+        data_type: string
+      - name: load_timestamp
+        data_type: timestamp
+
+  - name: link_audit_message_user
+    config:
+      contract:
+        enforced: true
+    columns:
+      - name: link_audit_message_user_hashkey
+        data_type: string
+        tests:
+          - unique:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+          - not_null:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+      - name: audit_message_hashkey
+        data_type: string
+        tests:
+          - relationships:
+              arguments:
+                to: ref('hub_audit_message')
+                field: audit_message_hashkey
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+          - not_null:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+      - name: omni_user_hashkey
+        data_type: string
+        tests:
+          - relationships:
+              arguments:
+                to: ref('hub_user_omni')
+                field: omni_user_hashkey
+              config:
+                severity: warn
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+          - not_null:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+      - name: source_event_date
+        data_type: date
+      - name: record_source
+        data_type: string
+      - name: load_timestamp
+        data_type: timestamp
+
+  - name: link_audit_message_device
+    config:
+      contract:
+        enforced: true
+    columns:
+      - name: link_audit_message_device_hashkey
+        data_type: string
+        tests:
+          - unique:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+          - not_null:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+      - name: audit_message_hashkey
+        data_type: string
+        tests:
+          - relationships:
+              arguments:
+                to: ref('hub_audit_message')
+                field: audit_message_hashkey
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+          - not_null:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+      - name: device_omni_hashkey
+        data_type: string
+        tests:
+          - relationships:
+              arguments:
+                to: ref('hub_device_omni')
+                field: device_omni_hashkey
+              config:
+                severity: warn
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+          - not_null:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+      - name: source_event_date
+        data_type: date
+      - name: record_source
+        data_type: string
+      - name: load_timestamp
+        data_type: timestamp
+
+  - name: link_clevertap_tracking_customer
+    config:
+      contract:
+        enforced: true
+    columns:
+      - name: link_clevertap_tracking_customer_hashkey
+        data_type: string
+        tests:
+          - unique:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+          - not_null:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+      - name: clevertap_tracking_hashkey
+        data_type: string
+        tests:
+          - relationships:
+              arguments:
+                to: ref('hub_clevertap_tracking')
+                field: clevertap_tracking_hashkey
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+          - not_null:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+      - name: customer_hashkey
+        data_type: string
+        tests:
+          - relationships:
+              arguments:
+                to: ref('hub_customer')
+                field: customer_hashkey
+              config:
+                severity: warn
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+          - not_null:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+      - name: source_event_date
+        data_type: date
+      - name: record_source
+        data_type: string
+      - name: load_timestamp
+        data_type: timestamp
+
+  - name: link_message_user
+    config:
+      contract:
+        enforced: true
+    columns:
+      - name: link_message_user_hashkey
+        data_type: string
+        tests:
+          - unique:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+          - not_null:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+      - name: message_hashkey
+        data_type: string
+        tests:
+          - relationships:
+              arguments:
+                to: ref('hub_message')
+                field: message_hashkey
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+          - not_null:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+      - name: omni_user_hashkey
+        data_type: string
+        tests:
+          - relationships:
+              arguments:
+                to: ref('hub_user_omni')
+                field: omni_user_hashkey
+              config:
+                severity: warn
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+          - not_null:
+              config:
+                where: "source_event_date = to_date('{{ var(\"target_date\") }}', 'yyyyMMdd')"
+      - name: source_event_date
+        data_type: date
+      - name: record_source
+        data_type: string
+      - name: load_timestamp
+        data_type: timestamp
