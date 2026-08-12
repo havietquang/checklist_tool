@@ -219,9 +219,19 @@ def _better(new: MappingDoc, old: MappingDoc) -> bool:
     """Uu tien: (1) ten FILE khop ten object, (2) co field mapping, (3) nhieu field hon,
     (4) file moi hon.
     (1) quan trong nhat: RT_PL_DTL phai lay tu RT_PL_DTL_Silver_to_Gold.xlsx, khong lay tu
-    sheet '1.10a RT_PL_DTL' nam trong workbook cua object khac."""
+    sheet '1.10a RT_PL_DTL' nam trong workbook cua object khac.
+
+    Dung object_from_filename() (bo dung tien to 'OCB_GOLD_<MODULE>_' + hau to '_<PIC>')
+    de so khop, KHONG dung norm_key(path) truc tiep - norm_key chi bo cac noise ver-hoa
+    ('_v2', '_backup'...) chu khong bo duoc tien to/hau to theo quy uoc dat ten OCB, nen
+    voi quy uoc nay norm_key(path) gan nhu KHONG BAO GIO khop norm_key(object_name) cho
+    BAT KY file nao -> tieu chi (1) bi vo hieu hoan toan, luon roi xuong so mtime (4) mot
+    cach ngau nhien giua cac workbook co CUNG 1 block object trung lap (vd nhieu workbook
+    deu co copy-dan block 'V_FTP_RATE' de tham khao) - day la nguyen nhan gay nham workbook
+    chinh chu nhieu lan trong thuc te."""
     def key(d: MappingDoc):
-        return (norm_key(d.path) == norm_key(d.object_name),
+        fname_obj = object_from_filename(d.path).strip(" _-").upper()
+        return (fname_obj == norm_key(d.object_name).upper(),
                 len(d.fields) > 0, len(d.fields))
 
     if key(new) != key(old):
@@ -405,10 +415,12 @@ def _read_lineage_sheet(ws, rows: list, doc: MappingDoc) -> bool:
 
 
 # ---------------------------------------------------------------- doc SQL tu sheet Script
-# Cho phep hau to nhan TANG sau ten cot ('View/Table LV1', 'Table/View Lv2'): nhieu workbook
-# ghi kem tang thiet ke o tieu de cot. Khong nhan duoc thi _scan_script_sheet tra ve rong ->
-# CA workbook bi bo qua IM LANG (da tung lam mat 5 file BPM_* khoi luot cham).
-OBJ_HDR_RE = re.compile(r"^(object|view\s*/\s*table|table\s*/\s*view|view|table)"
+# Cho phep hau to nhan TANG sau ten cot ('View/Table LV1', 'Table/View Lv2') VA tien to
+# 'Ten '/'Tên ' truoc ten cot ('Tên View/Table'): nhieu workbook ghi kem tang thiet ke o
+# tieu de cot, hoac them chu 'Tên' cho de doc. Khong nhan duoc thi _scan_script_sheet tra
+# ve rong -> CA workbook bi bo qua IM LANG (da tung lam mat 5 file BPM_* + 4 file
+# V_TB_AR_DTL* khoi luot cham vi header ghi 'Tên View/Table' thay vi 'View/Table').
+OBJ_HDR_RE = re.compile(r"^(t[êe]n\s+)?(object|view\s*/\s*table|table\s*/\s*view|view|table)"
                         r"(\s*lv\s*\d+)?$", re.I)
 SCRIPT_HDR_RE = re.compile(r"script|sql|code", re.I)
 TYPE_HDR_RE = re.compile(r"^(type|loai)$", re.I)
@@ -421,10 +433,31 @@ SQL_BODY_RE = re.compile(r"\b(SELECT|CREATE|INSERT|MERGE|WITH|DELETE)\b", re.I)
 # trong ca cot Type (vd '010. V_FTP_003') -> truoc day bi loc sach, mat ca file.
 OLD_CODE_RE = re.compile(r"\[dbo\]|\bdbo\.", re.I)
 
+# O Script SQL duoc phep ghi DUONG DAN toi 1 file .sql THAT thay vi dan nguyen code vao
+# nhieu o (dep hon, va luon dong bo voi code that trong repo, khong so lech ban). Nhan
+# dien: ca o (sau khi noi cac dong cung khoi) chi la 1 DONG DUY NHAT, ket thuc bang .sql.
+SQL_FILE_REF_RE = re.compile(r'^["\']?(?P<path>[^\r\n"\']+\.sql)["\']?$', re.I)
+# Goc repo, dung de quy doi duong dan tuong doi ghi trong o ve file that tren dia.
+_ROOT_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "..", ".."))
+
+
+def _resolve_sql_ref(ref: str, base_dir: str) -> str | None:
+    """Quy doi duong dan ghi trong o Script SQL ve file that tren dia.
+
+    Thu lan luot: duong dan tuyet doi -> tuong doi voi THU MUC CHUA WORKBOOK (thuong go
+    duong dan ngan tinh tu day) -> tuong doi voi GOC REPO. None neu khong tim thay dau."""
+    ref = ref.strip()
+    candidates = [ref] if os.path.isabs(ref) else [
+        os.path.join(base_dir, ref), os.path.join(_ROOT_DIR, ref)]
+    return next((c for c in candidates if os.path.isfile(c)), None)
+
 
 # Workbook bi bo qua khi quet sheet Script (ly do). run_check doc de in canh bao -
 # im lang bo file la nguy hiem nhat: object bien mat khoi ket qua ma khong ai biet.
 SKIPPED_FILES: list = []
+# Cot Script SQL ghi duong dan file .sql nhung KHONG tim thay file do tren dia (go sai
+# ten/duong dan). Rieng voi SKIPPED_FILES vi day la loi 1 object, khong phai ca workbook.
+SQL_REF_ISSUES: list = []
 
 
 COPY_FILE_RE = re.compile(r"\b(copy|bak|backup|old|cu)\b|\bcopy\b|\(\d+\)", re.I)
@@ -443,6 +476,7 @@ def discover_scripts(dirs: list, conflicts: list | None = None) -> dict:
     danh sach object bi khai o nhieu noi (kem co `differs` khi cac ban LECH NOI DUNG)."""
     import glob
     SKIPPED_FILES.clear()
+    SQL_REF_ISSUES.clear()
     found: dict[str, list] = {}
     for d in dirs:
         for p in sorted(glob.glob(os.path.join(d, "*.xlsx"))):
@@ -460,7 +494,7 @@ def discover_scripts(dirs: list, conflicts: list | None = None) -> dict:
                 continue
             got = 0
             for ws in sheets:
-                for key, sql in _scan_script_sheet(ws).items():
+                for key, sql in _scan_script_sheet(ws, os.path.dirname(p), base).items():
                     if key:
                         found.setdefault(key, []).append((p, ws.title, sql))
                         got += 1
@@ -519,8 +553,18 @@ def _script_header(rows: list) -> tuple:
     return -1, None, None, None
 
 
-def _scan_script_sheet(ws) -> dict:
-    """{khoa_object: sql} lay tu sheet dang bang Type | Object | Script SQL."""
+def _scan_script_sheet(ws, base_dir: str = "", label: str = "") -> dict:
+    """{khoa_object: sql} lay tu sheet dang bang Type | Object | Script SQL.
+
+    Ho tro 2 cach ghi code thay vi dan het vao 1 o (o Excel toi da ~32.767 ky tu):
+    (1) CAT THANH NHIEU O/NHIEU DONG: dong dau 1 khoi co Object (+ Type='Code moi'), cac
+        dong TIEP THEO cung khoi de trong Object (chi con Script SQL) - deu duoc NOI VAO
+        CUOI (xuong dong) theo dung thu tu xuat hien trong sheet.
+    (2) GHI DUONG DAN toi 1 file .sql THAT: o Script SQL chi ghi 1 dong duy nhat la
+        duong dan file (vd 'zonec_datamart/.../pst_entr_fct.sql') - tool tu doc noi dung
+        file do, luon dong bo voi code that trong repo thay vi phai dan lai. `base_dir`
+        la thu muc chua workbook, dung de quy doi duong dan tuong doi; `label` chi de
+        ghi vao SQL_REF_ISSUES khi khong tim thay file."""
     rows = _rows(ws)
     if not rows:
         return {}
@@ -528,20 +572,51 @@ def _scan_script_sheet(ws) -> dict:
     if hdr_idx < 0:
         return {}
 
-    out = {}
+    out: dict[str, str] = {}
+    cur_key, cur_typ, cur_lines = None, "", []
+
+    def flush() -> None:
+        # Chi den khi HET khoi (gap Object moi hoac het bang) moi ghep cac dong lai va
+        # kiem tra - dong dau 1 khoi thuong chi la 'USE CATALOG...'/'USE SCHEMA...', chua
+        # co CREATE/SELECT nen KHONG THE xet SQL_BODY_RE tung dong rieng le duoc.
+        nonlocal cur_key, cur_typ, cur_lines
+        if cur_key and cur_lines:
+            joined = "\n".join(cur_lines)
+            ref = SQL_FILE_REF_RE.match(joined.strip()) if len(cur_lines) == 1 else None
+            if ref:
+                path = _resolve_sql_ref(ref.group("path"), base_dir)
+                if path:
+                    with open(path, encoding="utf-8", errors="replace") as fh:
+                        joined = fh.read()
+                else:
+                    SQL_REF_ISSUES.append(
+                        (label, f"{cur_key}: khong tim thay file '{ref.group('path')}'"
+                                f" (da thu tuong doi voi thu muc workbook va goc repo)"))
+                    joined = ""
+            if joined and SQL_BODY_RE.search(joined):
+                skip = (not NEW_CODE_RE.search(cur_typ)) if cur_typ else bool(OLD_CODE_RE.search(joined))
+                if not skip:
+                    out[cur_key] = out[cur_key] + "\n" + joined if cur_key in out else joined
+        cur_key, cur_typ, cur_lines = None, "", []
+
     for r in rows[hdr_idx + 1:]:
         sql = r[i_sql] if i_sql < len(r) else ""
-        if not sql or not SQL_BODY_RE.search(sql):
+        raw_obj = _cell(r, i_obj) if i_obj is not None else ""
+        key = clean_key(raw_obj) if raw_obj else None
+
+        if key is None:
+            # Khong khai Object -> phan tiep cua khoi dang mo (o truoc da het cho).
+            if sql and cur_key:
+                cur_lines.append(sql)
             continue
-        typ = unaccent(_cell(r, i_type)) if i_type is not None else ""
-        if typ:
-            if not NEW_CODE_RE.search(typ):
-                continue                               # ghi ro 'Code cu' on-prem -> bo
-        elif OLD_CODE_RE.search(sql):
-            continue                                   # Type bo trong + SQL la T-SQL cu -> bo
-        key = clean_key(_cell(r, i_obj))
-        if key:
-            out.setdefault(key, sql)
+
+        # Co khai Object -> ket thuc khoi truoc, mo 1 khoi moi.
+        flush()
+        cur_key = key
+        cur_typ = unaccent(_cell(r, i_type)) if i_type is not None else ""
+        if sql:
+            cur_lines.append(sql)
+    flush()
     return out
 
 

@@ -45,6 +45,7 @@ from core import (
     same_object,
     sat_refs,
     scope_chain,
+    strip_comments,
 )
 
 PASS, FAIL, NA, WARN = "PASS", "FAIL", "N-A", "WARN"
@@ -93,19 +94,26 @@ def _ok(*ev) -> Finding:
 
 # ============================================================ pattern active
 def active_signatures(ctx: Ctx) -> dict:
-    """Chu ky cach lay ban ghi moi nhat + huong loc cdc_status trong 1 file."""
+    """Chu ky cach lay ban ghi moi nhat (tren MOI sat_* + sts_hub_*) + huong loc cdc_status
+    trong 1 file. MAX_BY la chuan; ROW_NUMBER+QUALIFY (hoac dang subquery+WHERE rn=1) CHI
+    duoc mien tru (khong tinh la khac pattern) khi block do co >5 cot - dung toi uu hop ly
+    (Issue log #5 + feedback OCB ve so cot). Neu ROW_NUMBER dung cho block <=5 cot thi VAN
+    tinh la signature khac voi MAX_BY -> gay bat nhat trong file/batch (Issue log #2)."""
     sigs, cdc_dirs = set(), set()
+    cte_map = _cte_map(ctx)
 
-    for sat in sat_refs(ctx):
+    for sat in list(sat_refs(ctx)) + [t for t in _tables(ctx) if t.name.lower().startswith("sts_hub_")]:
         sel = sat.parent_select
         if sel is None:
             continue
         if list(sel.find_all(exp.ArgMax)) or re.search(r"\bMAX_BY\s*\(", sel.sql(), re.I):
             sigs.add("MAX_BY")
         elif sel.args.get("qualify") is not None and re.search(r"ROW_NUMBER", sel.args["qualify"].sql(), re.I):
-            sigs.add("QUALIFY_RN")
+            if _row_pick_col_count(sel, cte_map) <= 5:
+                sigs.add("QUALIFY_RN")            # >5 cot: coi la toi uu hop le, khong tinh bat nhat
         elif re.search(r"ROW_NUMBER", sel.sql(), re.I):
-            sigs.add("SUBQ_RN")
+            if _row_pick_col_count(sel, cte_map) <= 5:
+                sigs.add("SUBQ_RN")
         elif re.search(r"MAX\s*\(\s*\w*\.?source_event_date", sel.sql(), re.I):
             sigs.add("MAX_SUBQ")
 
@@ -203,13 +211,17 @@ def r21(ctx: Ctx, repo: dict) -> Finding:
     if not _tables(ctx) or (not sts and not sat_refs(ctx)):
         return Finding(NA, ["script không đọc sts_hub/satellite nào nên không có bản ghi xóa để lọc"])
 
-    for s in sts:
-        if not re.search(r"max_by\s*\(\s*(?:\w+\.)?cdc_status\s*,\s*(?:\w+\.)?source_event_date\s*\)\s*=\s*'D'",
-                          ctx.raw, re.I):
-            ev.append(f"{s} có được đọc nhưng không thấy HAVING max_by(cdc_status, source_event_date) = 'D' —"
-                      " đang lấy trạng thái mới nhất bằng cách khác")
-            break
-    if sts and not re.search(r"IS\s+NULL", ctx.raw, re.I):
+    # 2 dang tuong duong: (1) tinh tap DA XOA (='D') roi anti-join IS NULL, hoac (2) tinh
+    # THANG tap CON SONG (<>'D') roi JOIN thuong - ca hai deu dung MAX_BY dung chuan, chi
+    # khac chieu so sanh nen khong bat buoc phai co anti-join IS NULL o dang (2).
+    has_del_form = bool(re.search(
+        r"max_by\s*\(\s*(?:\w+\.)?cdc_status\s*,\s*(?:\w+\.)?source_event_date\s*\)\s*=\s*'D'", ctx.raw, re.I))
+    has_active_form = bool(re.search(
+        r"max_by\s*\(\s*(?:\w+\.)?cdc_status\s*,\s*(?:\w+\.)?source_event_date\s*\)\s*(?:<>|!=)\s*'D'", ctx.raw, re.I))
+    if sts and not (has_del_form or has_active_form):
+        ev.append(f"{sorted(sts)} có được đọc nhưng không thấy HAVING max_by(cdc_status, source_event_date) = 'D'"
+                  " (hoặc <> 'D') — đang lấy trạng thái mới nhất bằng cách khác")
+    if sts and has_del_form and not has_active_form and not re.search(r"IS\s+NULL", ctx.raw, re.I):
         ev.append("có đọc sts_hub nhưng không thấy anti-join (d.<hashkey> IS NULL) nên chưa loại được khóa đã xóa")
 
     # loc cdc_status trong satellite la sai tang theo tai lieu
@@ -235,6 +247,9 @@ def _tables(ctx: Ctx) -> list:
 
 @rule("2.2", G2, "Thong nhat MOT pattern xac dinh ban ghi active", (P_SILVER,))
 def r22(ctx: Ctx, repo: dict) -> Finding:
+    """Bat nhat cach lay ban ghi moi nhat trong 1 file/batch (Issue log #2). MAX_BY la
+    chuan; ROW_NUMBER+QUALIFY chi duoc mien tru khi block do >5 cot (toi uu hop ly, xem
+    active_signatures) - <=5 cot ma dung ROW_NUMBER van tinh la khac pattern, gay bat nhat."""
     mine = active_signatures(ctx)
     repo_sigs, repo_cdc = repo.get("sigs", set()), repo.get("cdc", set())
     ev = [f"file này dùng: {sorted(mine['sigs']) or ['(không có)']}; toàn batch dùng: {sorted(repo_sigs)}"]
@@ -246,7 +261,8 @@ def r22(ctx: Ctx, repo: dict) -> Finding:
     if len(repo_sigs) > 1 and mine["sigs"] and mine["sigs"] != {STANDARD_SIG}:
         return Finding(FAIL, ev + [f"batch đang bất nhất mà file này không theo pattern chuẩn {STANDARD_SIG}"])
     if not mine["sigs"]:
-        return Finding(NA, ["script không có bước lấy bản ghi mới nhất từ satellite"])
+        return Finding(NA, ["script không có bước lấy bản ghi mới nhất nào tính là bất nhất"
+                            " (không dùng, hoặc chỉ dùng ROW_NUMBER cho block >5 cột - đã miễn trừ)"])
     return _ok(*ev)
 
 
@@ -357,10 +373,11 @@ def r25(ctx: Ctx, repo: dict) -> Finding:
     """Nhi phan: trung 1 trong cac loi DA Data Vault da neu (known_issues.json) -> FAIL,
     khong trung -> PASS. Danh sach loi trich tu 'ZoneC Mapping - Iss log.xlsx' sheet Issue."""
     hits = []
+    code_only = strip_comments(ctx.raw)     # bo comment de khong nham chu giai thich thanh code loi
     for issue, pattern in repo.get("known_issues", {}).items():
         if issue.startswith("_"):          # khoa metadata (_nguon...), khong phai regex
             continue
-        ln = lines_of(ctx.raw, pattern)
+        ln = lines_of(code_only, pattern)
         if ln:
             hits.append(f"{issue} @ dòng {ln[:5]}")
     if hits:
@@ -380,6 +397,17 @@ def r26(ctx: Ctx, repo: dict) -> Finding:
         ev.append(f"dùng antipattern MAX(ID) + ROW_NUMBER để sinh surrogate key ở dòng {lines_of(ctx.raw, r'ROW_NUMBER')[:5]} (Issue log #4)")
     if re.search(r"STORED\s+AS\s+SCD\s+TYPE\s*2", ctx.raw, re.I):
         return Finding(FAIL, ev) if ev else _ok("dùng APPLY CHANGES ... STORED AS SCD TYPE 2 đúng tài liệu")
+
+    # TRUNCATE + INSERT toan bo (khong MERGE) = thiet ke Type 1 'current-only' hop le: moi
+    # lan chay xoa het nap lai nen KHONG THE giu lich su duoc du co muon - SCD Type 2 khong
+    # ap dung duoc cho kieu nap nay, khac voi truong hop "quen lam SCD2".
+    is_full_reload = bool(re.search(r"\bTRUNCATE\s+TABLE\b", ctx.raw, re.I)) and \
+                      not re.search(r"\bMERGE\s+INTO\b", ctx.raw, re.I)
+    if is_full_reload:
+        return Finding(FAIL, ev) if ev else Finding(NA, ["TRUNCATE + INSERT toàn bộ mỗi lần chạy (không MERGE) -"
+                                                          " thiết kế Type 1 'current-only', không áp dụng được"
+                                                          " SCD Type 2 (mỗi lần chạy đã xóa hết lịch sử cũ)"])
+
     cols = " ".join(ctx.out_columns).upper()
     if not re.search(r"(EFF|EFFECTIVE|VALID).*(DT|DATE)|END_(DT|DATE)|CURRENT_FLAG|IS_CURRENT|START_AT", cols):
         ev.append("không dùng APPLY CHANGES ... SCD TYPE 2 và cũng không có cột"
@@ -583,11 +611,12 @@ def r32(ctx: Ctx, repo: dict) -> Finding:
 def _cte_reuse(ctx: Ctx) -> dict:
     """So lan 1 CTE 'nang' bi tham chieu lai. CTE tham so (khong doc bang nao) bo qua."""
     out = {}
+    code_only = strip_comments(ctx.raw)   # bo comment de khong tinh nham ten CTE bi nhac trong chu giai thich
     for alias, src in _cte_map(ctx).items():
         reads = [t for t in src.find_all(exp.Table) if t.name.lower() not in ctx.cte_aliases]
         if not reads:
             continue  # vd. CTE prm chi chua tham so, scan lai khong ton kem
-        n = len(re.findall(rf"(?<![\w.]){re.escape(alias)}(?![\w(])", ctx.raw, re.I))
+        n = len(re.findall(rf"(?<![\w.]){re.escape(alias)}(?![\w(])", code_only, re.I))
         if n - 1 > 0:
             out[alias] = n - 1  # tru 1 lan dinh nghia
     return out
@@ -650,17 +679,123 @@ def r34(ctx: Ctx, repo: dict) -> Finding:
     return Finding(WARN, [f"{len(heavy)} CTE nặng dùng lại >= 2 lần mà không có CACHE: " + ", ".join(sorted(heavy))])
 
 
-@rule("3.5", G3, "Uu tien MAX_BY + QUALIFY thay ROW_NUMBER()+WHERE rn=1")
+def _row_pick_col_count(sel: exp.Select, cte_map: dict) -> int:
+    """So cot 'payload' cua 1 khoi SELECT dung ROW_NUMBER de lay dong moi nhat (tru cot
+    ROW_NUMBER tu than). Rieng dang 'SELECT *, ROW_NUMBER()...' (vd dedup sau UNION ALL
+    nhieu nhanh) thi '*' khong bung ra duoc qua AST - phai doan so cot THAT bang cach tra
+    ve CTE nguon (vd cte_all) roi lay so cot cua nhanh dau tien trong UNION ALL do."""
+    has_star = any(isinstance(e, exp.Star) or (isinstance(e, exp.Column) and isinstance(e.this, exp.Star))
+                    for e in sel.expressions)
+    if has_star:
+        frm = sel.args.get("from") or sel.args.get("from_")
+        tbl = frm.this if frm else None
+        src = cte_map.get(tbl.name.lower()) if isinstance(tbl, exp.Table) else None
+        node = src
+        while isinstance(node, exp.Union):
+            node = node.this
+        if isinstance(node, exp.Select):
+            return len(node.expressions)
+        return 1     # khong doan duoc -> coi nhu 1 cot (an toan, se roi vao FAIL de nguoi xem lai)
+    return max(len(sel.expressions) - 1, 0)
+
+
+def _orders_by_source_event_date(w: exp.Window) -> bool:
+    """True khi ORDER BY cua window nay tham chieu source_event_date - dau hieu day la
+    pattern dedup Data Vault ve ban moi nhat (khong phai xep hang theo cot nghiep vu khac,
+    vd ngay lich thanh toan)."""
+    order = w.args.get("order")
+    return bool(order and re.search(r"source_event_date", order.sql(), re.I))
+
+
+@rule("3.5", G3, "MAX_BY toi uu cho <=5 cot, ROW_NUMBER+QUALIFY toi uu cho >5 cot")
 def r35(ctx: Ctx, repo: dict) -> Finding:
-    if not re.search(r"ROW_NUMBER", ctx.raw, re.I):
-        return Finding(NA, ["script không dùng ROW_NUMBER"])
-    if re.search(r"\bMAX_BY\s*\(", ctx.raw, re.I):
-        return _ok("đã dùng MAX_BY")
-    latest_pick = re.search(r"ROW_NUMBER[^;]{0,400}?\)\s*=\s*1|(?:\brn\b|\brnk\b|row_num)\s*=\s*1", ctx.raw, re.I)
-    if not latest_pick:
-        return Finding(WARN, [f"có ROW_NUMBER ở dòng {lines_of(ctx.raw, 'ROW_NUMBER')[:5]} nhưng không phải dạng lấy dòng mới nhất, cần xác nhận không thay được bằng MAX_BY"])
-    return Finding(FAIL, [f"lấy bản ghi mới nhất bằng ROW_NUMBER = 1 ở dòng {lines_of(ctx.raw, 'ROW_NUMBER')[:5]},"
-                          f" pattern chuẩn đã chốt là MAX_BY (Issue log #5)"])
+    """2 chieu doi xung, nguong 5 cot theo feedback OCB:
+    - Block lay dong moi nhat bang ROW_NUMBER()...=1 ma CHI <=5 cot -> nen doi sang MAX_BY
+      (don gian hon, khong ly do gi phai dung window function) -> FAIL (Issue log #5).
+    - Block lay dong moi nhat bang NHIEU MAX_BY doc lap (>5 cot cung 1 GROUP BY) -> KHONG
+      toi uu: N phep tong hop doc lap, tie-break yeu (thuong chi source_event_date) de
+      'ghep Frankenstein' giua cac cot khi trung ngay - nen doi sang ROW_NUMBER()+QUALIFY
+      (chon 1 dong ROI lay het cot mot luc) -> WARN, khong FAIL vi van la lua chon HOP LE,
+      chi la chua toi uu."""
+    cte_map = _cte_map(ctx)
+
+    # strip_comments() TRUOC KHI tim so dong: needle "max_by"/"ROW_NUMBER" hay bi khop nham
+    # vao dong comment mo ta (vd "-- MAX(DIM_KEY) + ROW_NUMBER()" tren cot DDL) khien bao
+    # sai vi tri dong loi (khong lien quan code that).
+    code_only = strip_comments(ctx.raw)
+    src = ctx.raw.splitlines()
+
+    maxby_wide = []
+    for sel in {id(s): s for st in ctx.statements for s in st.find_all(exp.Select)}.values():
+        n = sum(1 for e in sel.expressions if e.find(exp.ArgMax))
+        if n > 5:
+            ln = first_line(code_only, "max_by") or 0
+            maxby_wide.append((n, ln))
+
+    windows = [w for st in ctx.statements for w in st.find_all(exp.Window)
+               if isinstance(w.this, exp.RowNumber)]
+    # Pham vi THAT SU cua rule nay (tai lieu Silver->Gold): dedup ban ghi Data Vault ve
+    # ban MOI NHAT theo source_event_date. Chi tinh 1 window la "ung vien lay ban ghi moi
+    # nhat" khi CHINH ORDER BY cua no tham chieu source_event_date - window dung de xep
+    # hang theo cot nghiep vu khac (vd ngay lich thanh toan shd_dt trong sched_pick) nam
+    # NGOAI pham vi, du CUNG FILE co noi khac (CTE khac) dung dung pattern dedup that.
+    # Truoc day dung 1 co latest_pick CHUNG CA FILE nen 1 window xep hang nghiep vu bi
+    # FAIL oan chi vi 1 CTE khong lien quan trong cung file dung dedup ROW_NUMBER that.
+    dv_windows = [w for w in windows if _orders_by_source_event_date(w)]
+    latest_pick = bool(dv_windows) and bool(re.search(
+        r"ROW_NUMBER[^;]{0,400}?\)\s*=\s*1|(?:\brn\b|\brnk\b|row_num)\s*=\s*1", ctx.raw, re.I))
+    rn_narrow, rn_exempt = [], []
+    if latest_pick:
+        for w in dv_windows:
+            sel = w.find_ancestor(exp.Select)
+            n = _row_pick_col_count(sel, cte_map) if sel is not None else 0
+            if n <= 5:
+                ln = first_line(code_only, w.sql()[:30].split("(")[0]) or 0
+                # Ngoai le hop le (Issue log #5, da chot trong rule doc o tren): dung QUALIFY
+                # (khong phai subquery+WHERE rn=1) DE lay nguyen 1 dong nhieu cot LIEN QUAN
+                # nhau (vd resolve trung business key giua nhieu nguon, uu tien nguon A truoc
+                # B) + CO comment giai thich ly do ngay tren/trong CTE -> khong the thay bang
+                # nhieu MAX_BY doc lap vi se ghep lech gia tri giua cac cot khi tie-break khac
+                # nhau giua cac dong ("Frankenstein row"). Chi mien tru khi CA HAI dieu kien
+                # dung (QUALIFY + co comment) - thieu 1 trong 2 van tinh la FAIL binh thuong.
+                if w.find_ancestor(exp.Qualify) is not None and ln and _commented_block(src, ln):
+                    rn_exempt.append((n, ln))
+                else:
+                    rn_narrow.append((n, ln))
+
+    if not windows and not maxby_wide:
+        return Finding(NA, ["script không dùng ROW_NUMBER, và MAX_BY (nếu có) không vượt quá 5 cột/khối"])
+    if not maxby_wide and not rn_narrow:
+        if windows and not latest_pick:
+            # Khong phai dang lay dong moi nhat (vd ROW_NUMBER dung de danh so thu tu dong
+            # xuat ra, khong phai de dedup) -> chi can WARN neu CHUA co comment giai thich
+            # muc dich; da co comment (nhu 3.6) thi coi nhu da duoc xac nhan, khong warn nua.
+            wl = lines_of(ctx.raw, "ROW_NUMBER")
+            src = ctx.raw.splitlines()
+            uncommented = [ln for ln in wl if not _commented_block(src, ln)]
+            if not uncommented:
+                return _ok(f"{len(wl)} ROW_NUMBER không phải dạng lấy dòng mới nhất,"
+                          " đã có comment giải thích mục đích")
+            return Finding(WARN, [f"có ROW_NUMBER ở dòng {uncommented[:5]} nhưng không phải"
+                                  " dạng lấy dòng mới nhất, cần xác nhận không thay được bằng MAX_BY"])
+        if rn_exempt:
+            return _ok(f"{len(rn_exempt)} block ROW_NUMBER≤5 cột dùng QUALIFY + có comment giải thích"
+                      f" (dòng {sorted({ln for _, ln in rn_exempt})[:5]}) — miễn trừ vì cần lấy nguyên 1 dòng"
+                      " nhiều cột liên quan nhau, tách MAX_BY từng cột riêng sẽ ghép lệch giá trị giữa các cột")
+        return _ok("MAX_BY/ROW_NUMBER đang dùng đúng theo số cột (≤5 cột dùng MAX_BY, >5 cột dùng ROW_NUMBER)")
+
+    ev = []
+    if rn_narrow:
+        ev.append(f"{len(rn_narrow)} block ≤5 cột vẫn dùng ROW_NUMBER=1 (dòng {sorted({ln for _, ln in rn_narrow})[:5]}) —"
+                  " ít cột thì MAX_BY đơn giản hơn, pattern chuẩn đã chốt là MAX_BY (Issue log #5)")
+    if maxby_wide:
+        ev.append(f"{len(maxby_wide)} khối dùng MAX_BY độc lập cho >5 cột (dòng {first_line(ctx.raw, 'max_by')},"
+                  f" {[n for n, _ in maxby_wide]} cột/khối) — nên đổi sang ROW_NUMBER()+QUALIFY để tối ưu hơn:"
+                  " N phép MAX_BY độc lập với tie-break yếu (thường chỉ source_event_date) dễ ghép lệch dòng"
+                  " giữa các cột khi trùng ngày, còn ROW_NUMBER chọn 1 dòng rồi lấy hết cột một lúc")
+    if rn_narrow:
+        return Finding(FAIL, ev)
+    return Finding(WARN, ev)
 
 
 @rule("3.6", G3, "Khong lam dung window function; co comment khi dung")
@@ -704,8 +839,16 @@ def rx1(ctx: Ctx, repo: dict) -> Finding:
             sel = join.parent_select
             if sel is None:
                 continue
-            # da rut current: chinh SELECT chua link co GROUP BY + MAX_BY, hoac DISTINCT/QUALIFY
-            if (sel.args.get("group") and re.search(r"max_by\s*\(", sel.sql(), re.I)) \
+            # da rut current: chinh SELECT chua link co GROUP BY + MAX_BY NAM NGAY TRONG SELECT
+            # LIST cua no (dung sel.expressions, KHONG dung find_all tren ca cay - se quet nham
+            # max_by cua 1 subquery long trong FROM/JOIN dung cho muc dich khac, khong lien quan
+            # gi den viec rut gon chinh link nay), hoac DISTINCT/QUALIFY.
+            # Luu y: truoc day dung re.search(r"max_by\(", sel.sql()) - sqlglot luon RENDER
+            # max_by(...) thanh 'ARG_MAX(...)' trong .sql(), nen regex do KHONG BAO GIO khop,
+            # mien tru nay chua bao gio thuc su hoat dong, bao FAIL oan moi truong hop dung dung
+            # MAX_BY ngay trong select list.
+            has_own_maxby = any(e.find(exp.ArgMax) for e in sel.expressions)
+            if (sel.args.get("group") and has_own_maxby) \
                     or sel.args.get("distinct") or sel.args.get("qualify"):
                 continue
             risky.append(f"{tbl.name} (dong {first_line(ctx.raw, tbl.name)})")
@@ -854,7 +997,8 @@ def rx8(ctx: Ctx, repo: dict) -> Finding:
 def rx7(ctx: Ctx, repo: dict) -> Finding:
     """Tai lieu (Cau hinh Pipeline / Cu phap chung): dung IDENTIFIER(:cleaned || '...') hoac
     ${cleaned_catalog} / ${curated_catalog} thay cho ten catalog cung."""
-    hard = sorted({m.group(0) for m in re.finditer(r"ocb_datavault_[a-z0-9]+_(cleaned|curated)", ctx.raw, re.I)})
+    code_only = strip_comments(ctx.raw)   # bo comment de khong nham ten catalog cu duoc nhac lai trong chu giai thich
+    hard = sorted({m.group(0) for m in re.finditer(r"ocb_datavault_[a-z0-9]+_(cleaned|curated)", code_only, re.I)})
     if not hard:
         return _ok("dùng biến môi trường cho catalog")
     if re.search(r"IDENTIFIER\s*\(|\$\{(cleaned|curated)_catalog\}", ctx.raw, re.I):
@@ -978,11 +1122,17 @@ def rx11(ctx: Ctx, repo: dict) -> Finding:
                 continue  # Select doc >=2 bang -> khong chac cot thuoc bang nao, bo qua
             checked_any = True
             real_cols = known[name]
-            refs = {c.name.lower() for c in sel.expressions for c in c.find_all(exp.Column)}
+            # Chi tinh cot thuoc DUNG scope cua sel nay - subquery long trong WHERE/SELECT
+            # (vd IN (SELECT hk FROM gl_stmt WHERE gl_dt = ...)) co Select rieng cua no,
+            # cot ben trong la cua bang trong subquery do, khong phai cua sat_* dang xet.
+            def in_scope(c: exp.Column) -> bool:
+                return c.find_ancestor(exp.Select) is sel
+            refs = {c.name.lower() for e in sel.expressions for c in e.find_all(exp.Column)
+                    if in_scope(c)}
             for key in ("where", "group", "having", "qualify"):
                 node = sel.args.get(key)
                 if node is not None:
-                    refs |= {c.name.lower() for c in node.find_all(exp.Column)}
+                    refs |= {c.name.lower() for c in node.find_all(exp.Column) if in_scope(c)}
             missing = sorted(c for c in refs if c not in real_cols)
             if missing:
                 bad.append(f"{name} (dòng {first_line(ctx.raw, name)}): {missing}")

@@ -11,7 +11,9 @@ from sqlglot import exp
 DIALECT = "databricks"
 
 # ---------------------------------------------------------------- nhan dien
-SAT_RE = re.compile(r"(?:^|\.)sat_", re.I)
+# c?sat_ : nhan ca satellite raw_vault (sat_...) lan "conformed satellite" ben
+# business_vault (csat_...) - vd csat_crb_balance, csat_customer_sum_balance.
+SAT_RE = re.compile(r"(?:^|\.)c?sat_", re.I)
 LINK_RE = re.compile(r"(?:^|\.)link_", re.I)
 HUB_RE = re.compile(r"(?:^|\.)hub_", re.I)
 SILVER_SCHEMA_RE = re.compile(r"\.(raw_vault|business_vault)\.", re.I)
@@ -330,6 +332,21 @@ def lines_of(raw: str, pattern: str, flags=re.I) -> list:
     """So dong khop pattern (dung lam bang chung, vi sqlglot khong giu vi tri)."""
     rx = re.compile(pattern, flags)
     return [i for i, line in enumerate(raw.splitlines(), 1) if rx.search(line)]
+
+
+LINE_COMMENT_RE = re.compile(r"--.*$", re.M)
+
+
+def strip_comments(raw: str) -> str:
+    """Bo phan comment '--...' cuoi moi dong TRUOC KHI quet regex tim loi.
+
+    Nhieu rule chi dung re.search(pattern, ctx.raw) tren toan van ban - neu comment giai
+    thich (thuong viet tieng Viet, hay nhac lai cum tu giong pattern loi de mo ta, vd
+    "cdc_status='D'" hay ten catalog cu da sua) tinh co khop regex thi bi bao SAI OAN
+    (rule tuong la code thuc thi, thuc ra la chu giai thich). Chi xoa PHAN SAU '--' tren
+    tung dong, GIU NGUYEN so dong (khong dung DOTALL) de line_of() tren ket qua nay van
+    tra ve dung so dong nhu ban goc."""
+    return LINE_COMMENT_RE.sub("", raw)
 
 
 def first_line(raw: str, needle: str) -> int:

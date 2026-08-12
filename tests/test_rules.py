@@ -32,7 +32,8 @@ EXPECT = {
         "X.3": "FAIL",   # INSERT khong liet ke cot
         "X.4": "FAIL",   # khong DELETE truoc INSERT
         "X.6": "FAIL",   # INNER JOIN sat_customer_kyc
-        "2.2": "FAIL",   # batch bat nhat, file khong theo MAX_BY
+        "2.2": "FAIL",   # ROW_NUMBER tren sat_deposits_rate chi 2-3 cot (<=5) -> khong duoc
+                         # mien tru, tinh khac pattern voi MAX_BY -> bat nhat trong batch
     },
     "good_fct.sql": {
         "1.1": "PASS",   # 3 field thiet ke khop 3 cot SQL

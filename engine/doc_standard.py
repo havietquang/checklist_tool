@@ -117,6 +117,16 @@ TRANSACTION_SATS = {
     "sat_tsbd_tai_san_thong_tin_chung", "sat_tsbd_tai_san_thong_tin_khac",
     "sat_usage_action_date", "sat_usage_action_information",
     "sat_usage_action_state", "sts_hub_crb",
+    # --- bo sung thieu: nguon T24_RE_STAT_LINE_BAL va T24_PC_RE_STAT_LINE_BAL
+    # (bang statement/balance movement, phat sinh hang ngay = transaction).
+    # Chua doi chieu lai voi tai lieu/Excel goc (xem comment dau file) - can tim hieu
+    # lai trong tuong lai de xac nhan co thuoc danh sach 49 bang transaction hay khong.
+    "hub_re_stat_line_bal", "sat_re_stat_line_bal",
+    "hub_pc_re_stat_line_bal", "sat_pc_re_stat_line_bal",
+    # --- bo sung thieu: bang business_vault csat_crb_balance va csat_customer_sum_balance
+    # la bang transaction -> phai dung source_event_date = :DATADT. Chua doi chieu lai voi
+    # tai lieu/Excel goc (xem comment dau file) - can tim hieu lai trong tuong lai.
+    "csat_crb_balance", "csat_customer_sum_balance",
 }
 
 # --- muc PIT: PIT da bao gom hieu luc, LEFT JOIN thang PIT voi sat la du

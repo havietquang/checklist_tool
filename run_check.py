@@ -127,6 +127,11 @@ def collect_from_excel(mapping_dirs: list) -> list:
               " -> object trong do KHONG duoc cham:")
         for base, why in mapping.SKIPPED_FILES:
             print(f"  - {base:<46} {why}")
+    if mapping.SQL_REF_ISSUES:
+        print(f"\n[!] {len(mapping.SQL_REF_ISSUES)} o Script SQL ghi duong dan file .sql"
+              " nhung KHONG TIM THAY file do -> object do KHONG duoc cham:")
+        for base, why in mapping.SQL_REF_ISSUES:
+            print(f"  - {base:<46} {why}")
     out = _dedupe_by_target(_only_owner_objects(items))
     # Sap xep theo STT cua workbook thiet ke (khop dung thu tu OCB da danh san), khong
     # con lai o cuoi giu nguyen thu tu phat hien duoc (sort on tinh, khong xao thu tu goc).
