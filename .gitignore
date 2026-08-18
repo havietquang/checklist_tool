@@ -1,2 +1,13 @@
 __pycache__/
 *.pyc
+
+# Excel/Word temp lock files
+~$*
+
+# Du lieu input/output: chi giu cau truc folder, khong track file
+/input/**
+!/input/.gitkeep
+!/input/README.md
+/output/**
+!/output/.gitkeep
+!/output/README.md
