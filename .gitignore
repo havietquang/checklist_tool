@@ -3,11 +3,13 @@ __pycache__/
 
 # Excel/Word temp lock files
 ~$*
+*.bak_*
 
-# Du lieu input/output: chi giu cau truc folder, khong track file
-/input/**
-!/input/.gitkeep
-!/input/README.md
+# Du lieu input: chi ignore mapping + sql, van track checklist
+/input/mapping/
+/input/sql/
+
+# Toan bo output: chi giu cau truc folder
 /output/**
 !/output/.gitkeep
 !/output/README.md
