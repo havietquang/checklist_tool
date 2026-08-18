@@ -14,10 +14,18 @@ Duong dan CO DINH (khong can truyen tham so):
   python tools/gold_review/run_check.py --rule 2.4                       # cham 1 tieu chi
   python tools/gold_review/run_check.py --dir <thu_muc> --mapping-dir <thu_muc> --out <thu_muc>
 
+DOI CHIEU DONG BO - cung 1 object ma code duoc dan o nhieu workbook thi workbook nao dang giu
+ban cu. Luot cham BINH THUONG da in canh bao nay (dau + cuoi output); 2 lenh duoi de xem chi
+tiet, khong cham checklist:
+  python tools/gold_review/run_check.py --sync-object T24_CRB    # diff day du cua 1 object
+  python tools/gold_review/run_check.py --sync-report            # ca bang + output/Sync_Report.xlsx
+Mac dinh chi so GIUA CAC WORKBOOK; them --src-dir src/tckh de so ca voi code deploy.
+
 Yeu cau thu vien: sqlglot, openpyxl  ->  pip install -r tools/gold_review/requirements.txt
 
 Exit code: 0 = tat ca dat | 1 = con object khong dat | 2 = khong tim thay file .sql
             | 3 = self-test rule truot | 4 = thieu thu vien.
+            --sync-report: 0 = da dong bo het | 1 = con object lech | 2 = khong doc duoc gi.
 """
 from __future__ import annotations
 
@@ -57,9 +65,10 @@ require_deps()
 
 import mapping  # noqa: E402
 import report  # noqa: E402
+import sync  # noqa: E402
 from core import (P_LEGACY, P_SCORED, P_SCRIPT, SRC_EXCEL, Ctx,  # noqa: E402
                   build_ctx, read_ctx, same_object)
-from rules import (FAIL, G1, G2, G3, NA, PASS, RULES, WARN,  # noqa: E402
+from rules import (BLOCKING, FAIL, G1, G2, G3, NA, PASS, RULES, WARN,  # noqa: E402
                    active_signatures, declared_upload)
 
 # ---- Duong dan CO DINH: bo file vao input/, ket qua ra output/ ----
@@ -68,8 +77,14 @@ DEFAULT_DIR = os.path.join(INPUT_DIR, "sql")            # file .sql can cham
 DEFAULT_MAPPING_DIR = os.path.join(INPUT_DIR, "mapping")  # workbook thiet ke
 CHECKLIST_DIR = os.path.join(INPUT_DIR, "checklist")     # file checklist lam template
 DEFAULT_OUT = os.path.join(HERE, "output")
+# Code THAT dang deploy - dung lam ban doi chieu thu 2 cho --sync-report.
+DEFAULT_SRC_DIR = os.path.join(ROOT, "src", "tckh")
 
 SKIP = ("*.bak*", "*_OLD_*", "*_CHECK_DATA*")
+# Ket qua doi chieu dong bo cua luot cham hien tai (sync.ObjSync). Dat o module de in nhac
+# lai o CUOI output: canh bao in luc doc workbook nam tan dau output, da bi cuon mat khi
+# nguoi doc xem den bang tong hop.
+SYNC_RESULTS: list = []
 THRESHOLD = {"Batch 1": 0.30}
 DEFAULT_THRESHOLD = 0.20
 
@@ -103,8 +118,9 @@ def collect_from_excel(mapping_dirs: list) -> list:
     Moi dong 'Code moi' trong sheet do -> 1 Ctx. Dung khi workbook da chua san code that,
     khoi phai dong bo 2 noi. Duong dan hien thi dang '<workbook> [Script SQL: <OBJ>]'."""
     dirs = [d for d in mapping_dirs if os.path.isdir(d)]
-    items, conflicts = [], []
-    for key, (path, sheet, sql) in sorted(mapping.discover_scripts(dirs, conflicts).items()):
+    items, variants = [], {}
+    for key, (path, sheet, sql) in sorted(
+            mapping.discover_scripts(dirs, None, variants).items()):
         label = f"{os.path.basename(path)} [{sheet}: {key}]"
         # target_hint tach tu TEN FILE workbook (khong phai 'label' o tren, label co dinh
         # them '[Sheet: key]' lam sai lech). Vd '088. OCB_GOLD_TTDL_TBL_BPM_QLNS_LINH.xlsx'
@@ -121,7 +137,7 @@ def collect_from_excel(mapping_dirs: list) -> list:
         if not ctx.target:
             ctx.target = mapping.clean_key(key) or hint
         items.append((ctx, path, key))
-    _report_script_conflicts(conflicts)
+    _report_script_conflicts(variants)
     if mapping.SKIPPED_FILES:
         print(f"\n[!] {len(mapping.SKIPPED_FILES)} workbook KHONG lay duoc code nao"
               " -> object trong do KHONG duoc cham:")
@@ -132,11 +148,61 @@ def collect_from_excel(mapping_dirs: list) -> list:
               " nhung KHONG TIM THAY file do -> object do KHONG duoc cham:")
         for base, why in mapping.SQL_REF_ISSUES:
             print(f"  - {base:<46} {why}")
+    if mapping.DROPPED_CELLS:
+        print(f"\n[!] {len(mapping.DROPPED_CELLS)} o Script SQL bi BO QUA (khong chua than SQL"
+              " nao). Neu do la code bi CAT DOAN thi phai de TRONG cot View/Table o cac dong"
+              " sau de tool noi lai:")
+        for base, why in mapping.DROPPED_CELLS:
+            print(f"  - {base:<46} {why}")
     out = _dedupe_by_target(_only_owner_objects(items))
+    _warn_workbooks_without_row(dirs, out, variants)
     # Sap xep theo STT cua workbook thiet ke (khop dung thu tu OCB da danh san), khong
     # con lai o cuoi giu nguyen thu tu phat hien duoc (sort on tinh, khong xao thu tu goc).
     out.sort(key=lambda c: (c.stt is None, c.stt if c.stt is not None else 0))
     return out
+
+
+def _warn_workbooks_without_row(dirs: list, kept: list, variants: dict) -> None:
+    """Workbook DA DANH SO ma khong sinh duoc dong nao trong checklist -> phai bao.
+
+    Checklist gui OCB liet ke theo danh sach workbook da danh so, moi file 1 dong. File
+    nao khong ra dong nao la MAT BANG khoi ket qua, ma truoc day khong co canh bao nao:
+    tong so chi hut di 1 (95 thay vi 96) nen rat de bo qua.
+
+    Nguyen nhan hay gap nhat la GO SAI TEN OBJECT o cot 'View/Table' (vd '045.
+    ..._TB_AR_BCN_DTL_QUANG.xlsx' khai 'TB_AR_BCN_DLT' - dao 2 chu cai): key khong khop
+    ten file nen workbook khong duoc coi la chinh chu, ban trong no bi loai theo. Nen in
+    kem ten object doc duoc tu chinh workbook do de nhin ra ngay cho go sai."""
+    import glob as _glob
+    # ctx.path o che do doc workbook la LABEL '<ten file>.xlsx [<sheet>: <OBJ>]' - chi co
+    # TEN FILE, khong phai duong dan day du -> so theo basename, khong abspath.
+    have = {os.path.basename(c.path.split(" [")[0]) for c in kept}
+    keys_of: dict[str, list] = {}
+    for key, cands in variants.items():
+        for p, _sheet, _sql in cands:
+            keys_of.setdefault(os.path.basename(p), []).append(key)
+
+    missing = []
+    for d in dirs:
+        for p in sorted(_glob.glob(os.path.join(d, "*.xlsx"))):
+            base = os.path.basename(p)
+            if base.startswith("~$") or "Checklist_Review" in base:
+                continue
+            if base not in have:
+                missing.append((base, keys_of.get(base, [])))
+    if not missing:
+        return
+    print(f"\n[!] {len(missing)} workbook da danh so KHONG sinh duoc dong nao trong checklist"
+          " -> bang trong do BI MAT khoi ket qua:")
+    for base, keys in missing:
+        want = mapping.object_from_filename(base)
+        print(f"  - {base}")
+        print(f"      ten object theo TEN FILE   : {want}")
+        print(f"      ten khai o cot View/Table  : {', '.join(keys) or '<khong doc duoc dong nao>'}")
+        near = [k for k in keys if k != want and sorted(k) == sorted(want)]
+        if near:
+            print(f"      -> GO SAI CHINH TA: '{near[0]}' dao chu so voi '{want}',"
+                  " sua lai trong workbook cho khop ten file")
 
 
 def _only_owner_objects(items: list) -> list:
@@ -194,25 +260,43 @@ def _dedupe_by_target(items: list) -> list:
     return sorted(out, key=lambda c: c.short)
 
 
-def _report_script_conflicts(conflicts: list) -> None:
-    """Bao ro object nao bi khai SQL o nhieu workbook va tool dang cham ban nao.
+def _report_script_conflicts(variants: dict) -> None:
+    """Bao ro object nao bi khai SQL o nhieu workbook va noi nao dang giu ban CU.
 
-    Bang dung chung hay bi dan lai SQL vao sheet Script cua nhieu workbook tieu thu;
-    im lang chon 1 ban la nguy hiem khi cac ban da LECH NOI DUNG - luc do co the dang
-    cham ban khong phai ban chuan."""
-    if not conflicts:
+    Bang dung chung hay bi dan lai SQL vao sheet Script cua nhieu workbook tieu thu; im
+    lang chon 1 ban la nguy hiem khi cac ban da LECH - luc do co the dang cham ban khong
+    phai ban chuan. Dung sync.analyse() de tach LECH THAT (khac logic) voi chi khac
+    FORMAT/COMMENT: truoc day so chuoi tho nen 1 dau ';' hay 1 dong comment le cung bi bao
+    'LECH NOI DUNG', lan trong danh sach dai khong ai doc nua.
+
+    `SYNC_RESULTS` giu lai ket qua de in nhac lai o cuoi luot cham (dau output bi cuon mat)."""
+    places = {key: [sync.Place(p, sheet, sql) for p, sheet, sql in cands]
+              for key, cands in variants.items()}
+    results = sync.analyse(places)
+    SYNC_RESULTS[:] = results
+    if not results:
         return
-    differs = [c for c in conflicts if c["differs"]]
-    print(f"\n[i] {len(conflicts)} object duoc khai SQL o nhieu workbook"
-          f"{f' - trong do {len(differs)} object CO CAC BAN LECH NOI DUNG' if differs else ''}."
-          "  Uu tien ban trong workbook CHINH CHU (ten file mang dung ten object).")
-    for c in sorted(conflicts, key=lambda x: (not x["differs"], x["object"])):
-        mark = "[!] LECH NOI DUNG" if c["differs"] else "    trung nhau"
-        owner = "" if c["owned"] else "  (KHONG co workbook chinh chu -> lay theo alphabet)"
-        print(f"  {mark}  {c['object']:<26} cham ban trong: {os.path.basename(c['chosen'])}{owner}")
-        for p in c["others"]:
-            print(f"{'':>21}bo qua ban trong: {os.path.basename(p)}")
-    if differs:
+    lech = [r for r in results if r.status == "LECH"]
+    unknown = [r for r in results if r.status == "KHONG RO BAN CHUAN"]
+    fmt = [r for r in results if r.status == "khac format"]
+    print(f"\n[i] {len(results)} object duoc khai SQL o nhieu workbook: {len(lech)} LECH"
+          f" | {len(unknown)} khong ro ban chuan | {len(fmt)} chi khac format | "
+          f"{len(results) - len(lech) - len(unknown) - len(fmt)} trung khop."
+          "  Cham ban trong workbook CHINH CHU (ten file mang dung ten object).")
+    for r in lech + unknown:
+        if r.canon:
+            print(f"  [!] LECH  {r.object:<26} cham ban trong: {os.path.basename(r.canon.path)}")
+            for p in r.stale:
+                cut = "  <-- O EXCEL BI CAT CUT" if p.truncated else ""
+                print(f"{'':>12}ban CU o: {p.label}   ({p.nchars} ky tu){cut}")
+        else:
+            print(f"  [?] KHONG RO BAN CHUAN  {r.object:<20} "
+                  f"{len({sync.fingerprint(p.sql) for p in r.others})} phien ban khac nhau"
+                  " (khong workbook nao mang dung ten object)")
+            for p in r.others:
+                print(f"{'':>12}{sync.fingerprint(p.sql)}  {p.nchars:>7} ky tu  {p.label}")
+    if lech or unknown:
+        print("    -> Xem diff:  --sync-object <TEN_OBJECT>   |  ca bang:  --sync-report")
         print("    -> Moi object chi nen co SQL o DUNG 1 workbook (workbook mang ten no);"
               " o workbook tieu thu chi khai ten bang o block JOIN SCHEMA, khong dan lai code.")
 
@@ -235,7 +319,9 @@ def attach_mapping(ctxs: list, mapping_dirs: list) -> None:
 
 def build_repo(ctxs: list, gold_list_path: str | None) -> dict:
     repo = {"sigs": set(), "cdc": set(), "known_issues": {}, "known_models": None,
-            "known_sat_columns": {}, "uncertain_sat_tables": set(), "gold_list": None}
+            "known_sat_columns": {}, "uncertain_sat_tables": set(), "gold_list": None,
+            "cancelled_models": set(), "renamed_models": {},
+            "multiactive_sats": set(), "sum_money_cols": {}, "pit_filtered": {}}
     ki = os.path.join(ENGINE, "known_issues.json")
     if os.path.exists(ki):
         with open(ki, encoding="utf-8") as fh:
@@ -243,7 +329,29 @@ def build_repo(ctxs: list, gold_list_path: str | None) -> dict:
     km = os.path.join(ENGINE, "known_models.json")
     if os.path.exists(km):
         with open(km, encoding="utf-8") as fh:
-            repo["known_models"] = set(json.load(fh)["models"])
+            data = json.load(fh)
+        # 2 nguon, gop lam mot de X.10 doi chieu:
+        #   "models"                 - trich tu zip dbt (anh chup 1 thoi diem, de cu);
+        #   "models_tai_lieu_mapping"- bang Zone C da mapping/dev nhung chua vao zip do
+        #                              (vd nhom accountbc_save nguon SBV).
+        # Thieu nguon thu 2 thi X.10 bao "KHONG TON TAI trong Data Vault model" oan.
+        # Sinh lai: python tools/gold_review/update_known_models.py <file mapping silver>
+        repo["known_models"] = set(data["models"]) | set(data.get("models_tai_lieu_mapping", []))
+        # "models_cancel" - bang bi danh Cancel o tai lieu mapping (Mapping Status HOAC Dev
+        # Status). Van co the con file model trong zip dbt nen X.10 phai check RIENG, khong
+        # suy ra tu "khong ton tai". Tru cac bang OCB da xac nhan van dung.
+        repo["cancelled_models"] = ({t.lower() for t in data.get("models_cancel", [])}
+                                    - {t.lower() for t in data.get("models_cancel_mien_tru", [])})
+        # "models_doi_ten" - bang da doi ten / tach bang o tai lieu mapping. File model TEN CU
+        # van con trong zip dbt nen script chay khong loi, khong rule nao bat duoc ngoai day.
+        repo["renamed_models"] = {k.lower(): v for k, v in data.get("models_doi_ten", {}).items()}
+        # Satellite MULTIACTIVE (unique_key co ma_key): 1 hashkey nhieu dong trong CUNG 1 ngay
+        # -> GROUP BY phai kem ma_key (X.12), va max_by o day KHONG thua (X.13 bo qua).
+        repo["multiactive_sats"] = {t.lower() for t in data.get("sat_multiactive", [])}
+        repo["sum_money_cols"] = {k.lower(): [c.lower() for c in v]
+                                  for k, v in data.get("sat_cot_tien_phai_sum", {}).items()}
+        # PIT co khai sts_hub_table -> da tu loc ban ghi da xoa, join them hub/*_active la thua.
+        repo["pit_filtered"] = {k.lower(): v for k, v in data.get("pit_da_loc_sts_hub", {}).items()}
     ksc = os.path.join(ENGINE, "known_sat_columns.json")
     if os.path.exists(ksc):
         with open(ksc, encoding="utf-8") as fh:
@@ -430,16 +538,20 @@ def score(findings: dict) -> dict:
             grp[RULES[rid].group] = 1
     ratio = 0.1 * grp[G1] + 0.8 * grp[G2] + 0.1 * grp[G3]
     warned = [rid for rid, f in findings.items() if f.status == WARN]
-    return {"n1": grp[G1], "n2": grp[G2], "n3": grp[G3], "ratio": ratio, "warn": warned}
+    block = sorted(rid for rid, f in findings.items()
+                   if rid in BLOCKING and f.status == FAIL)
+    return {"n1": grp[G1], "n2": grp[G2], "n3": grp[G3], "ratio": ratio, "warn": warned,
+            "block": block}
 
 
 # ------------------------------------------------------------------ in ket qua
 def print_file(ctx: Ctx, findings: dict, sc: dict, thr: float) -> None:
-    verdict = "DAT" if sc["ratio"] <= thr else "KHONG DAT"
+    verdict = "DAT" if sc["ratio"] <= thr and not sc["block"] else "KHONG DAT"
     src = "" if ctx.target_source == "AST" else f"  (target suy tu {ctx.target_source})"
+    chan = f"   [CHAN boi {', '.join(sc['block'])}]" if sc["block"] else ""
     print(f"\n{'=' * 100}\n{ctx.short}   [{ctx.profile}]{src}   {ctx.path}")
     print(f"  ty le loi = {sc['ratio']:.0%}  (N1={sc['n1']} N2={sc['n2']} N3={sc['n3']})   nguong {thr:.0%}"
-          f"   -> {verdict}   | canh bao: {len(sc['warn'])}")
+          f"   -> {verdict}{chan}   | canh bao: {len(sc['warn'])}")
     for rid in sorted(findings, key=lambda r: (r.split(".")[0], int(r.split(".")[1]))):
         f = findings[rid]
         if f.status == NA:
@@ -453,6 +565,85 @@ def print_file(ctx: Ctx, findings: dict, sc: dict, thr: float) -> None:
         if f.status != PASS:
             for e in f.evidence:
                 print(f"             - {e}")
+
+
+def _sync_notes() -> dict:
+    """{ten_workbook: [dong ghi chu]} de report.write ghi vao cot Ghi chu cua checklist.
+
+    Ghi cho CA HAI phia, vi moi phia can biet mot viec khac nhau:
+      - workbook TIEU THU dang giu ban cu -> phai cap nhat lai theo workbook chinh chu;
+      - workbook CHINH CHU -> biet con nhung workbook nao dang phat tan ban cu cua minh."""
+    notes: dict[str, list] = {}
+
+    def add(path: str, lines: list) -> None:
+        notes.setdefault(os.path.basename(path), []).extend(lines)
+
+    for r in SYNC_RESULTS:
+        if r.status not in ("LECH", "KHONG RO BAN CHUAN"):
+            continue
+        if not r.canon:
+            n_ver = len({sync.fingerprint(q.sql) for q in r.others})
+            for p in r.others:
+                add(p.path, [f"Script bảng {r.object} đang có {n_ver} bản khác nhau ở"
+                             f" {len(r.others)} file, chưa rõ file nào là bản chính."])
+            continue
+        for p in r.stale:
+            cut = " (ô code ở đây còn bị Excel cắt mất đoạn cuối)" if p.truncated else ""
+            add(p.path, [f"Script bảng {r.object} ở đây đang khác bản chính trong"
+                         f" {os.path.basename(r.canon.path)}{cut}."])
+        if r.stale:
+            add(r.canon.path, [
+                f"Script bảng {r.object} ở đây là bản chính; {len(r.stale)} file khác đang"
+                f" để bản khác: {', '.join(os.path.basename(p.path) for p in r.stale)}."])
+    return notes
+
+
+def _warn_sync_tail() -> None:
+    """Nhac lai o CUOI output: object nao co code lech giua cac workbook.
+
+    Cham 'DAT' o bang tong hop KHONG co nghia la tai lieu da dong bo: tool chi cham BAN
+    CHUAN (workbook chinh chu), cac ban dan kem o workbook tieu thu van co the la ban cu."""
+    lech = [r for r in SYNC_RESULTS if r.status in ("LECH", "KHONG RO BAN CHUAN")]
+    cut = sum(len(r.truncated) for r in SYNC_RESULTS)
+    if not lech and not cut:
+        return
+    print(f"\n[!] DONG BO TAI LIEU: {len(lech)} object co code LECH giua cac workbook"
+          f"{f' + {cut} o Excel bi CAT CUT' if cut else ''}"
+          " - ban duoc cham la ban trong workbook chinh chu, cac ban dan kem o workbook"
+          " khac dang la BAN CU:")
+    print(f"    {', '.join(r.object for r in lech)}")
+    print("    Xem diff:  run_check.py --sync-object <TEN_OBJECT>   |  ca bang + Excel:"
+          "  run_check.py --sync-report")
+
+
+def run_sync(args) -> int:
+    """Che do --sync-report / --sync-object: chi doi chieu dong bo, khong cham checklist.
+
+    Exit code: 0 = da dong bo het | 1 = con object LECH hoac khong ro ban chuan
+               | 2 = khong doc duoc noi nao co code."""
+    mapping_dirs = args.mapping_dir or [DEFAULT_MAPPING_DIR]
+    # Chi doi chieu GIUA CAC WORKBOOK mapping voi nhau. File src/tckh/*.sql khong tinh la
+    # 1 'noi giu ban thiet ke' - do la code deploy, sua theo nhip khac, nen luon lech vai
+    # cho va lam bao cao day nhieu. Muon so voi code that thi truyen --src-dir tuong minh.
+    src_dirs = [d for d in args.src_dir if os.path.isdir(d)]
+    print(f"Doi chieu: workbook trong {mapping_dirs}"
+          + (f" + code that trong {src_dirs}" if src_dirs else " (chi giua cac workbook)"))
+    places = sync.collect(mapping_dirs, src_dirs)
+    if not places:
+        print("Khong doc duoc script nao tu workbook lan file .sql.")
+        return 2
+    results = sync.analyse(places)
+    if args.sync_object:
+        return sync.print_object(results, args.sync_object)
+
+    sync.print_report(results)
+    if not args.no_excel:
+        out = os.path.join(args.out, "Sync_Report.xlsx")
+        # Object da dong bo khong can dong nao trong file doi soat - chi xuat cai can sua.
+        need = [r for r in results if r.status != "dong bo"]
+        print(f"\nExcel: {sync.write_excel(need, out)}   ({len(need)} object can xu ly)")
+    unresolved = [r for r in results if r.status in ("LECH", "KHONG RO BAN CHUAN")]
+    return 1 if unresolved else 0
 
 
 def main() -> int:
@@ -473,7 +664,18 @@ def main() -> int:
                     help="(mac dinh) lay SQL tu sheet 'Script SQL' cua workbook")
     ap.add_argument("--no-excel", action="store_true")
     ap.add_argument("--skip-selftest", action="store_true", help="bo qua buoc kiem chung rule")
+    ap.add_argument("--sync-report", action="store_true",
+                    help="chi doi chieu dong bo: object nao co code o nhieu noi va noi nao"
+                         " dang giu ban cu (khong cham checklist)")
+    ap.add_argument("--sync-object", metavar="OBJ",
+                    help="in diff DAY DU giua ban chuan va cac ban khac cua 1 object")
+    ap.add_argument("--src-dir", action="append", default=[],
+                    help="them thu muc code that (.sql) vao luot doi chieu --sync-report;"
+                         f" mac dinh CHI so giua cac workbook (vd {DEFAULT_SRC_DIR})")
     args = ap.parse_args()
+
+    if args.sync_report or args.sync_object:
+        return run_sync(args)
 
     broken = 0 if args.skip_selftest else selftest()
 
@@ -526,9 +728,11 @@ def main() -> int:
     print(f"{'Object':<36}{'PIC':<10}{'Profile':<17}{'Ty le':>7}{'Ket luan':>12}{'Canh bao':>10}")
     ndat = 0
     for ctx, sc in rows:
-        ok = sc["ratio"] <= thr
+        ok = sc["ratio"] <= thr and not sc["block"]
         ndat += ok
         note = "  <- TAM HOAN CHAM" if deferred_reason(ctx) else ""
+        if sc["block"]:
+            note = f"  <- CHAN boi {', '.join(sc['block'])}" + note
         print(f"{ctx.short[:35]:<36}{(args.pic or ctx.pic)[:9]:<10}{ctx.profile:<17}"
               f"{sc['ratio']:>6.0%}{'DAT' if ok else 'KHONG DAT':>12}{len(sc['warn']):>10}{note}")
     print(f"\n{ndat}/{len(rows)} bang DAT; "
@@ -542,6 +746,7 @@ def main() -> int:
         for c in held:
             print(f"  - {c.short:<34} {deferred_reason(c)}")
         print("    (bo hoan: xoa object khoi dict DEFERRED trong run_check.py roi chay lai)")
+    _warn_sync_tail()
     print(f"pattern active toan batch: {sorted(repo['sigs']) or ['<khong co>']}"
           f" | huong loc cdc_status: {sorted(repo['cdc']) or ['<khong co>']}")
     if skipped:
@@ -553,7 +758,7 @@ def main() -> int:
     if not args.no_excel:
         os.makedirs(args.out, exist_ok=True)
         xlsx = os.path.join(args.out, "Checklist_Review_AUTOFILLED.xlsx")
-        xlsx = report.write(results, args.template, xlsx, args.batch, args.pic)
+        xlsx = report.write(results, args.template, xlsx, args.batch, args.pic, _sync_notes())
         print(f"\nExcel: {xlsx}")
 
     if broken:

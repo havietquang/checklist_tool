@@ -8,6 +8,15 @@ from __future__ import annotations
 # table_deltaload_phase1 1.xlsx sheet 'RV DELTALOAD append' (cot 'Ten bang raw_vault',
 # ~210 bang nap kieu APPEND = phat sinh moi hang ngay = transaction). Doi chieu 2 nguon
 # nay khop 209/210 dong Excel; thieu "effsat_link_xl_pdtd_link" da bo sung o day.
+#
+# !! CO MAT TRONG DANH SACH NAY KHONG CO NGHIA LA PHAI DUNG '=' !!
+# Danh sach chi noi bang do nap kieu APPEND. Dang dieu kien con phu thuoc TANG bang:
+#   - satellite (sat_*, csat_*) cua bang transaction -> '='
+#   - hub_* / link_* cua chinh bang do              -> '<=' (van phai lay het key da
+#     phat sinh den ngay chay, khong chi key phat sinh dung ngay do)
+# Vi du nhom CRB (OCB chot 2026-08-13): sat_crb_*/csat_crb_balance dung '=', con hub_crb
+# va link_crb_* dung '<='. Vi vay rule 2.4 CHI quet sat_/csat_ (xem CHECK_TXN_HUBS trong
+# rules.py dang de False) - dung "sua" bang cach ep '=' cho hub/link theo danh sach nay.
 TRANSACTION_SATS = {
     "effsat_link_crb_branch", "effsat_link_crb_customer",
     "effsat_link_invoice_log_doc", "effsat_link_td_auth_sch_acnt_contract",
@@ -123,11 +132,52 @@ TRANSACTION_SATS = {
     # lai trong tuong lai de xac nhan co thuoc danh sach 49 bang transaction hay khong.
     "hub_re_stat_line_bal", "sat_re_stat_line_bal",
     "hub_pc_re_stat_line_bal", "sat_pc_re_stat_line_bal",
-    # --- bo sung thieu: bang business_vault csat_crb_balance va csat_customer_sum_balance
-    # la bang transaction -> phai dung source_event_date = :DATADT. Chua doi chieu lai voi
-    # tai lieu/Excel goc (xem comment dau file) - can tim hieu lai trong tuong lai.
-    "csat_crb_balance", "csat_customer_sum_balance",
+    # --- bang business_vault (csat_*). QuangHV xac nhan 2026-08-13 trang thai 4 bang BV
+    # dang duoc dung:
+    #   - csat_crb_balance          : la transaction (giong sat_crb_balance)  -> '='
+    #   - csat_customer_sum_balance : a Nam (OCB) dang muon chuyen thanh transaction
+    #                                 -> tinh la transaction luon, '='
+    #   - csat_loans_schedule       : dang tinh sua thanh transaction
+    #                                 -> tinh la transaction luon, '='
+    #   - csat_loans_payment_due    : KHONG phai transaction -> giu '<=', khong them vao day
+    # Hai bang giua chua co van ban chot: neu OCB khong chuyen thi phai bo ra khoi day va
+    # sua code ve '<=' (LOAN_SUMMARY_LIST, TB_AR_DTL, CST_LCS_KT_30D_FINAL_CASE5,
+    # TMP_CST_LCS_KT_30D_FINAL_CASE5).
+    "csat_crb_balance", "csat_customer_sum_balance", "csat_loans_schedule",
 }
+
+# --- 9 bang nguon T24 duoc OCB xac nhan (2026-08-13, Hop Hao Nguyen / Linh Dieu Phan):
+# "chac chan dung kieu transaction cho tat ca hub link sat nay". Tuc MOI bang raw_vault
+# sinh ra tu chung - ca hub_, link_, sat_ - deu phai loc source_event_date = :DATADT.
+#
+# KHAC voi nhom CRB: o CRB chi sat_crb_*/csat_crb_balance dung '=', con hub_crb va
+# link_crb_* dung '<='. Vi vay KHONG the suy "co trong TRANSACTION_SATS => moi tang dung
+# '='" - phai co danh sach rieng nay.
+#
+# Luu duoi dang ENTITY (khong liet ke 55 ten bang) de bang moi cua cung entity tu dong ap
+# dung. Ten khop theo kieu 'entity nam trong ten bang': 'teller' -> hub_teller,
+# link_teller_account1, sat_teller_vat...
+TXN_ALL_LAYER_ENTITIES = {
+    "funds_transfer",            # T24_FUNDS_TRANSFER
+    "clearing_citad",            # T24_VMBH_INT_CLR_CITAD (Excel xep chung t24_funds_transfer)
+    "teller",                    # T24_TELLER
+    "line_movement_toanhang",    # T24_LINE_MOVEMENT_TOANHANG (Excel ghi 't24_line_mvmt_toanhang')
+    "stmt_entry",                # T24_STMT_ENTRY
+    "categ_entry",               # T24_CATEG_ENTRY
+    "re_consol_spec_entry",      # T24_RE_CONSOL_SPEC_ENTRY
+    "re_stat_line_bal",          # T24_RE_STAT_LINE_BAL + T24_PC_RE_STAT_LINE_BAL
+}
+
+
+def is_txn_all_layer(table: str) -> bool:
+    """Bang nay co thuoc 9 nguon T24 phai dung '=' o MOI tang (hub/link/sat) khong.
+
+    Chi tra True cho bang CO TRONG TRANSACTION_SATS - danh sach entity dung de mo rong
+    tu sat_ sang hub_/link_, khong dung de tu nhan them bang ngoai danh sach goc."""
+    name = table.lower()
+    if name not in TRANSACTION_SATS:
+        return False
+    return any(ent in name for ent in TXN_ALL_LAYER_ENTITIES)
 
 # --- muc PIT: PIT da bao gom hieu luc, LEFT JOIN thang PIT voi sat la du
 PIT_SELF_SUFFICIENT = {

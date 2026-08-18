@@ -71,14 +71,100 @@ Sheet phải ở dạng bảng, tool nhận cột theo tên (không phân biệt
 
 - Chỉ lấy dòng có `Type` chứa `mới` / `new` / `gold` / `dbx` / `databricks` — `Code cũ` là T-SQL
   on-prem, không phải thứ cần chấm.
+- **Code dài quá 1 ô (giới hạn Excel 32.767 ký tự) thì cắt thành nhiều dòng — tool nối lại đủ.**
+  Chấp nhận cả hai kiểu ghi: để trống cột `View / Table` ở các dòng sau, **hoặc** ghi lại tên
+  object ở mỗi dòng. Thứ tự nối theo đúng thứ tự dòng trong sheet. Ô nào bị bỏ (không chứa thân
+  SQL và cũng không phải phần tiếp của object nào) đều được **báo ra console**, không bỏ im lặng.
 - Tên object lấy từ cột `View / Table` (bỏ hậu tố `(Gold)`).
 - Tiêu chí 1.2 **không** so tên file ở chế độ workbook vì không có file `.sql` để đối chiếu.
 - Object nào workbook chưa khai dòng `Code mới` thì **không được chấm** — kiểm số object ở dòng
   đầu console, thiếu thì bổ sung vào sheet hoặc chạy `--from-sql`.
+- **Tên ở cột `View / Table` phải khớp tên file.** Gõ sai là workbook mất hẳn dòng trong checklist:
+  key không khớp tên file → workbook không được coi là chính chủ → bản trong nó bị loại. Tool báo
+  rõ trường hợp này:
+
+  ```
+  [!] 1 workbook da danh so KHONG sinh duoc dong nao trong checklist:
+    - 045. OCB_GOLD_TCKH_TB_AR_BCN_DTL_QUANG.xlsx
+        ten object theo TEN FILE   : TB_AR_BCN_DTL
+        ten khai o cot View/Table  : TB_AR_BCN_DLT
+        -> GO SAI CHINH TA: 'TB_AR_BCN_DLT' dao chu so voi 'TB_AR_BCN_DTL'
+  ```
 
 > **Hai nguồn có thể lệch nhau.** Mặc định chấm code trong workbook; `--from-sql` chấm file
 > `.sql`. Chạy cả hai rồi so kết quả là cách nhanh nhất để phát hiện thiết kế đã cũ hơn code thật
 > (hoặc ngược lại).
+
+---
+
+## 2c. Đối chiếu đồng bộ — cùng một bảng, code nằm ở nhiều workbook, nơi nào đang giữ bản cũ
+
+Bảng **dùng chung** (`T24_CRB`, `CB_OU_DIM`, `BRANCH_LIST`, `HOLIDAY`…) hay bị dán lại SQL vào
+sheet `Script` của nhiều workbook tiêu thụ. Sửa code thì chỉ workbook **chính chủ** được cập nhật,
+còn bản dán kèm ở workbook tiêu thụ vẫn là bản cũ — người đọc thiết kế thấy hai phiên bản khác
+nhau của cùng một bảng mà không biết bản nào đúng.
+
+**Chạy bình thường là đã thấy** — không cần flag nào. Kết quả ra 3 chỗ:
+
+1. **Cột `AG` "Đồng bộ tài liệu"** của sheet `Review theo bảng` — mỗi bảng 1 dòng, ngay trên dòng
+   của object đó. Mở file Excel ra là thấy:
+   > `Script bảng T24_CRB ở đây đang khác bản chính trong 043. OCB_GOLD_TCKH_T24_CRB_PHAT.xlsx.`
+2. **Console** — danh sách đầy đủ ở đầu output, nhắc lại gọn ở cuối.
+3. `--sync-report` / `--sync-object` — diff từng dòng (bên dưới).
+
+Cảnh báo ở console:
+
+```
+[!] DONG BO TAI LIEU: 12 object co code LECH giua cac workbook + 3 o Excel bi CAT CUT
+    BRANCH_LIST, CB_OFCR_DIM, CB_OU_DIM, LD_FTP_RATE, LOAN_SUMMARY_LIST, T24_CRB, ...
+```
+
+> Object chấm `DAT` **không** có nghĩa tài liệu đã đồng bộ: tool chỉ chấm **bản chuẩn**, các bản
+> dán kèm ở workbook khác vẫn có thể là bản cũ.
+
+Xem chi tiết:
+
+```bash
+python tools/gold_review/run_check.py --sync-object T24_CRB    # diff đầy đủ của 1 object
+python tools/gold_review/run_check.py --sync-report            # cả bảng + output/Sync_Report.xlsx
+```
+
+**Bản chuẩn** = bản trong workbook chính chủ (tên file mang đúng tên object, dùng cùng luật
+`mapping.owns` mà bước chấm điểm đang dùng → bản được coi là chuẩn đúng là bản đã được chấm
+`Pass`). Không workbook nào mang đúng tên object thì tool **không kết luận**, chỉ liệt kê các bản
+kèm dấu vân tay để người chọn.
+
+Mặc định **chỉ đối chiếu giữa các workbook mapping với nhau**. File `src/tckh/*.sql` là code
+deploy, sửa theo nhịp khác nên luôn lệch vài chỗ — muốn so thì thêm `--src-dir src/tckh` tường
+minh.
+
+So sánh ở 2 mức, để lệch format không lẫn với lệch logic:
+
+| Kết luận | Nghĩa | Phải sửa? |
+|---|---|---|
+| `LECH` | khác nhau sau khi bỏ comment + gộp whitespace → **khác logic** | Có |
+| `KHONG RO BAN CHUAN` | các bản khác nhau nhưng không nơi nào là chính chủ | Có — chốt bản đúng trước |
+| `BI CAT CUT` | ô Excel dài 32.767 ký tự = chạm giới hạn, Excel cắt cụt im lặng | Có |
+| `khac format` | chỉ khác thụt lề / xuống dòng / comment / `;` cuối | Không |
+| `dong bo` | khớp bản chuẩn | Không |
+
+Ví dụ `--sync-object T24_CRB`:
+
+```
+ban chuan: 043. OCB_GOLD_TCKH_T24_CRB_PHAT.xlsx [Script]   (7323 ky tu, workbook chinh chu)
+
+--- vs 030. OCB_GOLD_TCKH_V_T24_CRB_FULLLIST_PHAT.xlsx [Script]   (7327 ky tu, LECH NOI DUNG)
+  -WHERE h.source_event_date = TO_DATE(:DATADT, 'yyyyMMdd')
+  +WHERE h.source_event_date <= TO_DATE(:DATADT, 'yyyyMMdd')
+```
+
+Dòng `-` là bản chuẩn, dòng `+` là bản đang xét. Ở ví dụ trên workbook 030 còn giữ `<=` (bản cũ)
+trong khi bản chuẩn đã đổi sang `=` theo tiêu chí 2.4.
+
+**Tool chỉ báo cáo, không tự ghi đè workbook.** Hướng sửa gốc rễ: mỗi object chỉ nên có code ở
+đúng 1 nơi — workbook chính chủ của nó. Ở workbook tiêu thụ, thay vì dán lại code, ghi **đường dẫn
+file `.sql`** vào ô `Script SQL` (vd `src/tckh/t24_crb.sql`) — tool tự đọc file đó nên không bao
+giờ lệch nữa (xem `_scan_script_sheet` cách (2)).
 
 ---
 
@@ -133,11 +219,13 @@ Mỗi dòng FAIL/WARN đều kèm **tên đối tượng + số dòng code** đ�
 
 Sheet `Review theo bảng`, mỗi object 1 dòng từ dòng 4 (dòng 3 ví dụ giữ nguyên):
 
-| B (Object) | C | D | E | F (1.1) | G (1.2) | H (2.1) | … | AF (Ghi chú) |
-|---|---|---|---|---|---|---|---|---|
-| OCB…TCKH.FTP_FACT | Batch 2 | QuangHV | 2026-07-28 | Pass | Pass | **Fail** | … | CHƯA CÓ SỐ LIỆU (1): 2.7 \| [2.1] thiếu sts_hub… |
+| B (Object) | C | D | E | F (1.1) | G (1.2) | H (2.1) | … | AF (Ghi chú) | AG (Đồng bộ tài liệu) |
+|---|---|---|---|---|---|---|---|---|---|
+| OCB…TCKH.FTP_FACT | Batch 2 | QuangHV | 2026-07-28 | Pass | Pass | **Fail** | … | CHƯA CÓ SỐ LIỆU (1): 2.7 \| [2.1] thiếu sts_hub… | Script bảng T24_CRB ở đây đang khác bản chính trong 043. …_T24_CRB_PHAT.xlsx. |
 
 - Ô `Pass` / `Fail` → máy điền.
+- Cột `AG` là cột **thêm mới** (checklist gốc hết ở `AF`): cảnh báo workbook này đang giữ bản
+  script khác bản chính của bảng dùng chung — xem mục 2c. Không tính điểm.
 - Tiêu chí **chưa có số liệu** để kết luận (có sau UAT test) vẫn ghi `Pass`, nhưng được liệt kê rõ ở cột `AF` (mục "CHƯA CÓ SỐ LIỆU") và sheet `Auto-check chi tiết` — cập nhật lại ô sau khi có số.
 - Công thức `AA:AF` (tỷ lệ lỗi, Kết luận) **giữ nguyên** → mở Excel là tự tính, Dashboard tự tổng hợp.
 

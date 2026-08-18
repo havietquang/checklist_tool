@@ -1,0 +1,17 @@
+-- Object   : V_PLA_CPHD_UPL
+-- Workbook : 016. OCB_GOLD_TCKH_V_PLA_CPHD_UPL_QUANG.xlsx
+-- Sheet    : Script SQL
+-- PIC      : QUANG
+-- Nguon    : tai lieu mapping (input/mapping), KHONG phai code trong src/
+
+USE CATALOG IDENTIFIER(:curated);
+USE SCHEMA tckh;
+
+CREATE OR REPLACE VIEW v_pla_cphd_upl AS
+SELECT
+    A.HT_CP, A.DATA_DATE, A.RPT_COMPANY, A.KHOI, A.MA_PHONG,
+    CASE WHEN INSTR(A.MA_PHONG,'*')=0
+         THEN SUBSTRING(A.MA_PHONG, INSTR(A.MA_PHONG,'.')+1, 1000)
+         ELSE SUBSTRING(A.MA_PHONG, INSTR(A.MA_PHONG,'*')+1, 1000) END AS MA_PHONG_G,
+    A.LINE, A.T_ACCOUNT_NUMBER, A.KE_HOACH, A.UPL_DATE, A.CDR_DT_ID
+FROM PLA_CPHD_UPL A;

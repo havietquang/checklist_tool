@@ -345,7 +345,7 @@ WITH a AS (SELECT hk, max_by(nm, source_event_date) nm FROM ... sat_x GROUP BY h
 
 **Hai ngoại lệ được miễn cho `source_event_date`** (`_sed_in_on_allowed`):
 1. **Pattern PIT**: `sat.source_event_date = p.<sat>_src_ev_dt` (III.4.2.4);
-2. bảng nằm trong danh sách **49 bảng transaction** ([doc_standard.py](../engine/doc_standard.py)).
+2. bảng nằm trong danh sách **bảng transaction** (221 bảng) ([doc_standard.py](../engine/doc_standard.py)).
 
 **Ví dụ FAIL**
 
@@ -373,16 +373,33 @@ LEFT JOIN (SELECT hk, nm FROM ... sat_customer
 **Cột K** · AUTO · chỉ `SILVER_CONSUMER` · **Căn cứ** Technical Document III.4.2 + mục "Các
 trường hợp đặc biệt" · **Code** [rules.py:265](../engine/rules.py#L265)
 
-**Đọc** — với mỗi bảng `sat_*` được đọc, máy quét **mọi lớp SELECT bao quanh** nó
+**Đọc** — với mỗi bảng được kiểm, máy quét **mọi lớp SELECT bao quanh** nó
 (`WHERE` / `QUALIFY` / `HAVING` / `ON`) tìm:
 - `has_le`: có `source_event_date <=` hoặc `<`;
 - `has_eq`: có `source_event_date =`.
 
-**Luật** — phụ thuộc bảng đó có nằm trong 49 bảng transaction hay không:
+Phạm vi bảng được kiểm:
+
+| Bảng | Có kiểm? | Ghi chú |
+|---|---|---|
+| `sat_*`, `csat_*` | có | qua `sat_refs()` |
+| `hub_*`, `link_*`, `effsat_*` | **không** | xem ô cảnh báo bên dưới |
+| `sts_hub_*` | **không** | `sts_hub_crb` có trong danh sách transaction nhưng buộc dùng `<=` — rule 2.1 cần toàn bộ lịch sử để lấy `max_by(cdc_status,…)='D'` |
+
+> **Có mặt trong `TRANSACTION_SATS` không có nghĩa là phải dùng `=`.** Danh sách đó chỉ nói bảng
+> nạp kiểu APPEND. Dạng điều kiện phụ thuộc **tầng bảng**: satellite của bảng transaction dùng
+> `=`, còn `hub_*` / `link_*` của chính bảng đó dùng `<=` (vẫn phải lấy hết key đã phát sinh đến
+> ngày chạy). Ví dụ nhóm CRB (OCB chốt 2026-08-13): `sat_crb_*` / `csat_crb_balance` dùng `=`,
+> `hub_crb` và `link_crb_*` dùng `<=`, dù cả ba đều nằm trong danh sách.
+>
+> Cờ `CHECK_TXN_HUBS` trong `rules.py` để `False` vì lý do này. Bật lên sẽ báo sai cho đúng
+> những chỗ đang làm đúng — chỉ bật khi có danh sách riêng "hub nào phải dùng `=`" từ OCB.
+
+**Luật** — phụ thuộc bảng đó có nằm trong danh sách transaction hay không:
 
 | Loại bảng | Điều kiện | Trạng thái |
 |---|---|---|
-| Transaction (49 bảng) | `= :DATADT` | đúng |
+| Transaction (221 bảng) | `= :DATADT` | đúng |
 | Transaction | `<= :DATADT` | `FAIL` — sai dạng |
 | Thường | `<= :DATADT` | đúng |
 | Thường | `=` kèm pattern PIT (`= p.<sat>_src_ev_dt`) | đúng |
@@ -398,7 +415,7 @@ FROM ocb_dv_cleaned.raw_vault.sat_customer_classification s
 WHERE s.source_event_date = TO_DATE(:DATADT,'yyyyMMdd')
 ```
 
-> `sat_customer_classification (dong 12): dùng = :DATADT nhưng KHÔNG thuộc danh sách 49 bảng transaction, sẽ bỏ sót bản ghi mới nhất nằm trước ngày chạy (Issue log #1)`
+> `sat_customer_classification (dong 12): dùng = :DATADT nhưng KHÔNG thuộc danh sách bảng transaction, sẽ bỏ sót bản ghi mới nhất nằm trước ngày chạy (Issue log #1)`
 
 **Ví dụ FAIL** — đặt thêm cận dưới:
 
@@ -453,10 +470,12 @@ Các lỗi đang bắt được:
 **Cách mở rộng**: OCB trả lỗi mới → thêm một regex vào `known_issues.json`, lần sau tự bắt được.
 Đây là tiêu chí duy nhất "học" được từ lịch sử review.
 
-> **Issue #1 chưa bắt được**: "bảng transaction như `T24_CRB` vẫn dùng `source_event_date <=`".
-> Việc này thuộc rule 2.4, dựa vào danh sách 49 bảng transaction ở
-> [doc_standard.py](../engine/doc_standard.py) — danh sách đó **không có bảng nào chứa `crb`**.
-> Cần OCB xác nhận `CRB` có thuộc nhóm transaction hay không rồi bổ sung.
+> **Issue #1 đã bắt được** (từ 2026-08-12): "bảng transaction như `T24_CRB` vẫn dùng
+> `source_event_date <=`". Việc này thuộc rule 2.4. Danh sách ở
+> [doc_standard.py](../engine/doc_standard.py) có `hub_crb` và `csat_crb_balance`, nhưng trước
+> đây rule 2.4 chỉ quét `sat_*` / `csat_*` nên `hub_crb` không đi qua tiêu chí nào — cả hai bản
+> `T24_CRB` (`hub_crb =` và `hub_crb <=`) đều `pass`. Nay rule quét cả `hub_*` thuộc danh sách
+> transaction, `<=` là `FAIL`.
 
 ---
 

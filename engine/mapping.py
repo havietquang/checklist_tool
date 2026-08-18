@@ -458,12 +458,16 @@ SKIPPED_FILES: list = []
 # Cot Script SQL ghi duong dan file .sql nhung KHONG tim thay file do tren dia (go sai
 # ten/duong dan). Rieng voi SKIPPED_FILES vi day la loi 1 object, khong phai ca workbook.
 SQL_REF_ISSUES: list = []
+# O Script SQL bi bo qua vi khong chua than SQL nao va cung khong phai phan tiep cua object
+# nao. Thuong la o ghi chu/mo ta - nhung cung co the la CODE BI CAT DOAN ma go sai cach.
+DROPPED_CELLS: list = []
 
 
 COPY_FILE_RE = re.compile(r"\b(copy|bak|backup|old|cu)\b|\bcopy\b|\(\d+\)", re.I)
 
 
-def discover_scripts(dirs: list, conflicts: list | None = None) -> dict:
+def discover_scripts(dirs: list, conflicts: list | None = None,
+                     variants: dict | None = None) -> dict:
     """Quet workbook thiet ke, tra ve {khoa_object: (duong_dan_workbook, sheet, sql)}.
 
     Dung khi chay --from-excel: SQL lay thang tu sheet 'Script SQL' cua workbook,
@@ -473,10 +477,15 @@ def discover_scripts(dirs: list, conflicts: list | None = None) -> dict:
     Script cua NHIEU workbook tieu thu. Truoc day lay ban gap dau tien theo alphabet nen
     ban trong workbook CHINH CHU co the bi bo qua im lang; nay _pick_script() luon uu tien
     ban trong workbook mang dung ten object. Truyen 1 list vao `conflicts` de nhan lai
-    danh sach object bi khai o nhieu noi (kem co `differs` khi cac ban LECH NOI DUNG)."""
+    danh sach object bi khai o nhieu noi (kem co `differs` khi cac ban LECH NOI DUNG).
+
+    Truyen 1 dict vao `variants` de nhan lai TAT CA cac ban tim duoc
+    ({khoa_object: [(workbook, sheet, sql), ...]}), khong chi ban duoc chon - sync.py can
+    day du de chi ro noi nao dang giu ban cu."""
     import glob
     SKIPPED_FILES.clear()
     SQL_REF_ISSUES.clear()
+    DROPPED_CELLS.clear()
     found: dict[str, list] = {}
     for d in dirs:
         for p in sorted(glob.glob(os.path.join(d, "*.xlsx"))):
@@ -506,6 +515,9 @@ def discover_scripts(dirs: list, conflicts: list | None = None) -> dict:
                           " (thieu cot Type / View-Table / Script SQL, hoac khong co dong"
                           " Type='Code moi')"))
 
+    if variants is not None:
+        variants.clear()
+        variants.update(found)
     out = {}
     for key, cands in found.items():
         out[key] = _pick_script(key, cands)
@@ -557,9 +569,11 @@ def _scan_script_sheet(ws, base_dir: str = "", label: str = "") -> dict:
     """{khoa_object: sql} lay tu sheet dang bang Type | Object | Script SQL.
 
     Ho tro 2 cach ghi code thay vi dan het vao 1 o (o Excel toi da ~32.767 ky tu):
-    (1) CAT THANH NHIEU O/NHIEU DONG: dong dau 1 khoi co Object (+ Type='Code moi'), cac
-        dong TIEP THEO cung khoi de trong Object (chi con Script SQL) - deu duoc NOI VAO
-        CUOI (xuong dong) theo dung thu tu xuat hien trong sheet.
+    (1) CAT THANH NHIEU O/NHIEU DONG - chap nhan CA HAI kieu ghi, deu duoc NOI VAO CUOI
+        (xuong dong) theo dung thu tu xuat hien trong sheet:
+          - dong dau co Object (+ Type='Code moi'), cac dong TIEP THEO DE TRONG Object;
+          - hoac GHI LAI ten Object o moi dong (vd '077. LOAN_SUMMARY_LIST' cat 3 o
+            32701 + 22322 + 11241 ky tu, dong nao cung ghi ten).
     (2) GHI DUONG DAN toi 1 file .sql THAT: o Script SQL chi ghi 1 dong duy nhat la
         duong dan file (vd 'zonec_datamart/.../pst_entr_fct.sql') - tool tu doc noi dung
         file do, luon dong bo voi code that trong repo thay vi phai dan lai. `base_dir`
@@ -593,14 +607,28 @@ def _scan_script_sheet(ws, base_dir: str = "", label: str = "") -> dict:
                         (label, f"{cur_key}: khong tim thay file '{ref.group('path')}'"
                                 f" (da thu tuong doi voi thu muc workbook va goc repo)"))
                     joined = ""
-            if joined and SQL_BODY_RE.search(joined):
+            # Khoi tiep cua MOT object da doc duoc code (nguoi lam khai lai ten object o
+            # dong sau thay vi de trong cot View/Table) -> nhan luon, KHONG doi phai co
+            # SELECT/CREATE. Doan giua cau SQL nhu 'FROM ... WHERE ...' hay 'GROUP BY ...'
+            # khong he chua tu khoa nao trong SQL_BODY_RE: truoc day bi bo IM LANG, code
+            # trong o do mat sach ma khong ai biet (test_split: doc 3/7 dong).
+            cont = cur_key in out
+            if joined and (cont or SQL_BODY_RE.search(joined)):
                 skip = (not NEW_CODE_RE.search(cur_typ)) if cur_typ else bool(OLD_CODE_RE.search(joined))
                 if not skip:
-                    out[cur_key] = out[cur_key] + "\n" + joined if cur_key in out else joined
+                    out[cur_key] = out[cur_key] + "\n" + joined if cont else joined
+            elif joined:
+                # Khong phai phan tiep, cung khong co than SQL nao -> that su bo qua o nay.
+                # Phai bao ro: neu day dung la code bi cat doan thi nguoi lam moi biet ma
+                # sua cach ghi (de trong cot View/Table o cac dong sau).
+                DROPPED_CELLS.append(
+                    (label, f"{cur_key}: bo qua 1 o Script SQL khong chua SELECT/CREATE/"
+                            f"INSERT/MERGE/WITH/DELETE ({len(joined)} ky tu, bat dau"
+                            f" '{joined.strip()[:40]}...')"))
         cur_key, cur_typ, cur_lines = None, "", []
 
     for r in rows[hdr_idx + 1:]:
-        sql = r[i_sql] if i_sql < len(r) else ""
+        sql = _unquote_cell(r[i_sql] if i_sql < len(r) else "")
         raw_obj = _cell(r, i_obj) if i_obj is not None else ""
         key = clean_key(raw_obj) if raw_obj else None
 
@@ -618,6 +646,29 @@ def _scan_script_sheet(ws, base_dir: str = "", label: str = "") -> dict:
             cur_lines.append(sql)
     flush()
     return out
+
+
+def _unquote_cell(sql) -> str:
+    """Bo cap dau nhay kep BAO NGOAI o Script SQL (kieu quoting cua CSV).
+
+    Code copy tu file .csv/.txt dan vao Excel hay bi boc ca cap '"' o dau va cuoi O. Voi
+    code dan 1 o thi vo hai, nhung code dai phai cat NHIEU O: noi lai se thanh
+    '... sched_day ), " " avi as ( ...' - dau nhay lot vao GIUA cau SQL. Hau qua:
+      - sqlglot parse ra cay khac (hoac loi cu phap) -> cham diem sai;
+      - --sync-report bao LECH voi ban chuan chi vi 4 ky tu nay (dung case
+        LOAN_SUMMARY_LIST: 034/035/046 vs 077 - noi dung y het, chi lech cap '"').
+    Chi bo khi o BAT DAU va KET THUC bang '"' - do la dau hieu quoting, khong phai SQL."""
+    if not isinstance(sql, str):
+        return sql or ""
+    s = sql.strip()
+    if len(s) > 2 and s.startswith('"') and s.endswith('"'):
+        return s[1:-1]
+    # cat nhieu o: o dau chi co '"' mo, o cuoi chi co '"' dong -> bo not ve dung 1 phia
+    if len(s) > 1 and s.startswith('"') and '"' not in s[1:]:
+        return s[1:]
+    if len(s) > 1 and s.endswith('"') and '"' not in s[:-1]:
+        return s[:-1]
+    return sql
 
 
 def _cell(row: list, idx: int) -> str:

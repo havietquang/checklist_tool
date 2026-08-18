@@ -3,6 +3,7 @@ from __future__ import annotations
 
 import os
 import shutil
+from copy import copy
 from datetime import date
 
 import openpyxl
@@ -10,7 +11,7 @@ from openpyxl.formatting.rule import CellIsRule
 from openpyxl.styles import Alignment, Font, PatternFill
 
 import rule_text
-from rules import FAIL, NA, PASS, RULES, WARN
+from rules import BLOCKING, FAIL, NA, PASS, RULES, WARN
 
 SHEET_REVIEW = "Review theo bảng"
 SHEET_DETAIL = "Auto-check chi tiết"
@@ -24,14 +25,23 @@ COL = {
     "2.7": "N", "2.8": "O", "2.9": "P", "2.10": "Q", "2.11": "R", "2.12": "S",
     "3.1": "T", "3.2": "U", "3.3": "V", "3.4": "W", "3.5": "X", "3.6": "Y",
 }
+VERDICT_COL = "AE"                    # cot 'Kết luận' - vốn là công thức =IF(ty_le<=nguong,...)
 NOTE_COL = "AF"                       # cot 'Ghi rõ: mã tiêu chí – file script – dòng/CTE'
+# Cot THEM MOI (checklist goc het o AF): canh bao dong bo tai lieu. Tach rieng chu khong
+# gop vao AF de de nhin - AF da rat dai vi chua giai trinh tung tieu chi FAIL/WARN, nhet
+# them canh bao dong bo vao thi phai keo het o moi thay.
+SYNC_COL = "AG"
+SYNC_HDR = "Đồng bộ tài liệu\n(script khác bản chính)"
 FIRST_ROW, LAST_ROW = 3, 200      # row 3 = dong du lieu dau tien (khop CF Pass/Fail co san tu F3)
+HDR_ROW = 2                       # dong tieu de cua sheet 'Review theo bảng'
 
 NAVY = "FF000080"
 BLUE = "FF0069BA"
 GREEN = "FF1FBA00"
 WARN_BG = "FFFFF2CC"          # nen vang nhat cho o WARN (canh bao, khong tinh loi)
 WARN_FG = "FF9C6500"          # chu nau vang cho o WARN
+BLOCK_BG = "FFFFC7CE"         # nen do nhat cho o 'Không đạt' bi rule chan ep xuong
+BLOCK_FG = "FF9C0006"         # chu do dam
 ARIAL = Font(name="Arial", size=11)
 HEAD = Font(name="Arial", size=11, bold=True, color="FFFFFFFF")
 
@@ -71,9 +81,14 @@ def _available_path(path: str) -> str:
     return f"{base}_v{i}{ext}"
 
 
-def write(results: list, template: str, out_path: str, batch: str, pic: str) -> str:
+def write(results: list, template: str, out_path: str, batch: str, pic: str,
+          sync_notes: dict | None = None) -> str:
     """results: list[(ctx, {rule_id: Finding})]. Tra ve duong dan THAT SU da ghi (co
-    the khac out_path neu file dich dang bi khoa - xem _available_path)."""
+    the khac out_path neu file dich dang bi khoa - xem _available_path).
+
+    `sync_notes`: {ten_workbook: [dong ghi chu]} - canh bao DONG BO TAI LIEU (workbook nay
+    dang giu ban CU cua bang dung chung nao). Ghi vao cot Ghi chu cua dung dong object do,
+    vi canh bao chi in ra console thi mo file Excel len khong thay gi."""
     out_path = _available_path(out_path)
     shutil.copyfile(template, out_path)
     wb = openpyxl.load_workbook(out_path)
@@ -110,15 +125,51 @@ def write(results: list, template: str, out_path: str, batch: str, pic: str) -> 
             cell.value = _cell_value(f.status)
             cell.font = ARIAL
 
+        # Rule CHAN: nhom X khong co cot tren sheet nen khong vao cong thuc ty le loi. Ghi
+        # DE cong thuc o cot Ket luan de FAIL X.10 khong bi ket luan la "Đạt".
+        blocked = sorted(rid for rid in BLOCKING
+                         if (findings.get(rid) is not None
+                             and findings[rid].status == FAIL))
+        if blocked:
+            cell = ws[f"{VERDICT_COL}{row}"]
+            cell.value = "Không đạt"
+            cell.font = Font(name="Arial", size=11, bold=True, color=BLOCK_FG)
+            cell.fill = PatternFill("solid", start_color=BLOCK_BG, end_color=BLOCK_BG)
+            cell.alignment = Alignment(horizontal="center", vertical="center")
+
         ws[f"{NOTE_COL}{row}"] = _note(findings)
         ws[f"{NOTE_COL}{row}"].alignment = Alignment(wrap_text=True, vertical="top")
         ws[f"{NOTE_COL}{row}"].font = ARIAL
+
+        lines = _sync_lines(ctx, sync_notes)
+        cell = ws[f"{SYNC_COL}{row}"]
+        cell.value = "\n".join(lines) if lines else ""
+        cell.alignment = Alignment(wrap_text=True, vertical="top")
+        cell.font = Font(name="Arial", size=11, color=NAVY) if lines else ARIAL
         row += 1
 
+    _setup_sync_col(ws, row)
     _setup_warn_format(ws)
     _detail_sheet(wb, results)
     wb.save(out_path)
     return out_path
+
+
+def _setup_sync_col(ws, after_row: int) -> None:
+    """Ghi tieu de + do rong cho cot SYNC_COL (cot them moi, checklist goc khong co).
+
+    Style tieu de sao y cot AF ke ben de nhin lien mach voi bang goc; ke luon vien cho cac
+    o trong tu dong du lieu cuoi tro len de cot khong bi 'ho' giua bang."""
+    src = ws[f"{NOTE_COL}{HDR_ROW}"]
+    dst = ws[f"{SYNC_COL}{HDR_ROW}"]
+    dst.value = SYNC_HDR
+    dst.font = copy(src.font)
+    dst.fill = copy(src.fill)
+    dst.border = copy(src.border)
+    dst.alignment = Alignment(wrap_text=True, vertical="center", horizontal="center")
+    ws.column_dimensions[SYNC_COL].width = 52
+    for r in range(FIRST_ROW, after_row):
+        ws[f"{SYNC_COL}{r}"].border = copy(ws[f"{NOTE_COL}{r}"].border)
 
 
 def _setup_warn_format(ws) -> None:
@@ -159,8 +210,12 @@ X_DOCUMENTED = {
     "X.1": "Technical Document ZoneC v1.1, mục III.4.2.3",
     "X.6": "Technical Document ZoneC v1.1, mục III.4.2.2 nguyên tắc 1",
     "X.7": "Technical Document ZoneC v1.1, mục Cấu hình Pipeline / Cú pháp chung",
-    "X.10": "đối chiếu trực tiếp với docs/datavault-model-dev_zonec.zip (models/raw_vault, models/business_vault) - danh sách bảng model dbt thật",
+    "X.10": "đối chiếu trực tiếp với docs/datavault-model-dev_zonec.zip (models/raw_vault, models/business_vault) - danh sách bảng model dbt thật; và trạng thái Cancel ở tài liệu mapping Silver (sheet 'Tracking Mapping&Dev Zone C', cột Mapping Status + Dev Status)",
     "X.11": "đối chiếu trực tiếp với docs/datavault-model-dev_zonec.zip (models/raw_vault/satellite) - cột list_cols/raw_sql cua model dbt that",
+    "X.12": "satellite multiactive (unique_key có ma_key trong docs/datavault-model-dev_zonec.zip): 1 hashkey nhiều dòng trong cùng ngày nên GROUP BY phải kèm ma_key, cột tiền phải SUM thay vì max_by",
+    "X.13": "bảng transaction đã lọc source_event_date = 1 ngày thì max_by không chọn gì, bỏ được",
+    "X.14": "PIT có khai sts_hub_table trong docs/datavault-model-dev_zonec.zip đã tự loại bản ghi cdc_status='D', join thêm hub/*_active là thừa",
+    "X.15": "PIT đã có sẵn cột <sat>_src_ev_dt nên join thẳng satellite theo cột đó, không cần bọc thêm CTE/subquery",
 }
 
 
@@ -172,6 +227,17 @@ def in_checklist(rid: str) -> bool:
 def _origin_tag(rid: str) -> str:
     """Nhan nguon cho tieu chi bo sung, de khong bi nham la tieu chi checklist OCB."""
     return f"   [bổ sung, không tính điểm — {X_DOCUMENTED[rid]}]" if rid in X_DOCUMENTED else ""
+
+
+def _sync_lines(ctx, sync_notes: dict | None) -> list:
+    """Cac dong canh bao dong bo cua workbook sinh ra `ctx`.
+
+    ctx.path o che do doc workbook co dang '<ten workbook>.xlsx [<sheet>: <OBJ>]' -> cat
+    lay ten workbook truoc dau ' ['. Che do --from-sql thi ctx.path la file .sql, khong
+    khop khoa nao nen khong ghi gi (dung: luc do khong doc workbook de ma so)."""
+    if not sync_notes:
+        return []
+    return sync_notes.get(os.path.basename(ctx.path.split(" [")[0]), [])
 
 
 def _note(findings: dict) -> str:
@@ -214,6 +280,8 @@ def _note(findings: dict) -> str:
     # Tieu chi N-A (script khong dung sts/satellite/CASE/window... nen khong co gi de sai)
     # KHONG ghi vao note: note chi de giai trinh cho tieu chi FAIL hoac WARN.
     # Chi tiet day du van con o sheet 'Auto-check chi tiet'.
+    # Canh bao lech dong bo nam o cot SYNC_COL rieng, KHONG gop vao day: do khong phai loi
+    # cua chinh object nay (code cua no van dung) nen khong the de lan giua cac khoi FAIL.
     if not blocks:
         return "Đạt toàn bộ tiêu chí."
     return "\n".join(blocks).lstrip("\n")      # bo dong trong dau o khi khong co muc FAIL

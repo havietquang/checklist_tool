@@ -22,9 +22,10 @@ from dataclasses import dataclass, field
 
 from sqlglot import exp
 
-from doc_standard import TRANSACTION_SATS
+from doc_standard import TRANSACTION_SATS, is_txn_all_layer
 from mapping import norm_key
 from core import (
+    HUB_RE,
     LINK_RE,
     SAT_RE,
     NUMERIC_COL_RE,
@@ -78,6 +79,12 @@ class Rule:
 
 
 RULES: dict[str, Rule] = {}
+
+# Rule CHAN: nhom X khong co cot tren sheet OCB nen khong vao cong thuc ty le loi, mac dinh
+# FAIL o nhom X van cho ket luan "Dat". Rieng cac ma duoi day FAIL la ep "Khong dat" - doc
+# bang da bi CANCEL/khong ton tai thi khong con la van de toi uu, script chay se sai hoac
+# chet nen khong duoc phep di tiep.
+BLOCKING = {"X.10"}
 
 
 def rule(rid: str, group: str, title: str, profiles: tuple = ()):
@@ -309,12 +316,31 @@ def _sed_in_on_allowed(ctx: Ctx, join: exp.Join, on: exp.Expression) -> bool:
     return isinstance(tbl, exp.Table) and tbl.name.lower() in TRANSACTION_SATS
 
 
+def _txn_refs(ctx: Ctx) -> list:
+    """Bang hub_* / link_* PHAI dung '= :DATADT' vi thuoc 9 nguon T24 transaction toan tang.
+
+    sat_refs() chi bat sat_/csat_ (SAT_RE) nen hub_*/link_* khong di qua rule 2.4 - hai ban
+    T24_CRB lech nhau dung o cho nay ('hub_crb =' vs '<=') ma ca hai deu 'pass'.
+
+    Phan biet 2 nhom (xem is_txn_all_layer):
+      - 9 nguon T24 (funds_transfer, teller, stmt_entry, categ_entry...): hub + link + sat
+        DEU dung '=' -> quet o day;
+      - nhom con lai, vi du CRB: chi sat dung '=', hub_crb/link_crb_* dung '<=' -> KHONG
+        quet, de hub/link cua chung tu do.
+    'sts_hub_*' luon nam ngoai: HUB_RE doi dau chuoi hoac dau '.' ngay truoc 'hub_' nen
+    'sts_hub_crb' khong khop - dung vay, rule 2.1 can '<=' de doc het lich su trang thai."""
+    return [tbl for tbl in _tables(ctx)
+            if (HUB_RE.search("." + tbl.name) or LINK_RE.search("." + tbl.name))
+            and is_txn_all_layer(tbl.name)]
+
+
 @rule("2.4", G2, "source_event_date dung dang <= / = theo loai bang", (P_SILVER,))
 def r24(ctx: Ctx, repo: dict) -> Finding:
     """Tai lieu III.4.2: bang thuong dung source_event_date <= :DATADT, KHONG dat can duoi.
-    Rieng 49 bang transaction (muc 'Cac truong hop dac biet') PHAI dung = :DATADT."""
+    Rieng bang TRANSACTION (danh sach TRANSACTION_SATS) PHAI dung = :DATADT - ap dung cho
+    ca satellite VA hub_*/link_*/effsat_* (OCB xac nhan: hub transaction phai dung '=')."""
     ok, missing, wrong_form = [], [], []
-    for sat in sat_refs(ctx):
+    for sat in sat_refs(ctx) + _txn_refs(ctx):
         name = sat.name.lower()
         where = f"{sat.name} (dong {first_line(ctx.raw, sat.name)})"
         is_txn = name in TRANSACTION_SATS
@@ -334,7 +360,7 @@ def r24(ctx: Ctx, repo: dict) -> Finding:
             elif has_eq and _pit_join(ctx, sat):
                 ok.append(where)      # PIT: s.source_event_date = p.<sat>_src_ev_dt
             elif has_eq:
-                wrong_form.append(f"{where}: dùng = :DATADT nhưng KHÔNG thuộc danh sách 49 bảng transaction,"
+                wrong_form.append(f"{where}: dùng = :DATADT nhưng KHÔNG thuộc danh sách bảng transaction,"
                                   " sẽ bỏ sót bản ghi mới nhất nằm trước ngày chạy (Issue log #1)")
             else:
                 missing.append(where)
@@ -344,15 +370,15 @@ def r24(ctx: Ctx, repo: dict) -> Finding:
     if wrong_form:
         ev += wrong_form
     if missing:
-        ev.append(f"{len(missing)} satellite không có điều kiện source_event_date nào: " + ", ".join(sorted(set(missing))))
+        ev.append(f"{len(missing)} bảng không có điều kiện source_event_date nào: " + ", ".join(sorted(set(missing))))
     if lower_bound:
         ev.append(f"có đặt cận dưới source_event_date >= ở dòng {lower_bound[:4]} —"
                   " tài liệu yêu cầu CHỈ chặn trên, cận dưới làm bỏ sót bản ghi mới nhất")
     if ev:
         return Finding(FAIL, ev)
     if not ok:
-        return Finding(NA, ["script không đọc satellite nào"])
-    return _ok(f"{len(ok)} satellite đều đúng dạng điều kiện source_event_date")
+        return Finding(NA, ["script không đọc satellite / bảng transaction nào"])
+    return _ok(f"{len(ok)} bảng đều đúng dạng điều kiện source_event_date")
 
 
 def _has_eq_on(node: exp.Expression, col: str) -> bool:
@@ -1077,10 +1103,44 @@ def rx10(ctx: Ctx, repo: dict) -> Finding:
     ma vAn goi SAI TEN BANG khong ton tai (vd doc 'sts_hub_giao_dich' vi hub_giao_dich co
     thuc, nhung KHONG co sts_hub tuong ung trong model - hub nay khong track xoa qua STS
     Hub) - loi nay se FAIL o RUNTIME Databricks (table not found), khong loi cu phap nao
-    bat truoc duoc ngoai rule nay. Day la loi thuc te da gui OCB va bi lech."""
+    bat truoc duoc ngoai rule nay. Day la loi thuc te da gui OCB va bi lech.
+
+    Rule con bao FAIL khi bang co ton tai trong model NHUNG da bi danh Cancel o tai lieu
+    mapping Silver (khoa "models_cancel"): bang huy thi khong duoc dung cho Gold, du hom nay
+    SELECT van chay duoc. Bang nao OCB xac nhan van dung thi khai o "models_cancel_mien_tru"."""
     known = repo.get("known_models")
     if not known:
         return Finding(NA, ["không có danh sách model (known_models.json) để đối chiếu"])
+    # Xet CANCEL truoc "khong ton tai": bang da huy cung khong con trong "models" nen neu
+    # de nhanh duoi bat truoc thi bao "KHONG TON TAI ... co phai y ban la" - sai ban chat,
+    # nguoi doc se di sua ten bang thay vi doi nguon.
+    # Chi xet bang script doc TRUC TIEP. Doc qua view trung gian thi bao o chinh view do,
+    # khong lan truyen sang cac object tieu thu - de moi FAIL tro ve dung 1 cho phai sua.
+    cancelled = repo.get("cancelled_models") or set()
+    huy = sorted({t.split(".")[-1].lower() for t in ctx.silver_tables
+                  if t.split(".")[-1].lower() in cancelled})
+    if huy:
+        ev = "; ".join(f"{name} (dòng {first_line(ctx.raw, name)})" for name in huy)
+        return Finding(FAIL, [f"{len(huy)} bảng đã bị CANCEL trong tài liệu mapping Silver"
+                              f" nên không được dùng cho Gold: {ev}"])
+    # Bang da DOI TEN / TACH BANG: file model ten cu van con trong zip dbt nen script chay
+    # khong loi, khong rule nao bat duoc - phai tra cuu bang khai bao rieng.
+    renamed = repo.get("renamed_models") or {}
+    doi = sorted({t.split(".")[-1].lower() for t in ctx.silver_tables
+                  if t.split(".")[-1].lower() in renamed})
+    if doi:
+        ev = []
+        for name in doi:
+            info = renamed[name]
+            moi = info.get("moi") or []
+            chua = [m for m in moi if m.lower() not in known]
+            canh = (f" [LUU Y: {', '.join(chua)} CHUA co trong Data Vault model,"
+                    " doi ten bay gio se loi table-not-found - cho Silver build xong]"
+                    if chua else "")
+            ev.append(f"{name} (dòng {first_line(ctx.raw, name)}) → đổi thành "
+                      f"{' + '.join(moi)} — CR mapping: {info.get('cr', '')}{canh}")
+        return Finding(FAIL, [f"{len(doi)} bảng đã ĐỔI TÊN / TÁCH BẢNG trong tài liệu mapping"
+                              f" nhưng script vẫn dùng tên cũ: " + "; ".join(ev)])
     bad = sorted({t.split(".")[-1].lower() for t in ctx.silver_tables
                   if t.split(".")[-1].lower() not in known})
     if bad:
@@ -1094,7 +1154,8 @@ def rx10(ctx: Ctx, repo: dict) -> Finding:
                               + "; ".join(ev)])
     if not ctx.silver_tables:
         return Finding(NA, ["script không đọc bảng raw_vault/business_vault nào"])
-    return _ok(f"{len(ctx.silver_tables)} bảng Silver đều có thật trong Data Vault model")
+    return _ok(f"{len(ctx.silver_tables)} bảng Silver đều có thật trong Data Vault model"
+               " và không bảng nào bị Cancel")
 
 
 @rule("X.11", GX, "Cot doc tu satellite (sat_*) phai TON TAI THAT trong model")
@@ -1142,3 +1203,174 @@ def rx11(ctx: Ctx, repo: dict) -> Finding:
     if not checked_any:
         return Finding(NA, ["không có bảng sat_* nào đủ điều kiện đối chiếu (Select chỉ đọc 1 bảng)"])
     return _ok("mọi cột đọc từ sat_* đều tồn tại trong model thật")
+
+
+def _sel_tables(sel: exp.Select) -> list:
+    """Ten bang DOC TRUC TIEP trong Select nay (bo qua bang cua subquery long ben trong)."""
+    return [t.name.lower() for t in sel.find_all(exp.Table) if t.parent_select is sel]
+
+
+def _group_cols(sel: exp.Select) -> set:
+    g = sel.args.get("group")
+    return {c.name.lower() for c in g.find_all(exp.Column)} if g is not None else set()
+
+
+@rule("X.12", GX, "Doc multiactive satellite thi GROUP BY phai kem ma_key")
+def rx12(ctx: Ctx, repo: dict) -> Finding:
+    """Satellite MULTIACTIVE (unique_key co ma_key) co NHIEU dong tren cung 1 hub_hashkey
+    trong CUNG 1 ngay - moi dong mot ma_key. GROUP BY chi theo hashkey la ep nhieu dong that
+    thanh 1, max_by giu lai dung 1 gia tri va VUT phan con lai -> mat du lieu, voi cot so tien
+    la thieu tien. Gop y review tu OCB: 'rieng bang CRB thi sum ngoaite,
+    ngoaite1 vi co the xuat hien 2 dong giong nhau hoan toan'."""
+    ma = repo.get("multiactive_sats") or set()
+    if not ma:
+        return Finding(NA, ["không có danh sách satellite multiactive để đối chiếu"])
+    money = repo.get("sum_money_cols") or {}
+    bad, checked = [], False
+    for sel in {id(s): s for st in ctx.statements for s in st.find_all(exp.Select)}.values():
+        tbls = [t for t in _sel_tables(sel) if t in ma]
+        if not tbls or sel.args.get("group") is None:
+            continue
+        checked = True
+        if "ma_key" in _group_cols(sel):
+            continue
+        for t in sorted(set(tbls)):
+            ev = f"{t} (dòng {first_line(ctx.raw, t)}): GROUP BY thiếu ma_key"
+            cols = money.get(t)
+            if cols:
+                ev += (f" — thêm ma_key vào GROUP BY, và cột tiền {cols} phải SUM"
+                       " thay vì max_by (2 dòng giống hệt nhau thì max_by chỉ lấy 1)")
+            bad.append(ev)
+    if bad:
+        return Finding(FAIL, [f"{len(bad)} khối đọc satellite multiactive nhưng GROUP BY thiếu"
+                              f" ma_key, sẽ mất bản ghi: " + "; ".join(bad)])
+    if not checked:
+        return Finding(NA, ["script không gom nhóm trên satellite multiactive nào"])
+    return _ok("mọi khối đọc satellite multiactive đều GROUP BY kèm ma_key")
+
+
+@rule("X.13", GX, "Bang transaction loc = 1 ngay thi khong can max_by")
+def rx13(ctx: Ctx, repo: dict) -> Finding:
+    """Bang transaction moi ngay sinh ban ghi rieng cua ngay do. Da loc
+    source_event_date = :DATADT thi trong tay chi con 1 ngay, moi dong cung source_event_date
+    -> max_by khong chon duoc gi, chi ton them mot buoc gom nhom. Bo GROUP BY + max_by,
+    SELECT thang cot. Gop y review tu OCB.
+
+    KHONG ap dung cho satellite MULTIACTIVE: o do 1 hashkey van co nhieu dong trong cung
+    ngay theo ma_key nen max_by con tac dung - truong hop do da co X.12 lo."""
+    ma = repo.get("multiactive_sats") or set()
+    thua, checked = [], False
+    for sel in {id(s): s for st in ctx.statements for s in st.find_all(exp.Select)}.values():
+        tbls = [t for t in _sel_tables(sel) if t in TRANSACTION_SATS]
+        if not tbls or sel.args.get("group") is None:
+            continue
+        if any(t in ma for t in tbls):
+            continue                      # multiactive -> max_by co viec that
+        where = sel.args.get("where")
+        if where is None or not _has_eq_on(where, "source_event_date"):
+            continue
+        checked = True
+        n = sum(1 for e in sel.expressions if e.find(exp.ArgMax))
+        if n:
+            thua.append(f"{', '.join(sorted(set(tbls)))} (dòng {first_line(ctx.raw, tbls[0])}):"
+                        f" {n} max_by")
+    if thua:
+        return Finding(WARN, [f"{len(thua)} khối dùng max_by trên bảng transaction đã lọc"
+                              f" source_event_date = 1 ngày nên max_by không chọn gì, bỏ được:"
+                              " " + "; ".join(thua),
+                              "bỏ GROUP BY + max_by, SELECT thẳng cột — kết quả không đổi"])
+    if not checked:
+        return Finding(NA, ["script không gom nhóm trên bảng transaction lọc = 1 ngày"])
+    return _ok("không khối transaction nào dùng max_by thừa")
+
+
+def _pit_aliases(sel: exp.Select, pit_ok: dict) -> dict:
+    """{alias -> ten pit} cho cac bang PIT DA loc sts_hub duoc doc truc tiep trong Select nay."""
+    out = {}
+    for t in sel.find_all(exp.Table):
+        if t.parent_select is sel and t.name.lower() in pit_ok:
+            out[(t.alias or t.name).lower()] = t.name.lower()
+    return out
+
+
+@rule("X.14", GX, "PIT da loc ban ghi hieu luc, khong can join them hub/*_active")
+def rx14(ctx: Ctx, repo: dict) -> Finding:
+    """Macro pit() nhan tham so sts_hub_table; khi co, no da tu dung sts_hub_cte loc
+    cdc_status='D' roi 'left join ... is null' - tuc PIT DA loai ban ghi da xoa. Join them
+    hub_*/\*_active phia sau la lam lai dung viec do lan hai. Gop y review tu OCB:
+    'Pit_customer da duoc thiet ke bang cach su dung sts_hub_customer nen viec join voi
+    cust_active la thua thai. Rule nay cung ap dung cho pit_loan, rieng pit_account dang
+    build rieng theo cau SQL nen Raffles xem lai khuc nay.'
+
+    CHI canh bao (WARN): bo join thuong keo theo phai doi nguon lay business_key, khong phai
+    xoa mot dong la xong - de nguoi sua tu can nhac."""
+    pit_ok = repo.get("pit_filtered") or {}
+    if not pit_ok:
+        return Finding(NA, ["không có danh sách PIT đã lọc sts_hub để đối chiếu"])
+    thua, checked = [], False
+    for sel in {id(s): s for st in ctx.statements for s in st.find_all(exp.Select)}.values():
+        pits = _pit_aliases(sel, pit_ok)
+        if not pits:
+            continue
+        checked = True
+        for join in sel.find_all(exp.Join):
+            tbl = join.this
+            if not isinstance(tbl, exp.Table):
+                continue
+            name = tbl.name.lower()
+            if not (name.endswith("_active") or "_active" in name or name.startswith("hub_")):
+                continue
+            on = join.args.get("on")
+            if on is None or not any(c.name.lower().endswith("_hashkey")
+                                     and (c.table or "").lower() in pits
+                                     for c in on.find_all(exp.Column)):
+                continue
+            pit_name = sorted(set(pits.values()))[0]
+            thua.append(f"{name} (dòng {first_line(ctx.raw, name)}) — {pit_name} đã lọc qua"
+                        f" {pit_ok[pit_name]} nên join này thừa")
+    if thua:
+        return Finding(WARN, [f"{len(thua)} join thừa sau PIT: " + "; ".join(sorted(set(thua))),
+                              "bỏ join thì phải lấy business_key từ nguồn khác — kiểm tra"
+                              " các cột đang đọc từ alias đó trước khi xoá"])
+    if not checked:
+        return Finding(NA, ["script không đọc PIT nào đã lọc sts_hub"])
+    return _ok("không join thừa hub/*_active sau PIT")
+
+
+@rule("X.15", GX, "Dung PIT thi join thang satellite, khong boc them CTE/subquery")
+def rx15(ctx: Ctx, repo: dict) -> Finding:
+    """PIT da tinh san cot <sat>_src_ev_dt = ngay hieu luc cua satellite tai ngay snapshot,
+    nen chi can join thang satellite theo cot do. Boc satellite trong mot subquery co
+    'WHERE source_event_date <= :DATADT' roi moi join la thua: dieu kien
+    'si.source_event_date = pit.<sat>_src_ev_dt' da chot ve dung 1 ngay, loc <= truoc chi
+    quet thua du lieu roi vut di. Gop y review tu OCB."""
+    pit_ok = repo.get("pit_filtered") or {}
+    thua, checked = [], False
+    for sel in {id(s): s for st in ctx.statements for s in st.find_all(exp.Select)}.values():
+        if not _pit_aliases(sel, pit_ok):
+            continue
+        checked = True
+        for join in sel.find_all(exp.Join):
+            sub = join.this
+            if not isinstance(sub, exp.Subquery):
+                continue
+            inner = sub.this
+            if not isinstance(inner, exp.Select):
+                continue
+            sats = [t.name.lower() for t in inner.find_all(exp.Table)
+                    if t.name.lower().startswith(("sat_", "csat_", "non_his_sat_"))]
+            on = join.args.get("on")
+            if not sats or on is None:
+                continue
+            if not re.search(r"_src_ev_dt", on.sql(), re.I):
+                continue
+            thua.append(f"{sats[0]} (dòng {first_line(ctx.raw, sats[0])}) bọc trong subquery"
+                        f" rồi mới join theo _src_ev_dt")
+    if thua:
+        return Finding(WARN, [f"{len(thua)} satellite bọc CTE/subquery thừa khi đã dùng PIT: "
+                              + "; ".join(sorted(set(thua))),
+                              "join thẳng satellite: ON sat.<hashkey> = pit.<hashkey>"
+                              " AND sat.source_event_date = pit.<sat>_src_ev_dt"])
+    if not checked:
+        return Finding(NA, ["script không đọc PIT nào đã lọc sts_hub"])
+    return _ok("mọi satellite dùng cùng PIT đều join thẳng, không bọc subquery")
